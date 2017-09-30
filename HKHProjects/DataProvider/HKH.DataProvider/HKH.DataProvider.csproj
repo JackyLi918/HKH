@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9F8E166-54F4-42C3-8FEE-714F57F90BE3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HKH.Data</RootNamespace>
+    <AssemblyName>HKH.DataProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Collection\SqlInfoList.cs" />
+    <Compile Include="Configuration\DataBaseConfigurationManager.cs" />
+    <Compile Include="Configuration\DataBaseEncryption.cs" />
+    <Compile Include="Configuration\HKHConnectionStringCollection.cs" />
+    <Compile Include="Configuration\HKHConnectionStringElement.cs" />
+    <Compile Include="Configuration\HKHConnectionStringsSection.cs" />
+    <Compile Include="DataBaseObjectBuilder\BaseDataBaseObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\DataBaseObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\DataBaseObjectBuilderFactory.cs" />
+    <Compile Include="DataBaseObjectBuilder\IBaseDataBaseObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\ICommandBuiler.cs" />
+    <Compile Include="DataBaseObjectBuilder\IDataBaseObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\Odbc\OdbcObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\OleDb\OleDbObjectBuilder.cs" />
+    <Compile Include="DataBaseObjectBuilder\SqlServer\SqlServerObjectBuilder.cs" />
+    <Compile Include="DataProvider\DataProvider.cs" />
+    <Compile Include="DataProvider\IBaseDataProvider.cs" />
+    <Compile Include="DataProvider\IDataParameterProvider.cs" />
+    <Compile Include="DataProvider\IDataProvider.cs" />
+    <Compile Include="Data\ISafeDataReader.cs" />
+    <Compile Include="Data\SafeDataReader.cs" />
+    <Compile Include="Exception\DataBaseConfigurationException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction\TransactionController.cs" />
+    <Compile Include="Transaction\TransactionHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configuration\HKHConnectionStringsExample.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configuration\HKHConnectionStringsSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HKH.DataProvider.nuspec" />
+    <None Include="hkh.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HKH.Common\HKH.Common.csproj">
+      <Project>{33279f0b-e19c-4913-a367-62486897e6af}</Project>
+      <Name>HKH.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

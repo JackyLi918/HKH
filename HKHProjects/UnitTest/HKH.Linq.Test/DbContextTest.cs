@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace HKH.Linq.Test
+{
+    [TestClass]
+    public class DbContextTest
+    {
+        [TestMethod]
+        public void TestMethod1()
+        {
+            var nor = new Northwind();
+            //var cust = new Customer
+            //{
+            //    CustomerID = "XX1",
+            //    CompanyName = "Company1",
+            //    ContactName = "Contact1",
+            //    City = "Seattle",
+            //    Country = "USA"
+            //};
+            //var result = nor.Customers.Insert(cust);
+
+            var cust = new Customer
+            {
+                CustomerID = "XX1",
+                City = "Beijing", // moved to Portland!
+                Country ="China"
+            };
+
+            var result = nor.Customers.PartialUpdate(cust);
+        }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            var nor = new Northwind();
+            var result = nor.Customers.Where(c => c.City == "London").ToList();
+        }
+    }
+
+    public class Customer
+    {
+        public string CustomerID;
+        public string ContactName;
+        public string CompanyName;
+        public string Phone;
+        public string City;
+        public string Country;
+    }
+
+    public class Northwind : HKH.Linq.Data.SqlServer.SqlServerDbContext
+    {
+        public Northwind()
+            : base(HKH.Data.DataProvider.GetInstance(typeof(HKH.Data.SqlServer.SqlServerObjectBuilder), GetConnectionString(), false))
+        {
+        }
+
+        private static string GetConnectionString()
+        {
+            System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder();
+            builder.DataSource = @".\SQLEX2014";
+            builder.InitialCatalog = "Northwind";
+            builder.IntegratedSecurity = true;
+            builder.MultipleActiveResultSets = true;
+            return builder.ToString();
+
+            //string databaseFile = Path.GetFullPath(@"Northwind.mdf");
+            //return string.Format(@"Data Source=.\SQLEX2014;Integrated Security=True;Connect Timeout=30;User Instance=True;MultipleActiveResultSets=true;AttachDbFilename='{0}'", databaseFile);
+        }
+
+        public virtual IEntityTable<Customer> Customers
+        {
+            get { return GetTable<Customer>(); }
+        }
+    }
+}

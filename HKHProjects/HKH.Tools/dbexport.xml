@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<excelConfiguration>
+	<!--
+		id：Identity
+		source：Excel Sheet name or sheet index(if integer)
+		target：Class name or datatable name
+	-->
+	<tableMapping id ="1"  source = "Sheet1" target = "Grade">
+		<exports>
+			<!--
+				id：Identity
+				[outputTitle]：output title as first row if true. Option
+				[dataFormat]: specified date format. default is "mm/dd/yyyy".  Option
+			-->
+			<export id="1" outputTitle="true" dateFormat="yyyy年mm月dd日">
+				<!--
+					source：Excel Column Name (A, B, C ....)
+					target：Class property name or column name of datatable
+					[targetType]: indicate if the target is an expression. default is normal. Option
+					[title]：write to first row if outputtitle is true, default to property/column name. Option
+					
+					expression for target: 
+						{SrcRowNum(0)}		source current row number. 0 based
+						{XlsRowNum(0)}		excel current row number. 1 based
+						parameter: 0 = current row number
+								   -1 = prev row number
+								   +1 = next row number
+				-->
+				<columnMapping source ="A" target ="{SrcRowNum(+1)}" targetType="expression" title="序号" />
+				<columnMapping source ="B" target ="ClassId" title="班级编号"/>
+				<columnMapping source ="C" target ="StudentId" title="学生编号"/>
+				<columnMapping source ="D" target ="Net"/>
+				<columnMapping source ="E" target ="Java" />
+				<columnMapping source ="F" target ="Html" />
+				<columnMapping source ="G" target ="Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" targetType="expression" title="总分" />
+			</export>
+			<export id="2" outputTitle="true">
+				<columnMapping source ="A" target ="ClassId" title="ClassNo"/>
+				<columnMapping source ="B" target ="StudentId" title="StudentNo"/>
+				<columnMapping source ="C" target ="Net"/>
+				<columnMapping source ="D" target ="Java" />
+				<columnMapping source ="E" target ="Html" />
+			</export>
+		</exports>
+		<imports>
+			<import id="1">
+				<!--
+					source：Excel Column Name (A, B, C ....)
+					target：Class property name or column name of datatable
+					[inherit]：indicate whether set the merged cell value to each model, default to false. Option
+					[from]：indicate where should the current cell value be copied from if inherit is true, default to up. Option
+				-->
+				<columnMapping source ="A" target ="ClassId" inherit="true"/>
+				<columnMapping source ="B" target ="StudentId"/>
+				<columnMapping source ="C" target ="Net" inherit="true"/>
+				<columnMapping source ="D" target ="Java" inherit="true" from="left" />
+				<columnMapping source ="E" target ="Html" inherit="true" from="left" />
+			</import>
+		</imports>
+	</tableMapping>
+</excelConfiguration>

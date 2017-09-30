@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{33279F0B-E19C-4913-A367-62486897E6AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HKH.Common</RootNamespace>
+    <AssemblyName>HKH.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Common\BooleanExtension.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\DateRange.cs" />
+    <Compile Include="Common\DictionaryExtension.cs" />
+    <Compile Include="Common\EnumerableExtension.cs" />
+    <Compile Include="Common\Error.cs" />
+    <Compile Include="Common\EventArgsOfT.cs" />
+    <Compile Include="Common\IListExtension.cs" />
+    <Compile Include="Common\INullable.cs" />
+    <Compile Include="Common\LinkedEnumerable.cs" />
+    <Compile Include="Common\ObjectExtension.cs" />
+    <Compile Include="Common\PropertyCompare.cs" />
+    <Compile Include="Common\QueryableExtension.cs" />
+    <Compile Include="Common\StringExtension.cs" />
+    <Compile Include="Common\XExpression.cs" />
+    <Compile Include="Exception\UnLogException.cs" />
+    <Compile Include="ObjectPool\IPooledObject.cs" />
+    <Compile Include="ObjectPool\PooledObjectLocator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\HashEncryption\SHA.cs" />
+    <Compile Include="Security\SymmetricEncryption\AES.cs" />
+    <Compile Include="Security\SymmetricEncryption\Base64.cs" />
+    <Compile Include="Security\SymmetricEncryption\DES.cs" />
+    <Compile Include="Security\HashEncryption\HashEncryption.cs" />
+    <Compile Include="Configuration\HKHProtectedConfigurationProvider.cs" />
+    <Compile Include="Security\IEncryption.cs" />
+    <Compile Include="Security\HashEncryption\MD5.cs" />
+    <Compile Include="Security\SymmetricEncryption\SymmetricEncryption.cs" />
+    <Compile Include="Security\SymmetricEncryption\TripleDES.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hkh.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

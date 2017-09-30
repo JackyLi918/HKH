@@ -1,0 +1,10 @@
+**/.vs/**
+*.suo
+*.user
+*.nuspec
+*.cache
+*.csproj.FileList*.txt
+**/bin/**
+**/obj/**
+**/packages/**
+**/TestResults/**

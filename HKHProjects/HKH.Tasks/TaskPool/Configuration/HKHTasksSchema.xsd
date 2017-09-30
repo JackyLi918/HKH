@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vs="http://schemas.microsoft.com/Visual-Studio-Intellisense" elementFormDefault="qualified" attributeFormDefault="unqualified" vs:helpNamespace="http://schemas.microsoft.com/.NetConfiguration/v2.0">
+	<xs:simpleType name="small_boolean_Type">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- Append the code below to [%VS%\Xml\Schemas\DotNetConfig.xsd] to get intellisense -->
+	<xs:element name="hkh.tasks" vs:help="configuration/hkh.tasks">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="add" vs:help="configuration/hkh.tasks/add">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="taskType" type="xs:string" use="required" />
+						<xs:attribute name="taskQueueType" type="xs:string" use="optional" />
+						<xs:attribute name="maxTaskCount" type="xs:int" use="optional" />
+						<xs:attribute name="lockAttributes" type="xs:string" use="optional" />
+						<xs:attribute name="lockAllAttributesExcept" type="xs:string" use="optional" />
+						<xs:attribute name="lockElements" type="xs:string" use="optional" />
+						<xs:attribute name="lockAllElementsExcept" type="xs:string" use="optional" />
+						<xs:attribute name="lockItem" type="small_boolean_Type" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="remove" vs:help="configuration/hkh.tasks/remove">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="clear" vs:help="configuration/hkh.tasks/clear">
+					<xs:complexType>
+						<!--tag is empty-->
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="lockAttributes" type="xs:string" use="optional" />
+			<xs:attribute name="lockAllAttributesExcept" type="xs:string" use="optional" />
+			<xs:attribute name="lockElements" type="xs:string" use="optional" />
+			<xs:attribute name="lockAllElementsExcept" type="xs:string" use="optional" />
+			<xs:attribute name="lockItem" type="small_boolean_Type" use="optional" />
+			<xs:attribute name="configSource" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

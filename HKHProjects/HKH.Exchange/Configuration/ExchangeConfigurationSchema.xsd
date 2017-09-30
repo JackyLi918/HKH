@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vs="http://schemas.microsoft.com/Visual-Studio-Intellisense" elementFormDefault="qualified" attributeFormDefault="unqualified" vs:helpNamespace="http://schemas.microsoft.com/.NetConfiguration/v2.0">
+	<xs:complexType name="exportsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="export" type="exportType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="exportType">
+		<xs:sequence>
+			<xs:element name="basic" type="basicType"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="details" type="detailsType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="dateFormat" type="xs:string" use="optional" />
+		<xs:attribute name="numberFormat" type="xs:string" use="optional" />
+		<xs:attribute name="xlsFormat" type="xls_enum" use="optional" />
+	</xs:complexType>
+	<xs:complexType name ="basicType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="columnMapping">
+				<xs:complexType>
+					<xs:attribute name="col" type="xs:string" use="required" />
+					<xs:attribute name="row" type="xs:int" use="required" />
+					<xs:attribute name="offset" type="small_boolean_Type" use="optional" />
+					<xs:attribute name="prop" type="xs:string" use="required" />
+					<xs:attribute name="propType" type="propType_enum" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name ="detailsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="columnMapping">
+				<xs:complexType>
+					<xs:attribute name="col" type="xs:string" use="required" />
+					<xs:attribute name="prop" type="xs:string" use="required" />
+					<xs:attribute name="propType" type="propType_enum" use="optional"/>
+					<xs:attribute name="title" type="xs:string" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="outputTitle" type="small_boolean_Type" use="optional" />
+		<xs:attribute name="firstRowIndex" type="xs:int" use="optional" />
+		<xs:attribute name="pageSize" type="xs:int" use="optional" />
+		<xs:attribute name ="fillMode" type ="fillMode_enum" use ="optional" />
+	</xs:complexType>
+	<xs:complexType name="importsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="import"  type="importType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="importType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="columnMapping" >
+				<xs:complexType>
+					<xs:attribute name="col" type="xs:string" use="required" />
+					<xs:attribute name="prop" type="xs:string" use="required" />
+					<xs:attribute name="from" type="from_enum" use="optional" />
+					<xs:attribute name="inherit" type="small_boolean_Type" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="firstRowIndex" type="xs:int" use="optional" />
+		<xs:attribute name="xlsFormat" type="xls_enum" use="optional" />
+	</xs:complexType>
+	<xs:simpleType name="Infinite_or_int">
+		<xs:union memberTypes="Infinite xs:int" />
+	</xs:simpleType>
+	<xs:simpleType name="Infinite">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Infinite" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="small_boolean_Type">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="boolean_Type">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+			<xs:enumeration value="True" />
+			<xs:enumeration value="False" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="propType_enum">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="normal"></xs:enumeration>
+			<xs:enumeration value="expression"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="fillMode_enum">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="new"></xs:enumeration>
+			<xs:enumeration value="copy"></xs:enumeration>
+			<xs:enumeration value="fill"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="from_enum">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="left"></xs:enumeration>
+			<xs:enumeration value="up"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="xls_enum">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="auto"></xs:enumeration>
+			<xs:enumeration value="xls"></xs:enumeration>
+			<xs:enumeration value="xlsx"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="excelConfiguration">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="tableMapping" vs:help="excelConfiguration/tableMapping">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exports" type="exportsType"  minOccurs="0" maxOccurs="1"/>
+							<xs:element name="imports" type="importsType" minOccurs="0" maxOccurs="1"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:string" use="required" />
+						<xs:attribute name="sheet" type="xs:string" use="required" />
+						<xs:attribute name="clsType" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
