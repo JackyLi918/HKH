@@ -9,19 +9,15 @@
 *****************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel.Web;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace HKH.WCF.Unity
 {
-	/// <summary>
-	/// UnityWebServiceHost
-	/// </summary>
-	public class UnityWebServiceHost : WebServiceHost
+    /// <summary>
+    /// UnityWebServiceHost
+    /// </summary>
+    public class UnityWebServiceHost : WebServiceHost
 	{
 		public UnityWebServiceHost(IUnityContainer container, Type serviceType, params Uri[] baseAddresses)
 			: base(serviceType, baseAddresses)

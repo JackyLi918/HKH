@@ -9,20 +9,18 @@
 *****************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.RegistrationByConvention;
 
 namespace HKH.WCF.Unity
 {
-	/// <summary>
-	/// UnityWebServiceHostFactory
-	/// </summary>
-	public class UnityWebServiceHostFactory : WebServiceHostFactory
+    /// <summary>
+    /// UnityWebServiceHostFactory
+    /// </summary>
+    public class UnityWebServiceHostFactory : WebServiceHostFactory
 	{
 		protected static IUnityContainer container = new UnityContainer();
 		protected static bool isInitialized = false;

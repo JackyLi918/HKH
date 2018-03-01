@@ -8,22 +8,16 @@
  * 
 *****************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
 using Unity.Web;
 
 namespace System.Web.UI
 {
-   public  class UnityPage : Page, IDependencyObject
+    public class UnityPage : Page, IDependencyObject
     {
-       public UnityPage()
+        public UnityPage()
         {
-            if(WebUnity.Container!=null)
-                WebUnity.Container.BuildUp(this.GetType().BaseType, this);
+            if (WebUnity.Container != null)
+                WebUnity.Container.BuildUp(this.GetType().BaseType, this, "UnityPage");
         }
     }
 }

@@ -1,17 +1,13 @@
-﻿using Microsoft.Practices.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using System.Text;
-using System.Threading.Tasks;
+using Unity;
 
 namespace HKH.WCF.Unity
 {
-	public class UnityInstanceProvider : IInstanceProvider, IContractBehavior
+    public class UnityInstanceProvider : IInstanceProvider, IContractBehavior
 	{
 		private readonly IUnityContainer container;
 

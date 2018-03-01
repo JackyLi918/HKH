@@ -9,19 +9,15 @@
 *****************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity.InterceptionExtension;
+using Unity.Interception.PolicyInjection.Pipeline;
 
 namespace HKH.AOP
 {
-	/// <summary>
-	/// UnityExceptionHandler
-	/// </summary>
-	public class UnityExceptionHandler : ICallHandler
+    /// <summary>
+    /// UnityExceptionHandler
+    /// </summary>
+    public class UnityExceptionHandler : ICallHandler
 	{
 		public int Order { get; set; }
 

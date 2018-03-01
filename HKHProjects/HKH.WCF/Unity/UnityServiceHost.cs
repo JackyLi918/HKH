@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace HKH.WCF.Unity
 {
-	public class UnityServiceHost : ServiceHost
+    public class UnityServiceHost : ServiceHost
 	{
 		public UnityServiceHost(IUnityContainer container, Type serviceType, params Uri[] baseAddresses)
 			: base(serviceType, baseAddresses)
