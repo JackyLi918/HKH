@@ -65,9 +65,6 @@
     <Compile Include="ExceptionHandler\UnityExceptionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HKH.AOP.nuspec">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

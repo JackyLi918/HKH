@@ -57,7 +57,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HKH.DataProvider.Dapper.nuspec" />
+    <None Include="HKH.DataProvider.Dapper.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

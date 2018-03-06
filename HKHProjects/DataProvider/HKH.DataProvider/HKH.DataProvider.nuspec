@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <description>$description$</description>
+    <dependencies>
+      <dependency id="HKH.Common" version="4.5" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Configuration\*.*" target="content\docs" exclude="Configuration\*.cs" />
+  </files>
+</package>

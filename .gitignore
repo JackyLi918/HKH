@@ -1,7 +1,6 @@
 **/.vs/**
 *.suo
 *.user
-*.nuspec
 *.cache
 *.csproj.FileList*.txt
 **/bin/**

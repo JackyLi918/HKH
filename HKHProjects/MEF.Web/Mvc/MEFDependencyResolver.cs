@@ -13,18 +13,15 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MEF.Mvc
 {
-	/// <summary>
-	/// MEFDependencyResolver
-	/// </summary>
-	public class MEFDependencyResolver : IDependencyResolver
+    /// <summary>
+    /// MEFDependencyResolver
+    /// </summary>
+    public class MEFDependencyResolver : IDependencyResolver
 	{
 		private const string HttpContextKey = "perRequestContainer";
 		private ComposablePartCatalog _catalog;

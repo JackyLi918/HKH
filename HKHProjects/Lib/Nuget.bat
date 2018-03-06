@@ -16,6 +16,6 @@ NuGet.exe Pack ..\DataProvider\DapperLinq\HKH.Linq.SqlServer\HKH.Linq.SqlServer.
 Del ..\ReleasePackages\*.*
 Move *.nupkg ..\ReleasePackages\
 
-NuGetPackageUploader.exe ..\ReleasePackages\ /a
+::NuGetPackageUploader.exe ..\ReleasePackages\ /a
 
 pause
