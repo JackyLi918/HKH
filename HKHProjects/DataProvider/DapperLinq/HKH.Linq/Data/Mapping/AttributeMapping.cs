@@ -25,7 +25,7 @@ namespace HKH.Linq.Data.Mapping
         public string Alias { get; set; }
     }
 
-    [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class TableAttribute : TableBaseAttribute
     {
         public Type EntityType { get; set; }
@@ -53,7 +53,10 @@ namespace HKH.Linq.Data.Mapping
         public bool IsComputed { get; set; }
         public bool IsPrimaryKey { get; set; }
         public bool IsGenerated { get; set; }
-        public bool IsReadOnly { get; set; }  
+        public bool IsReadOnly { get; set; }
+    }
+    public class NotMappedAttribute : MemberAttribute
+    {
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
@@ -175,7 +178,7 @@ namespace HKH.Linq.Data.Mapping
                     string newTableId = tableId + "." + nestedMember;
                     nested = (AttributeMappingEntity)this.GetEntity(TypeHelper.GetMemberType(member), newTableId);
                 }
-                else 
+                else
                 {
                     if (members.Contains(memberName))
                     {
@@ -250,7 +253,7 @@ namespace HKH.Linq.Data.Mapping
             AttributeMappingMember mm = ((AttributeMappingEntity)entity).GetMappingMember(member.Name);
             return mm != null && mm.Column != null && mm.Column.IsGenerated;
         }
-        
+
         public override bool IsReadOnly(MappingEntity entity, MemberInfo member)
         {
             AttributeMappingMember mm = ((AttributeMappingEntity)entity).GetMappingMember(member.Name);
@@ -282,7 +285,7 @@ namespace HKH.Linq.Data.Mapping
         public override bool IsAssociationRelationship(MappingEntity entity, MemberInfo member)
         {
             AttributeMappingMember mm = ((AttributeMappingEntity)entity).GetMappingMember(member.Name);
-            return mm != null && mm.Association != null;        
+            return mm != null && mm.Association != null;
         }
 
         public override bool IsRelationshipSource(MappingEntity entity, MemberInfo member)
@@ -333,7 +336,7 @@ namespace HKH.Linq.Data.Mapping
             return base.GetRelatedEntity(entity, member);
         }
 
-        private static readonly char[] separators = new char[] {' ', ',', '|' };
+        private static readonly char[] separators = new char[] { ' ', ',', '|' };
 
         public override IEnumerable<MemberInfo> GetAssociationKeyMembers(MappingEntity entity, MemberInfo member)
         {

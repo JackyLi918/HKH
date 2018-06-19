@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HKH.Linq.Data.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HKH.Linq.Test
@@ -26,9 +27,9 @@ namespace HKH.Linq.Test
 
             var cust = new Customer
             {
-                CustomerID = "XX1",
+                ID = "XX1",
                 City = "Beijing", // moved to Portland!
-                Country ="China"
+                Country = "China"
             };
 
             var result = nor.Customers.PartialUpdate(cust);
@@ -42,9 +43,11 @@ namespace HKH.Linq.Test
         }
     }
 
+    [Table(Name = "Customers")]
     public class Customer
     {
-        public string CustomerID;
+        [Column(Name = "CustomerID", IsPrimaryKey = true, IsGenerated = false)]
+        public string ID;
         public string ContactName;
         public string CompanyName;
         public string Phone;
@@ -55,14 +58,14 @@ namespace HKH.Linq.Test
     public class Northwind : HKH.Linq.Data.SqlServer.SqlServerDbContext
     {
         public Northwind()
-            : base(HKH.Data.DataProvider.GetInstance(typeof(HKH.Data.SqlServer.SqlServerObjectBuilder), GetConnectionString(), false))
+            : base(HKH.Data.DataProvider.GetInstance(typeof(HKH.Data.SqlServer.SqlServerObjectBuilder), GetConnectionString(), false), new CompositiveMapping())
         {
         }
 
         private static string GetConnectionString()
         {
             System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder();
-            builder.DataSource = @".\SQLEX2014";
+            builder.DataSource = @".\SQLEX2017";
             builder.InitialCatalog = "Northwind";
             builder.IntegratedSecurity = true;
             builder.MultipleActiveResultSets = true;

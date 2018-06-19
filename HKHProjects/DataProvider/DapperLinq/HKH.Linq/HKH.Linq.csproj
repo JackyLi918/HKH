@@ -94,6 +94,7 @@
     <Compile Include="Data\Common\Translation\UnusedColumnRemover.cs" />
     <Compile Include="Data\DbContext.cs" />
     <Compile Include="Data\DbTypeSystem.cs" />
+    <Compile Include="Data\Mapping\CompositiveMapping.cs" />
     <Compile Include="Infrastructure\EnumerateOnce.cs" />
     <Compile Include="Infrastructure\AsyncEnumerable.cs" />
     <Compile Include="Infrastructure\AsyncEnumerator.cs" />

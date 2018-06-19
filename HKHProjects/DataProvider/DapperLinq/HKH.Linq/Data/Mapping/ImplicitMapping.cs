@@ -32,10 +32,10 @@ namespace HKH.Linq.Data.Mapping
         public override bool IsPrimaryKey(MappingEntity entity, MemberInfo member)
         {
             // Customers has CustomerID, Orders has OrderID, etc
-            if (this.IsColumn(entity, member)) 
+            if (this.IsColumn(entity, member))
             {
                 string name = NameWithoutTrailingDigits(member.Name);
-                return member.Name.EndsWith("ID") && member.DeclaringType.Name.StartsWith(member.Name.Substring(0, member.Name.Length - 2)); 
+                return member.Name.EndsWith("ID") && member.DeclaringType.Name.StartsWith(member.Name.Substring(0, member.Name.Length - 2));
             }
             return false;
         }
@@ -193,13 +193,13 @@ namespace HKH.Linq.Data.Mapping
 
         public static string Plural(string name)
         {
-            if (name.EndsWith("x", StringComparison.InvariantCultureIgnoreCase) 
+            if (name.EndsWith("x", StringComparison.InvariantCultureIgnoreCase)
                 || name.EndsWith("ch", StringComparison.InvariantCultureIgnoreCase)
-                || name.EndsWith("ss", StringComparison.InvariantCultureIgnoreCase)) 
+                || name.EndsWith("ss", StringComparison.InvariantCultureIgnoreCase))
             {
                 return name + "es";
             }
-            else if (name.EndsWith("y", StringComparison.InvariantCultureIgnoreCase)) 
+            else if (name.EndsWith("y", StringComparison.InvariantCultureIgnoreCase))
             {
                 return name.Substring(0, name.Length - 1) + "ies";
             }
