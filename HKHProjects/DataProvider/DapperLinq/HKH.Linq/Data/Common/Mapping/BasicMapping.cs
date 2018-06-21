@@ -124,7 +124,7 @@ namespace HKH.Linq.Data.Common
         {
             return false;
         }
-        
+
         /// <summary>
         /// Determines if a property should not be written back to database
         /// </summary>
@@ -143,7 +143,7 @@ namespace HKH.Linq.Data.Common
         /// <returns></returns>
         public virtual bool IsUpdatable(MappingEntity entity, MemberInfo member)
         {
-            return !this.IsPrimaryKey(entity, member) && !this.IsReadOnly(entity, member);   
+            return !this.IsPrimaryKey(entity, member) && !this.IsReadOnly(entity, member);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace HKH.Linq.Data.Common
         /// <param name="member"></param>
         /// <returns></returns>
         public virtual IEnumerable<MemberInfo> GetAssociationKeyMembers(MappingEntity entity, MemberInfo member)
-        {            
+        {
             return new MemberInfo[] { };
         }
 
@@ -293,13 +293,22 @@ namespace HKH.Linq.Data.Common
             }
             for (int i = 0, n = keys.Length; i < n; i++)
             {
+                ConstantExpression key = keys[i] as ConstantExpression;
                 MemberInfo mem = idMembers[i];
                 Type memberType = TypeHelper.GetMemberType(mem);
-                if (keys[i] != null && TypeHelper.GetNonNullableType(keys[i].Type) != TypeHelper.GetNonNullableType(memberType))
+                if (key != null && TypeHelper.GetNonNullableType(key.Type) != TypeHelper.GetNonNullableType(memberType))
                 {
-                    throw new InvalidOperationException("Primary key value is wrong type");
+                    try
+                    {
+                        object v = Convert.ChangeType(key.Value, TypeHelper.GetNonNullableType(memberType));
+                        key = Expression.Constant(v);
+                    }
+                    catch
+                    {
+                        throw new InvalidOperationException("Primary key value is wrong type");
+                    }
                 }
-                Expression eq = Expression.MakeMemberAccess(p, mem).Equal(keys[i]);
+                Expression eq = Expression.MakeMemberAccess(p, mem).Equal(key);
                 pred = (pred == null) ? eq : pred.And(eq);
             }
             var predLambda = Expression.Lambda(pred, p);
@@ -516,7 +525,7 @@ namespace HKH.Linq.Data.Common
         {
             foreach (var assign in assignments)
             {
-                MemberInfo[] members = entityType.GetMember(assign.Member.Name, BindingFlags.Instance|BindingFlags.Public);
+                MemberInfo[] members = entityType.GetMember(assign.Member.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (members != null && members.Length > 0)
                 {
                     yield return new EntityAssignment(members[0], assign.Expression);
@@ -668,7 +677,7 @@ namespace HKH.Linq.Data.Common
                 Expression where = null;
                 for (int i = 0, n = associatedMembers.Count; i < n; i++)
                 {
-                    Expression equal = 
+                    Expression equal =
                         this.GetMemberExpression(projection.Projector, relatedEntity, associatedMembers[i]).Equal(
                             this.GetMemberExpression(root, entity, declaredTypeMembers[i])
                         );
@@ -701,7 +710,7 @@ namespace HKH.Linq.Data.Common
         {
             var tableAlias = new TableAlias();
             var table = new TableExpression(tableAlias, entity, this.mapping.GetTableName(entity));
-            var assignments = this.GetColumnAssignments(table, instance, entity, (e, m) => !(mapping.IsGenerated(e, m) || mapping.IsReadOnly(e,m)));   // #MLCHANGE
+            var assignments = this.GetColumnAssignments(table, instance, entity, (e, m) => !(mapping.IsGenerated(e, m) || mapping.IsReadOnly(e, m)));   // #MLCHANGE
 
             if (selector != null)
             {
@@ -902,7 +911,7 @@ namespace HKH.Linq.Data.Common
 
             var assignments = this.GetColumnAssignments(table, instance, entity, (e, m) => this.mapping.IsUpdatable(e, m));
 
-            Expression update = new PartialUpdateCommand (table, where, assignments);
+            Expression update = new PartialUpdateCommand(table, where, assignments);
 
             if (selector != null)
             {
@@ -955,7 +964,7 @@ namespace HKH.Linq.Data.Common
                 var check = this.GetEntityExistsTest(entity, instance);
                 return new IFCommand(check, update, insert);
             }
-            else 
+            else
             {
                 Expression insert = this.GetInsertExpression(entity, instance, resultSelector);
                 Expression update = this.GetUpdateExpression(entity, instance, updateCheck, resultSelector, insert);

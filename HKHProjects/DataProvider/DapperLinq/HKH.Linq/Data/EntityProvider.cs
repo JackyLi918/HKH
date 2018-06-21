@@ -185,7 +185,7 @@ namespace HKH.Linq.Data
                     if (keys == null)
                         keys = new object[] { id };
                     Expression query = ((EntityProvider)dbProvider).Mapping.GetPrimaryKeyQuery(this.entity, this.Expression, keys.Select(v => Expression.Constant(v)).ToArray());
-                    return this.Provider.Execute<T>(query);
+                    return this.Provider.Execute<IEnumerable<T>>(query).FirstOrDefault();
                 }
                 return default(T);
             }
