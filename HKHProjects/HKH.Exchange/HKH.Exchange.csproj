@@ -126,16 +126,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HKH.Common\HKH.Common.csproj">
-      <Project>{7F8F09A5-0D2A-470C-95CC-2B1262B3C3B9}</Project>
-      <Name>HKH.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HKH.CSV\HKH.CSV.csproj">
-      <Project>{acb95bea-f7bb-4b08-9737-d3ac0091892d}</Project>
-      <Name>HKH.CSV</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -168,7 +158,16 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\HKH.Common\HKH.Common.csproj">
+      <Project>{33279f0b-e19c-4913-a367-62486897e6af}</Project>
+      <Name>HKH.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HKH.CSV\HKH.CSV.csproj">
+      <Project>{acb95bea-f7bb-4b08-9737-d3ac0091892d}</Project>
+      <Name>HKH.CSV</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
