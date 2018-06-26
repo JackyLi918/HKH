@@ -91,7 +91,7 @@ namespace HKH.Linq.Data.Common
                 if (test.Equals(col.Expression))
                 {
                     var colType = this.TypeSystem.GetColumnType(test.Type);
-                    testCol = new ColumnExpression(test.Type, colType, select.Alias, col.Name);
+                    testCol = new ColumnExpression(test.Type, colType, select.Alias, col.Name, null);
                     break;
                 }
             }
@@ -102,8 +102,8 @@ namespace HKH.Linq.Data.Common
                 string colName = (testCol != null) ? testCol.Name : "Test";
                 colName = proj.Select.Columns.GetAvailableColumnName(colName);
                 var colType = this.TypeSystem.GetColumnType(test.Type);
-                select = select.AddColumn(new ColumnDeclaration(colName, test, colType));
-                testCol = new ColumnExpression(test.Type, colType, select.Alias, colName);
+                select = select.AddColumn(new ColumnDeclaration(colName, null, test, colType));
+                testCol = new ColumnExpression(test.Type, colType, select.Alias, colName, null);
             }
             var newProjector = new OuterJoinedExpression(testCol, proj.Projector);
             return new ProjectionExpression(select, newProjector, proj.Aggregator);
@@ -166,7 +166,7 @@ namespace HKH.Linq.Data.Common
             private bool IsExternalColumn(Expression exp)
             {
                 var col = GetColumn(exp);
-                if (col != null && !this.aliases.Contains(col.Alias))
+                if (col != null && !this.aliases.Contains(col.TableAlias))
                     return true;
                 return false;
             }
@@ -274,7 +274,7 @@ namespace HKH.Linq.Data.Common
             this.translator = translator;
         }
 
-        public QueryLanguage Language 
+        public QueryLanguage Language
         {
             get { return this.language; }
         }

@@ -582,7 +582,7 @@ namespace HKH.Linq.Data.Common
                 }
                 if (alternate != null)
                 {
-                    alternate.Add(new ColumnDeclaration(column.Name, e, column.QueryType));
+                    alternate.Add(new ColumnDeclaration(column.Name, column.Alias, e, column.QueryType));
                 }
             }
             if (alternate != null)

@@ -63,7 +63,7 @@ namespace HKH.Linq.Data.Common
             get { return this.language; }
         }
 
-        protected bool HideColumnAliases 
+        protected bool HideColumnAliases
         {
             get { return this.hideColumnAliases; }
             set { this.hideColumnAliases = value; }
@@ -75,7 +75,7 @@ namespace HKH.Linq.Data.Common
             set { this.hideTableAliases = value; }
         }
 
-        protected bool IsNested 
+        protected bool IsNested
         {
             get { return this.isNested; }
             set { this.isNested = value; }
@@ -807,9 +807,9 @@ namespace HKH.Linq.Data.Common
 
         protected override Expression VisitColumn(ColumnExpression column)
         {
-            if (column.Alias != null && !this.HideColumnAliases)
+            if (column.TableAlias != null && !this.HideColumnAliases)
             {
-                this.WriteAliasName(GetAliasName(column.Alias));
+                this.WriteAliasName(GetAliasName(column.TableAlias));
                 this.Write(".");
             }
             this.WriteColumnName(column.Name);
@@ -912,10 +912,15 @@ namespace HKH.Linq.Data.Common
                         this.Write(", ");
                     }
                     ColumnExpression c = this.VisitValue(column.Expression) as ColumnExpression;
-                    if (!string.IsNullOrEmpty(column.Name) && (c == null || c.Name != column.Name))
+                    //if (!string.IsNullOrEmpty(column.Name) && (c == null || c.Name != column.Name))
+                    //{
+                    //    this.Write(" ");
+                    //    this.WriteAsColumnName(column.Name);
+                    //}
+                    if (!string.IsNullOrEmpty(column.Alias) && (column.Alias != column.Name))
                     {
                         this.Write(" ");
-                        this.WriteAsColumnName(column.Name);
+                        this.WriteAsColumnName(column.Alias);
                     }
                 }
             }
@@ -1114,7 +1119,7 @@ namespace HKH.Linq.Data.Common
                     this.Write(")");
                 }
             }
-            else 
+            else
             {
                 this.VisitValue(@in.Expression);
                 this.Write(" IN (");

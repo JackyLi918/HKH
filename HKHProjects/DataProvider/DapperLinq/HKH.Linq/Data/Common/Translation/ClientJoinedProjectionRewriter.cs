@@ -91,7 +91,7 @@ namespace HKH.Linq.Data.Common
                             // outerKey needs to refer to the outer-scope's alias
                             var outerKey = outerKeys.Select(k => ColumnMapper.Map(k, save.Alias, newOuterSelect.Alias));
                             // innerKey needs to refer to the new alias for the select with the new join
-                            var innerKey = innerKeys.Select(k => ColumnMapper.Map(k, joinedSelect.Alias, ((ColumnExpression)k).Alias));
+                            var innerKey = innerKeys.Select(k => ColumnMapper.Map(k, joinedSelect.Alias, ((ColumnExpression)k).TableAlias));
                             ProjectionExpression newProjection = new ProjectionExpression(joinedSelect, newProjector, proj.Aggregator);
                             return new ClientJoinExpression(newProjection, outerKey, innerKey);
                         }
@@ -138,13 +138,13 @@ namespace HKH.Linq.Data.Common
                 ColumnExpression rightCol = this.GetColumnExpression(b.Right);
                 if (leftCol != null && rightCol != null)
                 {
-                    if (leftCol.Alias == outerAlias)
+                    if (leftCol.TableAlias == outerAlias)
                     {
                         outerExpressions.Add(b.Left);
                         innerExpressions.Add(b.Right);
                         return true;
                     }
-                    else if (rightCol.Alias == outerAlias)
+                    else if (rightCol.TableAlias == outerAlias)
                     {
                         innerExpressions.Add(b.Left);
                         outerExpressions.Add(b.Right);

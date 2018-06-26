@@ -428,13 +428,13 @@ namespace HKH.Linq.Data.Common
             // how did we get here? Translate exists into count query
             var colType = this.linguist.Language.TypeSystem.GetColumnType(typeof(int));
             var newSelect = exists.Select.SetColumns(
-                new[] { new ColumnDeclaration("value", new AggregateExpression(typeof(int), "Count", null, false), colType) }
+                new[] { new ColumnDeclaration("value", null, new AggregateExpression(typeof(int), "Count", null, false), colType) }
                 );
 
             var projection =
                 new ProjectionExpression(
                     newSelect,
-                    new ColumnExpression(typeof(int), colType, newSelect.Alias, "value"),
+                    new ColumnExpression(typeof(int), colType, newSelect.Alias, "value", null),
                     Aggregator.GetAggregator(typeof(int), typeof(IEnumerable<int>))
                     );
 
@@ -601,7 +601,7 @@ namespace HKH.Linq.Data.Common
 
             protected override Expression VisitColumn(ColumnExpression column)
             {
-                if (column.Alias == this.outerAlias)
+                if (column.TableAlias == this.outerAlias)
                 {
                     NamedValueExpression nv;
                     if (!this.map.TryGetValue(column, out nv))

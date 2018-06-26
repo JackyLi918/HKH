@@ -99,18 +99,18 @@ namespace HKH.Linq.Data.Common
                     foreach (ColumnDeclaration existingColumn in this.columns)
                     {
                         ColumnExpression cex = existingColumn.Expression as ColumnExpression;
-                        if (cex != null && cex.Alias == column.Alias && cex.Name == column.Name)
+                        if (cex != null && cex.TableAlias == column.TableAlias && cex.Name == column.Name)
                         {
                             // refer to the column already in the column list
-                            return new ColumnExpression(column.Type, column.QueryType, this.newAlias, existingColumn.Name);
+                            return new ColumnExpression(column.Type, column.QueryType, this.newAlias, existingColumn.Name, cex.ColAlias);
                         }
                     }
-                    if (this.existingAliases.Contains(column.Alias)) 
+                    if (this.existingAliases.Contains(column.TableAlias))
                     {
                         int ordinal = this.columns.Count;
                         string columnName = this.GetUniqueColumnName(column.Name);
-                        this.columns.Add(new ColumnDeclaration(columnName, column, column.QueryType));
-                        mapped = new ColumnExpression(column.Type, column.QueryType, this.newAlias, columnName);
+                        this.columns.Add(new ColumnDeclaration(columnName, (column.ColAlias == null ? "" : column.ColAlias.Name), column, column.QueryType));
+                        mapped = new ColumnExpression(column.Type, column.QueryType, this.newAlias, columnName, column.ColAlias);
                         this.map.Add(column, mapped);
                         this.columnNames.Add(columnName);
                         return mapped;
@@ -122,8 +122,8 @@ namespace HKH.Linq.Data.Common
                 {
                     string columnName = this.GetNextColumnName();
                     var colType = this.language.TypeSystem.GetColumnType(expression.Type);
-                    this.columns.Add(new ColumnDeclaration(columnName, expression, colType));
-                    return new ColumnExpression(expression.Type, colType, this.newAlias, columnName);
+                    this.columns.Add(new ColumnDeclaration(columnName, null, expression, colType));
+                    return new ColumnExpression(expression.Type, colType, this.newAlias, columnName, null);
                 }
             }
             else
@@ -197,7 +197,7 @@ namespace HKH.Linq.Data.Common
                             {
                                 this.candidates.Add(expression);
                             }
-                            else 
+                            else
                             {
                                 this.isBlocked = true;
                             }

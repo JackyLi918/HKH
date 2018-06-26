@@ -156,45 +156,34 @@ namespace HKH.Linq.Data.Common
     /// </summary>
     public class ColumnExpression : DbExpression, IEquatable<ColumnExpression>
     {
-        TableAlias alias;
-        string name;
-        QueryType queryType;
-
-        public ColumnExpression(Type type, QueryType queryType, TableAlias alias, string name)
+        public ColumnExpression(Type type, QueryType queryType, TableAlias tableAlias, string name, ColumnAlias colAlias)
             : base(DbExpressionType.Column, type)
         {
             if (queryType == null)
                 throw new ArgumentNullException("queryType");
             if (name == null)
                 throw new ArgumentNullException("name");
-            this.alias = alias;
-            this.name = name;
-            this.queryType = queryType;
+            this.TableAlias = tableAlias;
+            this.Name = name;
+            this.ColAlias = colAlias ?? new ColumnAlias("");
+            this.QueryType = queryType;
         }
 
-        public TableAlias Alias
-        {
-            get { return this.alias; }
-        }
+        public TableAlias TableAlias { get; }
 
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name { get; }
 
-        public QueryType QueryType
-        {
-            get { return this.queryType; }
-        }
+        public ColumnAlias ColAlias { get; }
+        public QueryType QueryType { get; }
 
         public override string ToString()
         {
-            return this.Alias.ToString() + ".C(" + this.name + ")";
+            return this.TableAlias.ToString() + ".C(" + this.Name + (string.IsNullOrEmpty(ColAlias.Name) ? "" : " AS " + ColAlias.Name) + ")";
         }
 
         public override int GetHashCode()
         {
-            return alias.GetHashCode() + name.GetHashCode();
+            return TableAlias.GetHashCode() + Name.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -206,7 +195,7 @@ namespace HKH.Linq.Data.Common
         {
             return other != null
                 && ((object)this) == (object)other
-                 || (alias == other.alias && name == other.Name);
+                 || (TableAlias == other.TableAlias && Name == other.Name);
         }
     }
 
@@ -221,17 +210,24 @@ namespace HKH.Linq.Data.Common
             return "A:" + this.GetHashCode();
         }
     }
-
+    public class ColumnAlias
+    {
+        public ColumnAlias(string name)
+        {
+            this.Name = name;
+        }
+        public string Name { get; }
+        public override string ToString()
+        {
+            return "C:" + Name;
+        }
+    }
     /// <summary>
     /// A declaration of a column in a SQL SELECT expression
     /// </summary>
     public class ColumnDeclaration
     {
-        string name;
-        Expression expression;
-        QueryType queryType;
-
-        public ColumnDeclaration(string name, Expression expression, QueryType queryType)
+        public ColumnDeclaration(string name, string alias, Expression expression, QueryType queryType)
         {
             if (name == null)
                 throw new ArgumentNullException("name");
@@ -239,25 +235,16 @@ namespace HKH.Linq.Data.Common
                 throw new ArgumentNullException("expression");
             if (queryType == null)
                 throw new ArgumentNullException("queryType");
-            this.name = name;
-            this.expression = expression;
-            this.queryType = queryType;
+            this.Name = name;
+            this.Alias = alias;
+            this.Expression = expression;
+            this.QueryType = queryType;
         }
 
-        public string Name
-        {
-            get { return this.name; }
-        }
-
-        public Expression Expression
-        {
-            get { return this.expression; }
-        }
-
-        public QueryType QueryType
-        {
-            get { return this.queryType; }
-        }
+        public string Name { get; }
+        public string Alias { get; }
+        public Expression Expression { get; }
+        public QueryType QueryType { get; }
     }
 
     /// <summary>
@@ -630,7 +617,7 @@ namespace HKH.Linq.Data.Common
             if (name == null)
                 throw new ArgumentNullException("name");
             //if (queryType == null)
-                //throw new ArgumentNullException("queryType");
+            //throw new ArgumentNullException("queryType");
             if (value == null)
                 throw new ArgumentNullException("value");
             this.name = name;
@@ -952,7 +939,7 @@ namespace HKH.Linq.Data.Common
             this.ifFalse = ifFalse;
         }
 
-        public Expression Check 
+        public Expression Check
         {
             get { return this.check; }
         }
@@ -962,7 +949,7 @@ namespace HKH.Linq.Data.Common
             get { return this.ifTrue; }
         }
 
-        public Expression IfFalse 
+        public Expression IfFalse
         {
             get { return this.ifFalse; }
         }
@@ -973,12 +960,12 @@ namespace HKH.Linq.Data.Common
         ReadOnlyCollection<Expression> commands;
 
         public BlockCommand(IList<Expression> commands)
-            : base(DbExpressionType.Block, commands[commands.Count-1].Type)
+            : base(DbExpressionType.Block, commands[commands.Count - 1].Type)
         {
             this.commands = commands.ToReadOnly();
         }
 
-        public BlockCommand(params Expression[] commands) 
+        public BlockCommand(params Expression[] commands)
             : this((IList<Expression>)commands)
         {
         }

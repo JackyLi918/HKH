@@ -41,7 +41,7 @@ namespace HKH.Linq.Data.Common
 
         protected override Expression VisitSelect(SelectExpression select)
         {
-            select = (SelectExpression) base.VisitSelect(select);
+            select = (SelectExpression)base.VisitSelect(select);
 
             // look for redundant column declarations
             List<ColumnDeclaration> cols = select.Columns.OrderBy(c => c.Name).ToList();
@@ -52,7 +52,7 @@ namespace HKH.Linq.Data.Common
                 ColumnDeclaration ci = cols[i];
                 ColumnExpression cix = ci.Expression as ColumnExpression;
                 QueryType qt = cix != null ? cix.QueryType : ci.QueryType;
-                ColumnExpression cxi = new ColumnExpression(ci.Expression.Type, qt, select.Alias, ci.Name);
+                ColumnExpression cxi = new ColumnExpression(ci.Expression.Type, qt, select.Alias, ci.Name, null);
                 for (int j = i + 1; j < n; j++)
                 {
                     if (!removed.Get(j))
@@ -61,7 +61,7 @@ namespace HKH.Linq.Data.Common
                         if (SameExpression(ci.Expression, cj.Expression))
                         {
                             // any reference to 'j' should now just be a reference to 'i'
-                            ColumnExpression cxj = new ColumnExpression(cj.Expression.Type, qt, select.Alias, cj.Name);
+                            ColumnExpression cxj = new ColumnExpression(cj.Expression.Type, qt, select.Alias, cj.Name, null);
                             this.map.Add(cxj, cxi);
                             removed.Set(j, true);
                             anyRemoved = true;
@@ -89,7 +89,7 @@ namespace HKH.Linq.Data.Common
             if (a == b) return true;
             ColumnExpression ca = a as ColumnExpression;
             ColumnExpression cb = b as ColumnExpression;
-            return (ca != null && cb != null && ca.Alias == cb.Alias && ca.Name == cb.Name);
+            return (ca != null && cb != null && ca.TableAlias == cb.TableAlias && ca.Name == cb.Name);
         }
     }
 }

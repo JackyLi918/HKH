@@ -63,7 +63,7 @@ namespace HKH.Linq.Data.Common
         protected override Expression VisitColumn(ColumnExpression column)
         {
             Dictionary<string, Expression> nameMap;
-            if (this.map.TryGetValue(column.Alias, out nameMap))
+            if (this.map.TryGetValue(column.TableAlias, out nameMap))
             {
                 Expression expr;
                 if (nameMap.TryGetValue(column.Name, out expr))

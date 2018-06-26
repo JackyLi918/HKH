@@ -48,6 +48,7 @@ namespace HKH.Linq.Data.Mapping
     public class ColumnAttribute : MemberAttribute
     {
         public string Name { get; set; }
+        public string TableAlias { get; set; }
         public string Alias { get; set; }
         public string DbType { get; set; }
         public bool IsComputed { get; set; }
@@ -399,9 +400,13 @@ namespace HKH.Linq.Data.Mapping
         public override string GetAlias(MappingEntity entity, MemberInfo member)
         {
             AttributeMappingMember mm = ((AttributeMappingEntity)entity).GetMappingMember(member.Name);
+            return (mm != null && mm.Column != null) ? mm.Column.TableAlias : null;
+        }
+        public override string GetColumnAlias(MappingEntity entity, MemberInfo member)
+        {
+            AttributeMappingMember mm = ((AttributeMappingEntity)entity).GetMappingMember(member.Name);
             return (mm != null && mm.Column != null) ? mm.Column.Alias : null;
         }
-
         public override string GetTableName(MappingTable table)
         {
             var amt = (AttributeMappingTable)table;

@@ -65,10 +65,10 @@ namespace HKH.Linq.Data.Common
         {
             string colName = proj.Select.Columns.GetAvailableColumnName("Test");
             var colType = language.TypeSystem.GetColumnType(expression.Type);
-            SelectExpression newSource = proj.Select.AddColumn(new ColumnDeclaration(colName, expression, colType));
+            SelectExpression newSource = proj.Select.AddColumn(new ColumnDeclaration(colName, null, expression, colType));
             Expression newProjector =
                 new OuterJoinedExpression(
-                    new ColumnExpression(expression.Type, colType, newSource.Alias, colName),
+                    new ColumnExpression(expression.Type, colType, newSource.Alias, colName, null),
                     proj.Projector
                     );
             return new ProjectionExpression(newSource, newProjector, proj.Aggregator);
@@ -171,10 +171,10 @@ namespace HKH.Linq.Data.Common
 
         public static SelectExpression AddRedundantSelect(this SelectExpression sel, QueryLanguage language, TableAlias newAlias)
         {
-            var newColumns = 
+            var newColumns =
                 from d in sel.Columns
                 let qt = (d.Expression is ColumnExpression) ? ((ColumnExpression)d.Expression).QueryType : language.TypeSystem.GetColumnType(d.Expression.Type)
-                select new ColumnDeclaration(d.Name, new ColumnExpression(d.Expression.Type, qt, newAlias, d.Name), qt);
+                select new ColumnDeclaration(d.Name, d.Alias, new ColumnExpression(d.Expression.Type, qt, newAlias, d.Name, new ColumnAlias(d.Alias)), qt);
 
             var newFrom = new SelectExpression(newAlias, sel.Columns, sel.From, sel.Where, sel.OrderBy, sel.GroupBy, sel.IsDistinct, sel.Skip, sel.Take, sel.IsReverse);
             return new SelectExpression(sel.Alias, newColumns, newFrom, null, null, null, false, null, null, false);

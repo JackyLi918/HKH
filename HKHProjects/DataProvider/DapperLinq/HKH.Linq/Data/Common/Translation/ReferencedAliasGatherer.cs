@@ -30,7 +30,7 @@ namespace HKH.Linq.Data.Common
 
         protected override Expression VisitColumn(ColumnExpression column)
         {
-            this.aliases.Add(column.Alias);
+            this.aliases.Add(column.TableAlias);
             return column;
         }
     }

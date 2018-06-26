@@ -139,12 +139,12 @@ namespace HKH.Linq.Data.Common
                 }
                 // trim off obvious duplicates
                 HashSet<string> unique = new HashSet<string>();
-                for (int i = 0; i < this.gatheredOrderings.Count;) 
+                for (int i = 0; i < this.gatheredOrderings.Count;)
                 {
                     ColumnExpression column = this.gatheredOrderings[i].Expression as ColumnExpression;
                     if (column != null)
                     {
-                        string hash = column.Alias + ":" + column.Name;
+                        string hash = column.TableAlias + ":" + column.Name;
                         if (unique.Contains(hash))
                         {
                             this.gatheredOrderings.RemoveAt(i);
@@ -215,7 +215,7 @@ namespace HKH.Linq.Data.Common
             {
                 Expression expr = ordering.Expression;
                 ColumnExpression column = expr as ColumnExpression;
-                if (column == null || (existingAliases != null && existingAliases.Contains(column.Alias)))
+                if (column == null || (existingAliases != null && existingAliases.Contains(column.TableAlias)))
                 {
                     // check to see if a declared column already contains a similar expression
                     int iOrdinal = 0;
@@ -223,10 +223,10 @@ namespace HKH.Linq.Data.Common
                     {
                         ColumnExpression declColumn = decl.Expression as ColumnExpression;
                         if (decl.Expression == ordering.Expression ||
-                            (column != null && declColumn != null && column.Alias == declColumn.Alias && column.Name == declColumn.Name))
+                            (column != null && declColumn != null && column.TableAlias == declColumn.TableAlias && column.Name == declColumn.Name))
                         {
                             // found it, so make a reference to this column
-                            expr = new ColumnExpression(column.Type, column.QueryType, alias, decl.Name);
+                            expr = new ColumnExpression(column.Type, column.QueryType, alias, decl.Name, null);
                             break;
                         }
                         iOrdinal++;
@@ -242,8 +242,8 @@ namespace HKH.Linq.Data.Common
                         string colName = column != null ? column.Name : "c" + iOrdinal;
                         colName = newColumns.GetAvailableColumnName(colName);
                         var colType = this.language.TypeSystem.GetColumnType(expr.Type);
-                        newColumns.Add(new ColumnDeclaration(colName, ordering.Expression, colType));
-                        expr = new ColumnExpression(expr.Type, colType, alias, colName);
+                        newColumns.Add(new ColumnDeclaration(colName, null, ordering.Expression, colType));
+                        expr = new ColumnExpression(expr.Type, colType, alias, colName, null);
                     }
                     newOrderings.Add(new OrderExpression(ordering.OrderType, expr));
                 }

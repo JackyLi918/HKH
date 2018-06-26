@@ -703,13 +703,13 @@ namespace HKH.Linq.Data.Common
             var pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
             Expression aggExpr = new AggregateExpression(returnType, aggName, argExpr, isDistinct);
             var colType = this.language.TypeSystem.GetColumnType(returnType);
-            SelectExpression select = new SelectExpression(alias, new ColumnDeclaration[] { new ColumnDeclaration("", aggExpr, colType) }, projection.Select, null);
+            SelectExpression select = new SelectExpression(alias, new ColumnDeclaration[] { new ColumnDeclaration("", null, aggExpr, colType) }, projection.Select, null);
 
             if (isRoot)
             {
                 ParameterExpression p = Expression.Parameter(typeof(IEnumerable<>).MakeGenericType(aggExpr.Type), "p");
                 LambdaExpression gator = Expression.Lambda(Expression.Call(typeof(Enumerable), "Single", new Type[] { returnType }, p), p);
-                return new ProjectionExpression(select, new ColumnExpression(returnType, this.language.TypeSystem.GetColumnType(returnType), alias, ""), gator);
+                return new ProjectionExpression(select, new ColumnExpression(returnType, this.language.TypeSystem.GetColumnType(returnType), alias, "", null), gator);
             }
 
             ScalarExpression subquery = new ScalarExpression(returnType, select);
@@ -886,9 +886,9 @@ namespace HKH.Linq.Data.Common
                         // use count aggregate instead of exists
                         var colType = this.language.TypeSystem.GetColumnType(typeof(int));
                         var newSelect = projection.Select.SetColumns(
-                            new[] { new ColumnDeclaration("value", new AggregateExpression(typeof(int), "Count", null, false), colType) }
+                            new[] { new ColumnDeclaration("value", null, new AggregateExpression(typeof(int), "Count", null, false), colType) }
                             );
-                        var colx = new ColumnExpression(typeof(int), colType, newSelect.Alias, "value");
+                        var colx = new ColumnExpression(typeof(int), colType, newSelect.Alias, "value", null);
                         var exp = isAll
                             ? colx.Equal(Expression.Constant(0))
                             : colx.GreaterThan(Expression.Constant(0));
@@ -946,8 +946,8 @@ namespace HKH.Linq.Data.Common
             }
             var alias = this.GetNextAlias();
             var colType = this.language.TypeSystem.GetColumnType(expr.Type);
-            SelectExpression select = new SelectExpression(alias, new[] { new ColumnDeclaration("value", expr, colType) }, null, null);
-            return new ProjectionExpression(select, new ColumnExpression(expr.Type, colType, alias, "value"), gator);
+            SelectExpression select = new SelectExpression(alias, new[] { new ColumnDeclaration("value", null, expr, colType) }, null, null);
+            return new ProjectionExpression(select, new ColumnExpression(expr.Type, colType, alias, "value", null), gator);
         }
 
         private Expression BindInsert(IEntityTable upd, Expression instance, LambdaExpression selector)

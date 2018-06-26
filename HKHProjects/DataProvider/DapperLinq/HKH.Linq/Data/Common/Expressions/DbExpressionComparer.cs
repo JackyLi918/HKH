@@ -116,7 +116,7 @@ namespace HKH.Linq.Data.Common
 
         protected virtual bool CompareColumn(ColumnExpression a, ColumnExpression b)
         {
-            return this.CompareAlias(a.Alias, b.Alias) && a.Name == b.Name;
+            return this.CompareAlias(a.TableAlias, b.TableAlias) && a.Name == b.Name;
         }
 
         protected virtual bool CompareAlias(TableAlias a, TableAlias b)

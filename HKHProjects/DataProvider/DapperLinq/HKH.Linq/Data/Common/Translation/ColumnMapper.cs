@@ -38,9 +38,9 @@ namespace HKH.Linq.Data.Common
 
         protected override Expression VisitColumn(ColumnExpression column)
         {
-            if (this.oldAliases.Contains(column.Alias))
+            if (this.oldAliases.Contains(column.TableAlias))
             {
-                return new ColumnExpression(column.Type, column.QueryType, this.newAlias, column.Name);
+                return new ColumnExpression(column.Type, column.QueryType, this.newAlias, column.Name, column.ColAlias);
             }
             return column;
         }

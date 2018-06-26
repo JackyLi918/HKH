@@ -237,9 +237,9 @@ namespace HKH.Linq.Data.Common
         {
             int iAlias;
             string aliasName = 
-                this.aliasMap.TryGetValue(column.Alias, out iAlias)
+                this.aliasMap.TryGetValue(column.TableAlias, out iAlias)
                 ? "A" + iAlias
-                : "A" + (column.Alias != null ? column.Alias.GetHashCode().ToString() : "") + "?";
+                : "A" + (column.TableAlias != null ? column.TableAlias.GetHashCode().ToString() : "") + "?";
 
             this.Write(aliasName);
             this.Write(".");

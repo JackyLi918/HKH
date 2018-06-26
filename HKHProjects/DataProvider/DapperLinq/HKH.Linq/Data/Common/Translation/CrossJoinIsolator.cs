@@ -15,7 +15,7 @@ namespace HKH.Linq.Data.Common
     public class CrossJoinIsolator : DbExpressionVisitor
     {
         ILookup<TableAlias, ColumnExpression> columns;
-        Dictionary<ColumnExpression, ColumnExpression> map = new Dictionary<ColumnExpression,ColumnExpression>();
+        Dictionary<ColumnExpression, ColumnExpression> map = new Dictionary<ColumnExpression, ColumnExpression>();
         JoinType? lastJoin;
 
         public static Expression Isolate(Expression expression)
@@ -26,7 +26,7 @@ namespace HKH.Linq.Data.Common
         protected override Expression VisitSelect(SelectExpression select)
         {
             var saveColumns = this.columns;
-            this.columns = ReferencedColumnGatherer.Gather(select).ToLookup(c => c.Alias);
+            this.columns = ReferencedColumnGatherer.Gather(select).ToLookup(c => c.TableAlias);
             var saveLastJoin = this.lastJoin;
             this.lastJoin = null;
             var result = base.VisitSelect(select);
@@ -66,14 +66,14 @@ namespace HKH.Linq.Data.Common
             var aliases = DeclaredAliasGatherer.Gather(expression);
 
             var decls = new List<ColumnDeclaration>();
-            foreach (var ta in aliases) 
+            foreach (var ta in aliases)
             {
                 foreach (var col in this.columns[ta])
                 {
                     string name = decls.GetAvailableColumnName(col.Name);
-                    var decl = new ColumnDeclaration(name, col, col.QueryType);
+                    var decl = new ColumnDeclaration(name, null, col, col.QueryType);
                     decls.Add(decl);
-                    var newCol = new ColumnExpression(col.Type, col.QueryType, newAlias, col.Name);
+                    var newCol = new ColumnExpression(col.Type, col.QueryType, newAlias, col.Name, null);
                     this.map.Add(col, newCol);
                 }
             }

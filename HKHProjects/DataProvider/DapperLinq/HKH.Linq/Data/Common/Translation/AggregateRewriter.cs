@@ -40,8 +40,8 @@ namespace HKH.Linq.Data.Common
                 {
                     string name = "agg" + aggColumns.Count;
                     var colType = this.language.TypeSystem.GetColumnType(ae.Type);
-                    ColumnDeclaration cd = new ColumnDeclaration(name, ae.AggregateInGroupSelect, colType);
-                    this.map.Add(ae, new ColumnExpression(ae.Type, colType, ae.GroupByAlias, name));
+                    ColumnDeclaration cd = new ColumnDeclaration(name, null, ae.AggregateInGroupSelect, colType);
+                    this.map.Add(ae, new ColumnExpression(ae.Type, colType, ae.GroupByAlias, name, null));
                     aggColumns.Add(cd);
                 }
                 return new SelectExpression(select.Alias, aggColumns, select.From, select.Where, select.OrderBy, select.GroupBy, select.IsDistinct, select.Skip, select.Take, select.IsReverse);

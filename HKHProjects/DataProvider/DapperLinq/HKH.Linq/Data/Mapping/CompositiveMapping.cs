@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -111,6 +112,27 @@ namespace HKH.Linq.Data.Mapping
             return base.GetColumnName(entity, member);
         }
 
+        public string GetAlias(MappingEntity entity, MemberInfo member)
+        {
+            CompositiveMappingMember mm = ((CompositiveMappingEntity)entity).GetMappingMember(member.Name);
+            if (mm != null && mm.Column != null)
+                return mm.Column.TableAlias;
+
+            return "";
+        }
+        public override string GetColumnAlias(MappingEntity entity, MemberInfo member)
+        {
+            CompositiveMappingMember mm = ((CompositiveMappingEntity)entity).GetMappingMember(member.Name);
+            if (mm != null && mm.Column != null)
+                return mm.Column.Alias;
+
+            return "";
+        }
+        public override QueryMapper CreateMapper(QueryTranslator translator)
+        {
+            return new CompositiveMapper(this, translator);
+        }
+
         class CompositiveMappingEntity : MappingEntity
         {
             string entityID;
@@ -170,17 +192,21 @@ namespace HKH.Linq.Data.Mapping
                 {
                     foreach (MemberAttribute attr in Attribute.GetCustomAttributes(m, typeof(MemberAttribute)) as MemberAttribute[])
                     {
-                        if (string.IsNullOrEmpty(attr.Member))
-                            attr.Member=m.Name;
-
                         if (mappingMembers.ContainsKey(m.Name))
                             throw new InvalidOperationException(string.Format("AttributeMapping: more than one mapping attribute specified for member '{0}' on type '{1}'", m.Name, EntityType.Name));
+
+                        if (string.IsNullOrEmpty(attr.Member))
+                            attr.Member = m.Name;
 
                         if (attr is ColumnAttribute)
                         {
                             var colAttr = attr as ColumnAttribute;
                             if (string.IsNullOrEmpty(colAttr.Name))
                                 colAttr.Name = m.Name;
+                            if (colAttr.TableAlias == null)
+                                colAttr.TableAlias = "";
+                            if (string.IsNullOrEmpty(colAttr.Alias) && colAttr.Name != m.Name)
+                                colAttr.Alias = m.Name;
                         }
 
                         mappingMembers.Add(m.Name, new CompositiveMappingMember(m, attr));
@@ -218,6 +244,59 @@ namespace HKH.Linq.Data.Mapping
             internal AssociationAttribute Association
             {
                 get { return this.attribute as AssociationAttribute; }
+            }
+        }
+
+        public class CompositiveMapper : BasicMapper
+        {
+            public CompositiveMapper(BasicMapping mapping, QueryTranslator translator)
+                : base(mapping, translator)
+            {
+            }
+
+            public override ProjectionExpression GetQueryExpression(MappingEntity entity)
+            {
+                var tableAlias = new TableAlias();
+                var selectAlias = new TableAlias();
+                var columns = new List<ColumnDeclaration>();
+                var aliases = new Dictionary<string, TableAlias>();
+
+                var table = new TableExpression(tableAlias, entity, (this.Mapping as BasicMapping).GetTableName(entity));
+
+                this.GetColumns(entity, aliases, columns);
+                SelectExpression root = new SelectExpression(new TableAlias(), columns, table, null);
+
+                Expression projector = this.GetEntityExpression(table, entity);
+                var pc = ColumnProjector.ProjectColumns(this.Translator.Linguist.Language, projector, null, selectAlias, tableAlias);
+
+                var proj = new ProjectionExpression(
+                    new SelectExpression(selectAlias, pc.Columns, table, null),
+                    pc.Projector
+                    );
+
+                return (ProjectionExpression)this.Translator.Police.ApplyPolicy(proj, entity.ElementType);
+            }
+            private void GetColumns(MappingEntity entity, Dictionary<string, TableAlias> aliases, List<ColumnDeclaration> columns)
+            {
+                CompositiveMapping mapping = Mapping as CompositiveMapping;
+                foreach (MemberInfo mi in mapping.GetMappedMembers(entity))
+                {
+                    if (!mapping.IsAssociationRelationship(entity, mi))
+                    {
+                        if (mapping.IsColumn(entity, mi))
+                        {
+                            string name = mapping.GetColumnName(entity, mi);
+                            string aliasName = mapping.GetAlias(entity, mi);
+                            TableAlias alias;
+                            aliases.TryGetValue(aliasName, out alias);
+                            var colType = this.GetColumnType(entity, mi);
+                            string colAlias = mapping.GetColumnAlias(entity, mi);
+                            ColumnExpression ce = new ColumnExpression(TypeHelper.GetMemberType(mi), colType, alias, name, new ColumnAlias(colAlias));
+                            ColumnDeclaration cd = new ColumnDeclaration(name, colAlias, ce, colType);
+                            columns.Add(cd);
+                        }
+                    }
+                }
             }
         }
     }

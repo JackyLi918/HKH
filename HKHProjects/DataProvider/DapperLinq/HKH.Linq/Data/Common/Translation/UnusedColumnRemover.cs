@@ -25,7 +25,7 @@ namespace HKH.Linq.Data.Common
             this.allColumnsUsed = new Dictionary<TableAlias, HashSet<string>>();
         }
 
-        public static Expression Remove(Expression expression) 
+        public static Expression Remove(Expression expression)
         {
             return new UnusedColumnRemover().Visit(expression);
         }
@@ -61,20 +61,20 @@ namespace HKH.Linq.Data.Common
 
         protected override Expression VisitColumn(ColumnExpression column)
         {
-            MarkColumnAsUsed(column.Alias, column.Name);
+            MarkColumnAsUsed(column.TableAlias, column.Name);
             return column;
         }
 
-        protected override Expression VisitSubquery(SubqueryExpression subquery) 
+        protected override Expression VisitSubquery(SubqueryExpression subquery)
         {
             if ((subquery.NodeType == (ExpressionType)DbExpressionType.Scalar ||
                 subquery.NodeType == (ExpressionType)DbExpressionType.In) &&
-                subquery.Select != null) 
+                subquery.Select != null)
             {
                 System.Diagnostics.Debug.Assert(subquery.Select.Columns.Count == 1);
                 MarkColumnAsUsed(subquery.Select.Alias, subquery.Select.Columns[0].Name);
             }
- 	        return base.VisitSubquery(subquery);
+            return base.VisitSubquery(subquery);
         }
 
         protected override Expression VisitSelect(SelectExpression select)
@@ -94,7 +94,7 @@ namespace HKH.Linq.Data.Common
                     Expression expr = this.Visit(decl.Expression);
                     if (expr != decl.Expression)
                     {
-                        decl = new ColumnDeclaration(decl.Name, expr, decl.QueryType);
+                        decl = new ColumnDeclaration(decl.Name, null, expr, decl.QueryType);
                     }
                 }
                 else
@@ -129,12 +129,12 @@ namespace HKH.Linq.Data.Common
 
             ClearColumnsUsed(select.Alias);
 
-            if (columns != select.Columns 
-                || take != select.Take 
+            if (columns != select.Columns
+                || take != select.Take
                 || skip != select.Skip
-                || orderbys != select.OrderBy 
+                || orderbys != select.OrderBy
                 || groupbys != select.GroupBy
-                || where != select.Where 
+                || where != select.Where
                 || from != select.From)
             {
                 select = new SelectExpression(select.Alias, columns, from, where, orderbys, groupbys, select.IsDistinct, skip, take, select.IsReverse);

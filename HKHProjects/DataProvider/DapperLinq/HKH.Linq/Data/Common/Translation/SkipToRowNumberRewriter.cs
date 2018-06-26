@@ -39,14 +39,14 @@ namespace HKH.Linq.Data.Common
                     newSelect = newSelect.AddRedundantSelect(this.language, new TableAlias());
                 }
                 var colType = this.language.TypeSystem.GetColumnType(typeof(int));
-                newSelect = newSelect.AddColumn(new ColumnDeclaration("_rownum", new RowNumberExpression(select.OrderBy), colType));
+                newSelect = newSelect.AddColumn(new ColumnDeclaration("_rownum", null, new RowNumberExpression(select.OrderBy), colType));
 
                 // add layer for WHERE clause that references new rownum column
                 newSelect = newSelect.AddRedundantSelect(this.language, new TableAlias());
                 newSelect = newSelect.RemoveColumn(newSelect.Columns.Single(c => c.Name == "_rownum"));
 
                 var newAlias = ((SelectExpression)newSelect.From).Alias;
-                ColumnExpression rnCol = new ColumnExpression(typeof(int), colType, newAlias, "_rownum");
+                ColumnExpression rnCol = new ColumnExpression(typeof(int), colType, newAlias, "_rownum", null);
                 Expression where;
                 if (select.Take != null)
                 {

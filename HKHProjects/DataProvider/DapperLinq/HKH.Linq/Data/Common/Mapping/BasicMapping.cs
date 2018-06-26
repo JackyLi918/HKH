@@ -213,7 +213,10 @@ namespace HKH.Linq.Data.Common
         {
             return member.Name;
         }
-
+        public virtual string GetColumnAlias(MappingEntity entity, MemberInfo member)
+        {
+            return null;
+        }
         /// <summary>
         /// A sequence of all the mapped members
         /// </summary>
@@ -700,7 +703,7 @@ namespace HKH.Linq.Data.Common
                 AliasedExpression aliasedRoot = root as AliasedExpression;
                 if (aliasedRoot != null && this.mapping.IsColumn(entity, member))
                 {
-                    return new ColumnExpression(TypeHelper.GetMemberType(member), this.GetColumnType(entity, member), aliasedRoot.Alias, this.mapping.GetColumnName(entity, member));
+                    return new ColumnExpression(TypeHelper.GetMemberType(member), this.GetColumnType(entity, member), aliasedRoot.Alias, this.mapping.GetColumnName(entity, member), new ColumnAlias(this.mapping.GetColumnAlias(entity, member)));
                 }
                 return QueryBinder.BindMember(root, member);
             }
@@ -764,7 +767,7 @@ namespace HKH.Linq.Data.Common
                         // just use the select from the genIdCommand
                         return new ProjectionExpression(
                             genIdCommand.Source,
-                            new ColumnExpression(mex.Type, genIdCommand.Variables[0].QueryType, genIdCommand.Source.Alias, genIdCommand.Source.Columns[0].Name),
+                            new ColumnExpression(mex.Type, genIdCommand.Variables[0].QueryType, genIdCommand.Source.Alias, genIdCommand.Source.Columns[0].Name, null),
                             aggregator
                             );
                     }
@@ -773,8 +776,8 @@ namespace HKH.Linq.Data.Common
                         TableAlias alias = new TableAlias();
                         var colType = this.GetColumnType(entity, mex.Member);
                         return new ProjectionExpression(
-                            new SelectExpression(alias, new[] { new ColumnDeclaration("", map[mex.Member], colType) }, null, null),
-                            new ColumnExpression(TypeHelper.GetMemberType(mex.Member), colType, alias, ""),
+                            new SelectExpression(alias, new[] { new ColumnDeclaration("", null, map[mex.Member], colType) }, null, null),
+                            new ColumnExpression(TypeHelper.GetMemberType(mex.Member), colType, alias, "", null),
                             aggregator
                             );
                     }
@@ -816,8 +819,8 @@ namespace HKH.Linq.Data.Common
                 Expression genId = this.translator.Linguist.Language.GetGeneratedIdExpression(member);
                 var name = member.Name;
                 var colType = this.GetColumnType(entity, member);
-                columns.Add(new ColumnDeclaration(member.Name, genId, colType));
-                decls.Add(new VariableDeclaration(member.Name, colType, new ColumnExpression(genId.Type, colType, alias, member.Name)));
+                columns.Add(new ColumnDeclaration(mapping.GetColumnName(entity, member), mapping.GetColumnAlias(entity, member), genId, colType));
+                decls.Add(new VariableDeclaration(member.Name, colType, new ColumnExpression(genId.Type, colType, alias, member.Name, new ColumnAlias(mapping.GetColumnAlias(entity, member)))));
                 if (map != null)
                 {
                     var vex = new VariableExpression(member.Name, TypeHelper.GetMemberType(member), colType);

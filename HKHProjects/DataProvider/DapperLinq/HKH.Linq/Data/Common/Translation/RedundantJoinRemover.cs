@@ -77,9 +77,9 @@ namespace HKH.Linq.Data.Common
         protected override Expression VisitColumn(ColumnExpression column)
         {
             TableAlias mapped;
-            if (this.map.TryGetValue(column.Alias, out mapped))
+            if (this.map.TryGetValue(column.TableAlias, out mapped))
             {
-                return new ColumnExpression(column.Type, column.QueryType, mapped, column.Name);
+                return new ColumnExpression(column.Type, column.QueryType, mapped, column.Name, column.ColAlias);
             }
             return column;
         }

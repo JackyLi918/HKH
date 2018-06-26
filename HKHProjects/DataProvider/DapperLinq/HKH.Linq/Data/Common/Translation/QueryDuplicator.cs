@@ -42,9 +42,9 @@ namespace HKH.Linq.Data.Common
         protected override Expression VisitColumn(ColumnExpression column)
         {
             TableAlias newAlias;
-            if (this.map.TryGetValue(column.Alias, out newAlias))
+            if (this.map.TryGetValue(column.TableAlias, out newAlias))
             {
-                return new ColumnExpression(column.Type, column.QueryType, newAlias, column.Name);
+                return new ColumnExpression(column.Type, column.QueryType, newAlias, column.Name, column.ColAlias);
             }
             return column;
         }

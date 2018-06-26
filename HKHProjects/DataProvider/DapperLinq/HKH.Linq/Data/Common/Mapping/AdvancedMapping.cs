@@ -136,7 +136,7 @@ namespace HKH.Linq.Data.Common
                 MappingEntity subEntity = this.mapping.GetRelatedEntity(entity, member);
                 return this.GetEntityExpression(root, subEntity);
             }
-            else 
+            else
             {
                 return base.GetMemberExpression(root, entity, member);
             }
@@ -176,8 +176,8 @@ namespace HKH.Linq.Data.Common
                 {
                     var memberType = TypeHelper.GetMemberType(relatedMembers[i]);
                     var colType = this.GetColumnType(entity, relatedMembers[i]);
-                    var relatedColumn = new ColumnExpression(memberType, colType, relatedTableAlias, this.mapping.GetColumnName(entity, relatedMembers[i]));
-                    var joinedColumn = new ColumnExpression(memberType, colType, joinedTableAlias, keyColumns[i]);
+                    var relatedColumn = new ColumnExpression(memberType, colType, relatedTableAlias, this.mapping.GetColumnName(entity, relatedMembers[i]), new ColumnAlias(""));
+                    var joinedColumn = new ColumnExpression(memberType, colType, joinedTableAlias, keyColumns[i], new ColumnAlias(""));
                     var eq = joinedColumn.Equal(relatedColumn);
                     cond = (cond != null) ? cond.And(eq) : eq;
                 }
@@ -218,8 +218,9 @@ namespace HKH.Linq.Data.Common
                         TableAlias alias;
                         aliases.TryGetValue(aliasName, out alias);
                         var colType = this.GetColumnType(entity, mi);
-                        ColumnExpression ce = new ColumnExpression(TypeHelper.GetMemberType(mi), colType, alias, name);
-                        ColumnDeclaration cd = new ColumnDeclaration(name, ce, colType);
+                        string colAlias = this.mapping.GetColumnAlias(entity, mi);
+                        ColumnExpression ce = new ColumnExpression(TypeHelper.GetMemberType(mi), colType, alias, name, new ColumnAlias(colAlias));
+                        ColumnDeclaration cd = new ColumnDeclaration(name, colAlias, ce, colType);
                         columns.Add(cd);
                     }
                 }
@@ -321,8 +322,8 @@ namespace HKH.Linq.Data.Common
             foreach (var mi in members)
             {
                 ColumnExpression col = (ColumnExpression)this.GetMemberExpression(tex, entity, mi);
-                columns.Add(new ColumnDeclaration(this.mapping.GetColumnName(entity, mi), col, col.QueryType));
-                ColumnExpression vcol = new ColumnExpression(col.Type, col.QueryType, selectAlias, col.Name);
+                columns.Add(new ColumnDeclaration(this.mapping.GetColumnName(entity, mi), this.mapping.GetColumnAlias(entity, mi), col, col.QueryType));
+                ColumnExpression vcol = new ColumnExpression(col.Type, col.QueryType, selectAlias, col.Name, col.ColAlias);
                 variables.Add(new VariableDeclaration(mi.Name, col.QueryType, vcol));
                 map.Add(mi, new VariableExpression(mi.Name, col.Type, col.QueryType));
             }
@@ -354,10 +355,10 @@ namespace HKH.Linq.Data.Common
                 else if (this.mapping.IsNestedEntity(entity, m))
                 {
                     var assignments = this.GetColumnAssignments(
-                        table, 
-                        Expression.MakeMemberAccess(instance, m), 
-                        this.mapping.GetRelatedEntity(entity, m), 
-                        fnIncludeColumn, 
+                        table,
+                        Expression.MakeMemberAccess(instance, m),
+                        this.mapping.GetRelatedEntity(entity, m),
+                        fnIncludeColumn,
                         map
                         );
                     foreach (var ca in assignments)
@@ -414,7 +415,7 @@ namespace HKH.Linq.Data.Common
             {
                 commands.Add(
                     new IFCommand(
-                        this.Translator.Linguist.Language.GetRowsAffectedExpression(commands[commands.Count-1]).GreaterThan(Expression.Constant(0)),
+                        this.Translator.Linguist.Language.GetRowsAffectedExpression(commands[commands.Count - 1]).GreaterThan(Expression.Constant(0)),
                         this.GetUpdateResult(entity, instance, selector),
                         @else
                         )
@@ -424,7 +425,7 @@ namespace HKH.Linq.Data.Common
             {
                 commands.Add(
                     new IFCommand(
-                        this.Translator.Linguist.Language.GetRowsAffectedExpression(commands[commands.Count-1]).LessThanOrEqual(Expression.Constant(0)),
+                        this.Translator.Linguist.Language.GetRowsAffectedExpression(commands[commands.Count - 1]).LessThanOrEqual(Expression.Constant(0)),
                         @else,
                         null
                         )
@@ -453,7 +454,7 @@ namespace HKH.Linq.Data.Common
                 for (int i = 0, n = keyColNames.Length; i < n; i++)
                 {
                     var relatedMember = relatedMembers[i];
-                    var cex = new ColumnExpression(TypeHelper.GetMemberType(relatedMember), this.GetColumnType(entity, relatedMember), root.Alias, keyColNames[n]);
+                    var cex = new ColumnExpression(TypeHelper.GetMemberType(relatedMember), this.GetColumnType(entity, relatedMember), root.Alias, keyColNames[n], new ColumnAlias(this.mapping.GetColumnAlias(entity, relatedMember)));
                     var nex = this.GetMemberExpression(instance, entity, relatedMember);
                     var eq = cex.Equal(nex);
                     where = (where != null) ? where.And(eq) : where;
