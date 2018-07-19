@@ -347,10 +347,21 @@ namespace HKH.Linq.Data.Common
             Expression where = this.Visit(predicate.Body);
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, where),
-                pc.Projector
-                );
+
+            if (projection.Select.Columns.Count > 0 && projection.Select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                        new SelectExpression(alias, projection.Select.Columns, projection.Select.From, where),
+                        pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                        new SelectExpression(alias, pc.Columns, projection.Select, where),
+                        pc.Projector
+                    );
+            }
         }
 
         private Expression BindReverse(Expression source)

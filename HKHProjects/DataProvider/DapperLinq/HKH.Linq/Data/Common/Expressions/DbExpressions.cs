@@ -44,7 +44,8 @@ namespace HKH.Linq.Data.Common
         Block,
         If,
         Declaration,
-        Variable
+        Variable,
+        AllColumn
     }
 
     public static class DbExpressionTypeExtensions
@@ -148,6 +149,41 @@ namespace HKH.Linq.Data.Common
         public Expression Expression
         {
             get { return this.expression; }
+        }
+    }
+    public class AllColumnExpression : DbExpression, IEquatable<AllColumnExpression>
+    {
+        public const string ColumnName = "*";
+
+        public AllColumnExpression(TableAlias tableAlias)
+            : base(DbExpressionType.AllColumn, null)
+        {
+            this.TableAlias = tableAlias;
+            this.Name =ColumnName;
+        }
+
+        public TableAlias TableAlias { get; }
+        public string Name { get; }
+
+        public override string ToString()
+        {
+            return this.TableAlias.ToString() + "." + this.Name;
+        }
+        public override int GetHashCode()
+        {
+            return TableAlias.GetHashCode() + Name.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as AllColumnExpression);
+        }
+
+        public bool Equals(AllColumnExpression other)
+        {
+            return other != null
+                && ((object)this) == (object)other
+                 || (TableAlias == other.TableAlias && Name == other.Name);
         }
     }
 

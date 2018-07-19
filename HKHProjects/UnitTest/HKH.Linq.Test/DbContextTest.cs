@@ -43,7 +43,7 @@ namespace HKH.Linq.Test
         }
     }
 
-    [Table(Name = "Customers")]
+    [Table(Name = "Customers", View = "vCustomers")]
     public class Customer
     {
         [Column(Name = "CustomerID", IsPrimaryKey = true, IsGenerated = false)]
@@ -53,6 +53,8 @@ namespace HKH.Linq.Test
         public string Phone;
         public string City;
         public string Country;
+        [NotMapped]
+        public string Test;
     }
 
     public class Northwind : HKH.Linq.Data.SqlServer.SqlServerDbContext

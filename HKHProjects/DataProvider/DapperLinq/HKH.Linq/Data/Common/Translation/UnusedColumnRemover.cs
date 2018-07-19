@@ -89,18 +89,22 @@ namespace HKH.Linq.Data.Common
             for (int i = 0, n = select.Columns.Count; i < n; i++)
             {
                 ColumnDeclaration decl = select.Columns[i];
-                if (wasRetained || select.IsDistinct || IsColumnUsed(select.Alias, decl.Name))
+                if (!(decl.Expression is AllColumnExpression))
                 {
-                    Expression expr = this.Visit(decl.Expression);
-                    if (expr != decl.Expression)
+                    if (wasRetained || select.IsDistinct || IsColumnUsed(select.Alias, decl.Name))
                     {
-                        decl = new ColumnDeclaration(decl.Name, null, expr, decl.QueryType);
+                        Expression expr = this.Visit(decl.Expression);
+                        if (expr != decl.Expression)
+                        {
+                            decl = new ColumnDeclaration(decl.Name, null, expr, decl.QueryType);
+                        }
+                    }
+                    else
+                    {
+                        decl = null;  // null means it gets omitted
                     }
                 }
-                else
-                {
-                    decl = null;  // null means it gets omitted
-                }
+
                 if (decl != select.Columns[i] && alternate == null)
                 {
                     alternate = new List<ColumnDeclaration>();

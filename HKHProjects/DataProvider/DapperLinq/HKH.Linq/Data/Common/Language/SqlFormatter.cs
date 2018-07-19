@@ -133,7 +133,7 @@ namespace HKH.Linq.Data.Common
 
         protected virtual void WriteColumnName(string columnName)
         {
-            string name = (this.Language != null) ? this.Language.Quote(columnName) : columnName;
+            string name = (this.Language != null && !columnName.Equals(AllColumnExpression.ColumnName)) ? this.Language.Quote(columnName) : columnName;
             this.Write(name);
         }
 
@@ -270,6 +270,7 @@ namespace HKH.Linq.Data.Common
                 case (ExpressionType)DbExpressionType.Declaration:
                 case (ExpressionType)DbExpressionType.Variable:
                 case (ExpressionType)DbExpressionType.Function:
+                case (ExpressionType)DbExpressionType.AllColumn:
                     return base.Visit(exp);
 
                 case ExpressionType.ArrayLength:
@@ -815,7 +816,16 @@ namespace HKH.Linq.Data.Common
             this.WriteColumnName(column.Name);
             return column;
         }
-
+        protected override Expression VisitAllColumn(AllColumnExpression column)
+        {
+            if (column.TableAlias != null && !this.HideColumnAliases)
+            {
+                this.WriteAliasName(GetAliasName(column.TableAlias));
+                this.Write(".");
+            }
+            this.WriteColumnName(column.Name);
+            return column;
+        }
         protected override Expression VisitProjection(ProjectionExpression proj)
         {
             // treat these like scalar subqueries

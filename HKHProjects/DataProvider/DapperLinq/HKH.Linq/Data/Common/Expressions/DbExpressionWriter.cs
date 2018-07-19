@@ -66,6 +66,8 @@ namespace HKH.Linq.Data.Common
                     return this.VisitOuterJoined((OuterJoinedExpression)exp);
                 case DbExpressionType.Column:
                     return this.VisitColumn((ColumnExpression)exp);
+                case DbExpressionType.AllColumn:
+                    return this.VisitAllColumn((AllColumnExpression)exp);
                 case DbExpressionType.Insert:
                 case DbExpressionType.Update:
                 case DbExpressionType.PartialUpdate:
@@ -236,7 +238,7 @@ namespace HKH.Linq.Data.Common
         protected virtual Expression VisitColumn(ColumnExpression column)
         {
             int iAlias;
-            string aliasName = 
+            string aliasName =
                 this.aliasMap.TryGetValue(column.TableAlias, out iAlias)
                 ? "A" + iAlias
                 : "A" + (column.TableAlias != null ? column.TableAlias.GetHashCode().ToString() : "") + "?";
@@ -248,6 +250,17 @@ namespace HKH.Linq.Data.Common
             this.Write("\")");
             return column;
         }
+        protected virtual Expression VisitAllColumn(AllColumnExpression column)
+        {
+            int iAlias;
+            string aliasName =
+                this.aliasMap.TryGetValue(column.TableAlias, out iAlias)
+                ? "A" + iAlias
+                : "A" + (column.TableAlias != null ? column.TableAlias.GetHashCode().ToString() : "") + "?";
+
+            this.Write(aliasName);
+            this.Write(".*");
+            return column;
+        }
     }
 }
- 

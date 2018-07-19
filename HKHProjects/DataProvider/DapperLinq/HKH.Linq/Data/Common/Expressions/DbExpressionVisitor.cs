@@ -29,6 +29,8 @@ namespace HKH.Linq.Data.Common
                     return this.VisitTable((TableExpression)exp);
                 case DbExpressionType.Column:
                     return this.VisitColumn((ColumnExpression)exp);
+                case DbExpressionType.AllColumn:
+                    return this.VisitAllColumn((AllColumnExpression)exp);
                 case DbExpressionType.Select:
                     return this.VisitSelect((SelectExpression)exp);
                 case DbExpressionType.Join:
@@ -97,6 +99,11 @@ namespace HKH.Linq.Data.Common
         }
 
         protected virtual Expression VisitColumn(ColumnExpression column)
+        {
+            return column;
+        }
+
+        protected virtual Expression VisitAllColumn(AllColumnExpression column)
         {
             return column;
         }

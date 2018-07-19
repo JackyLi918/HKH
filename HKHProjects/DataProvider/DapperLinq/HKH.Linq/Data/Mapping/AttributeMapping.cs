@@ -23,6 +23,7 @@ namespace HKH.Linq.Data.Mapping
     {
         public string Name { get; set; }
         public string Alias { get; set; }
+        public string View { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]

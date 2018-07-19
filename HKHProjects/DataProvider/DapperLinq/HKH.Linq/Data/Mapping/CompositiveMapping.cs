@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -256,25 +257,51 @@ namespace HKH.Linq.Data.Mapping
 
             public override ProjectionExpression GetQueryExpression(MappingEntity entity)
             {
-                var tableAlias = new TableAlias();
-                var selectAlias = new TableAlias();
-                var columns = new List<ColumnDeclaration>();
-                var aliases = new Dictionary<string, TableAlias>();
+                CompositiveMappingEntity mme = (CompositiveMappingEntity)entity;
+                if (string.IsNullOrEmpty(mme.Table.View))
+                {
+                    var tableAlias = new TableAlias();
+                    var selectAlias = new TableAlias();
+                    var columns = new List<ColumnDeclaration>();
+                    var aliases = new Dictionary<string, TableAlias>();
 
-                var table = new TableExpression(tableAlias, entity, (this.Mapping as BasicMapping).GetTableName(entity));
+                    var table = new TableExpression(tableAlias, entity, (this.Mapping as BasicMapping).GetTableName(entity));
 
-                this.GetColumns(entity, aliases, columns);
-                SelectExpression root = new SelectExpression(new TableAlias(), columns, table, null);
+                    this.GetColumns(entity, aliases, columns);
+                    SelectExpression root = new SelectExpression(new TableAlias(), columns, table, null);
 
-                Expression projector = this.GetEntityExpression(table, entity);
-                var pc = ColumnProjector.ProjectColumns(this.Translator.Linguist.Language, projector, null, selectAlias, tableAlias);
+                    Expression projector = this.GetEntityExpression(table, entity);
+                    var pc = ColumnProjector.ProjectColumns(this.Translator.Linguist.Language, projector, null, selectAlias, tableAlias);
 
-                var proj = new ProjectionExpression(
-                    new SelectExpression(selectAlias, pc.Columns, table, null),
-                    pc.Projector
-                    );
+                    var proj = new ProjectionExpression(
+                        new SelectExpression(selectAlias, pc.Columns, table, null),
+                        pc.Projector
+                        );
 
-                return (ProjectionExpression)this.Translator.Police.ApplyPolicy(proj, entity.ElementType);
+                    return (ProjectionExpression)this.Translator.Police.ApplyPolicy(proj, entity.ElementType);
+                }
+                else
+                {
+                    var tableAlias = new TableAlias();
+                    var selectAlias = new TableAlias();
+                    var columns = new List<ColumnDeclaration>();
+                    var aliases = new Dictionary<string, TableAlias>();
+
+                    var table = new TableExpression(tableAlias, entity, mme.Table.View);
+                    ColumnDeclaration cd = new ColumnDeclaration("*", "", new AllColumnExpression(tableAlias), new DbQueryType(SqlDbType.Variant, false, 0, 0, 0));
+                    columns.Add(cd);
+
+                    SelectExpression root = new SelectExpression(new TableAlias(), columns, table, null);
+                    Expression projector = this.GetEntityExpression(table, entity);
+                    //var pc = ColumnProjector.ProjectColumns(this.Translator.Linguist.Language, projector, null, selectAlias, tableAlias);
+
+                    var proj = new ProjectionExpression(
+                        new SelectExpression(selectAlias, columns, table, null),
+                        projector
+                        );
+
+                    return (ProjectionExpression)this.Translator.Police.ApplyPolicy(proj, entity.ElementType);
+                }
             }
             private void GetColumns(MappingEntity entity, Dictionary<string, TableAlias> aliases, List<ColumnDeclaration> columns)
             {
