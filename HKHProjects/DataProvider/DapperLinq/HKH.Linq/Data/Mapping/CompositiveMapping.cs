@@ -258,7 +258,7 @@ namespace HKH.Linq.Data.Mapping
             public override ProjectionExpression GetQueryExpression(MappingEntity entity)
             {
                 CompositiveMappingEntity mme = (CompositiveMappingEntity)entity;
-                if (string.IsNullOrEmpty(mme.Table.View))
+                if (mme.Table == null || string.IsNullOrEmpty(mme.Table.View))
                 {
                     var tableAlias = new TableAlias();
                     var selectAlias = new TableAlias();
