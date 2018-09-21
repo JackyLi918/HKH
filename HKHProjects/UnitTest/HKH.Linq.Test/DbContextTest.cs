@@ -41,6 +41,13 @@ namespace HKH.Linq.Test
             var nor = new Northwind();
             var result = nor.Customers.Where(c => c.City == "London").ToList();
         }
+        [TestMethod]
+        public void TestMethod3()
+        {
+            var nor = new Northwind();
+            var result = nor.Customers.Where(c => c.City == "London").ToList();
+            nor.Customers.Update(result[0]);
+        }
     }
 
     [Table(Name = "Customers", View = "vCustomers")]
@@ -53,6 +60,8 @@ namespace HKH.Linq.Test
         public string Phone;
         public string City;
         public string Country;
+        [Column(IsReadOnly =true)]
+        public byte[] rVersion;
         [NotMapped]
         public string Test;
     }

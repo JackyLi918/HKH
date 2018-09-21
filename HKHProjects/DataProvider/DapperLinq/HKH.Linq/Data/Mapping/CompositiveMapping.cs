@@ -89,6 +89,15 @@ namespace HKH.Linq.Data.Mapping
 
             return base.IsGenerated(entity, member);
         }
+        public override bool IsReadOnly(MappingEntity entity, MemberInfo member)
+        {
+            CompositiveMappingEntity en = (CompositiveMappingEntity)entity;
+            CompositiveMappingMember mm = en.GetMappingMember(member.Name);
+            if (mm != null && mm.Column != null)
+                return mm.Column.IsReadOnly;
+
+            return base.IsReadOnly(entity, member);
+        }
         public override bool IsMapped(MappingEntity entity, MemberInfo member)
         {
             return IsColumn(entity, member);
