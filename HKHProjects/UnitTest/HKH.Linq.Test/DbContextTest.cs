@@ -48,6 +48,14 @@ namespace HKH.Linq.Test
             var result = nor.Customers.Where(c => c.City == "London").ToList();
             nor.Customers.Update(result[0]);
         }
+
+        [TestMethod]
+        public void TestInsert()
+        {
+            var nor = new Northwind();
+            TestTable tt = new TestTable() { Name = "Test" };
+            var result = nor.TestTables.Insert(tt,t=>t.ID);
+        }
     }
 
     [Table(Name = "Customers", View = "vCustomers")]
@@ -60,12 +68,18 @@ namespace HKH.Linq.Test
         public string Phone;
         public string City;
         public string Country;
-        [Column(IsReadOnly =true)]
+        [Column(IsReadOnly = true)]
         public byte[] rVersion;
         [NotMapped]
         public string Test;
     }
-
+    public class TestTable
+    {
+        [Column(IsPrimaryKey = true, IsGenerated = true)]
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int AA { get; set; }
+    }
     public class Northwind : HKH.Linq.Data.SqlServer.SqlServerDbContext
     {
         public Northwind()
@@ -89,6 +103,10 @@ namespace HKH.Linq.Test
         public virtual IEntityTable<Customer> Customers
         {
             get { return GetTable<Customer>(); }
+        }
+        public virtual IEntityTable<TestTable> TestTables
+        {
+            get { return GetTable<TestTable>(); }
         }
     }
 }

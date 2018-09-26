@@ -493,11 +493,11 @@ namespace HKH.Linq.Data.Common
             QueryCommand qc = new QueryCommand(commandText, namedValues.Select(v => new QueryParameter(v.Name, v.Type, v.QueryType)));
             Expression[] values = namedValues.Select(v => Expression.Convert(this.Visit(v.Value), typeof(object))).ToArray();
 
-            //ProjectionExpression projection = ProjectionFinder.FindProjection(expression);
-            //if (projection != null)
-            //{
-            //    return this.ExecuteProjection(projection, false, qc, values, isTopLevel: true);
-            //}
+            ProjectionExpression projection = ProjectionFinder.FindProjection(expression);
+            if (projection != null)
+            {
+                return this.ExecuteProjection(projection, false, qc, values, isTopLevel: true);
+            }
 
             var plan = Expression.Call(this.executor, nameof(QueryExecutor.ExecuteCommand), null,
                 Expression.Constant(qc),
