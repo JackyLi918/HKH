@@ -5,11 +5,14 @@ using System.Text;
 using System.ComponentModel;
 using HKH.Common;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace System.Linq//HKH.Common
 {
     public static class EnumerableExtension
     {
+        #region Do Action
         /// <summary>
         /// 
         /// </summary>
@@ -237,5 +240,106 @@ namespace System.Linq//HKH.Common
                 }
             }
         }
+        #endregion
+
+        #region Sort
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="propName"> Property.Property such as User.Name </param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
+        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, string propName, bool desc) where T : class
+        {
+            return OrderBy(enumerable, propName, (desc ? SortDirection.Descending : SortDirection.Ascending));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">T</typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="value">field desc/asc</param>
+        /// <returns>IOrderedQueryable</returns>
+        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, string value) where T : class
+        {
+            string[] arr = value.Split(' ');
+            SortDirection direction = SortDirection.Ascending;
+            if (arr.Length > 1 && "DESC".EqualsIgnoreCase(arr[1]))
+                direction = SortDirection.Descending;
+            return OrderBy(enumerable, arr[0], direction);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="propName"> Property.Property such as User.Name </param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public static IOrderedEnumerable<T> OrderBy<T>(this IEnumerable<T> enumerable, string propName, SortDirection direction) where T : class
+        {
+            LambdaExpression keySelector = ObjectExtension.BuildGetter<T>(propName);
+            string methodName = direction == SortDirection.Ascending ? "OrderBy" : "OrderByDescending";
+
+            MethodInfo method = typeof(Enumerable).GetMethods().Single(a => a.Name == methodName && a.IsGenericMethodDefinition && a.GetGenericArguments().Length == 2 && a.GetParameters().Length == 2)
+                .MakeGenericMethod(typeof(T), keySelector.ReturnType);
+
+            return (IOrderedEnumerable<T>)method.Invoke(null, new object[] { enumerable, keySelector.Compile() });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="propName"> Property.Property such as User.Name </param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
+        public static IOrderedEnumerable<T> ThenBy<T>(this IOrderedEnumerable<T> enumerable, string propName, bool desc) where T : class
+        {
+            return ThenBy(enumerable, propName, (desc ? SortDirection.Descending : SortDirection.Ascending));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">T</typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="value">field desc/asc</param>
+        /// <returns>IOrderedQueryable</returns>
+        public static IOrderedEnumerable<T> ThenBy<T>(this IOrderedEnumerable<T> enumerable, string value) where T : class
+        {
+            string[] arr = value.Split(' ');
+            SortDirection direction = SortDirection.Ascending;
+            if (arr.Length > 1 && "DESC".EqualsIgnoreCase(arr[1]))
+                direction = SortDirection.Descending;
+            return ThenBy(enumerable, arr[0], direction);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="propName"> Property.Property such as User.Name </param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public static IOrderedEnumerable<T> ThenBy<T>(this IOrderedEnumerable<T> enumerable, string propName, SortDirection direction) where T : class
+        {
+            LambdaExpression keySelector = ObjectExtension.BuildGetter<T>(propName);
+            string methodName = direction == SortDirection.Ascending ? "ThenBy" : "ThenByDescending";
+
+            MethodInfo method = typeof(Enumerable).GetMethods().Single(a => a.Name == methodName && a.IsGenericMethodDefinition && a.GetGenericArguments().Length == 2 && a.GetParameters().Length == 2)
+                .MakeGenericMethod(typeof(T), keySelector.ReturnType);
+
+            return (IOrderedEnumerable<T>)method.Invoke(null, new object[] { enumerable, keySelector.Compile() });
+        }
+
+        #endregion
     }
 }

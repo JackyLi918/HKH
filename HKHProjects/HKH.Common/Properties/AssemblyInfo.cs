@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("HKH.Common")]
 [assembly: AssemblyDescription("HKH Common classes")]
 [assembly: AssemblyConfiguration("")]
-//[assembly: AssemblyCompany("BlackEyes")]
+[assembly: AssemblyCompany("Jacky li")]
 [assembly: AssemblyProduct("HKH.Common")]
-//[assembly: AssemblyCopyright("Copyright © BlackEyes 2009")]
+[assembly: AssemblyCopyright("Copyright © BlackEyes 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-//[assembly: AssemblyVersion("4.5.*")]
-//[assembly: AssemblyFileVersion("4.5.0.0")]
+[assembly: AssemblyVersion("4.5.1.0")]
+[assembly: AssemblyFileVersion("4.5.1.0")]
 
 [assembly: InternalsVisibleTo("HKH.Common.Test")]
