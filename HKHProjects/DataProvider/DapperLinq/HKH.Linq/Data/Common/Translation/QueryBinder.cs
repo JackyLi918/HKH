@@ -367,12 +367,23 @@ namespace HKH.Linq.Data.Common
         private Expression BindReverse(Expression source)
         {
             ProjectionExpression projection = this.VisitSequence(source);
+            SelectExpression select = projection.Select;
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null).SetReverse(true),
-                pc.Projector
-                );
+            if (select.Columns.Count > 0 && select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, select.Columns, projection.Select.From, null).SetReverse(true),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, projection.Select, null).SetReverse(true),
+                    pc.Projector
+                    );
+            }
         }
 
         private Expression BindSelect(Type resultType, Expression source, LambdaExpression selector)
@@ -380,12 +391,23 @@ namespace HKH.Linq.Data.Common
             ProjectionExpression projection = this.VisitSequence(source);
             this.map[selector.Parameters[0]] = projection.Projector;
             Expression expression = this.Visit(selector.Body);
+            SelectExpression select = projection.Select;
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(expression, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null),
-                pc.Projector
-                );
+            if (select.Columns.Count > 0 && select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, select.Columns, projection.Select.From, null),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, projection.Select, null),
+                    pc.Projector
+                    );
+            }
         }
 
         protected virtual Expression BindSelectMany(Type resultType, Expression source, LambdaExpression collectionSelector, LambdaExpression resultSelector)
@@ -427,6 +449,7 @@ namespace HKH.Linq.Data.Common
                 Expression result = this.Visit(resultSelector.Body);
                 pc = this.ProjectColumns(result, alias, projection.Select.Alias, collectionProjection.Select.Alias);
             }
+
             return new ProjectionExpression(
                 new SelectExpression(alias, pc.Columns, join, null),
                 pc.Projector
@@ -466,6 +489,7 @@ namespace HKH.Linq.Data.Common
                 exists = Expression.Not(exists);
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(outerProjection.Projector, alias, outerProjection.Select.Alias);
+
             return new ProjectionExpression(
                 new SelectExpression(alias, pc.Columns, outerProjection.Select, exists),
                 pc.Projector, outerProjection.Aggregator
@@ -491,9 +515,9 @@ namespace HKH.Linq.Data.Common
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(resultExpr, alias, outerProjection.Select.Alias);
             return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, outerProjection.Select, null),
-                pc.Projector
-                );
+               new SelectExpression(alias, pc.Columns, outerProjection.Select, null),
+               pc.Projector
+               );
         }
 
         List<OrderExpression> thenBys;
@@ -521,10 +545,20 @@ namespace HKH.Linq.Data.Common
 
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null, orderings.AsReadOnly(), null),
-                pc.Projector
-                );
+            if (projection.Select.Columns.Count > 0 && projection.Select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, projection.Select.Columns, projection.Select.From, null, orderings.AsReadOnly(), null),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, projection.Select, null, orderings.AsReadOnly(), null),
+                    pc.Projector
+                    );
+            }
         }
 
         protected virtual Expression BindThenBy(Expression source, LambdaExpression orderSelector, OrderType orderType)
@@ -623,10 +657,20 @@ namespace HKH.Linq.Data.Common
                 this.groupByMap.Add(projectedElementSubquery, info);
             }
 
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null, null, groupExprs),
-                pc.Projector
-                );
+            if (projection.Select.Columns.Count > 0 && projection.Select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                     new SelectExpression(alias, projection.Select.Columns, projection.Select.From, null, null, groupExprs),
+                     pc.Projector
+                     );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                     new SelectExpression(alias, pc.Columns, projection.Select, null, null, groupExprs),
+                     pc.Projector
+                     );
+            }
         }
 
         private NewExpression GetNewExpression(Expression expression)
@@ -761,10 +805,20 @@ namespace HKH.Linq.Data.Common
             SelectExpression select = projection.Select;
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null, null, null, true, null, null, false),
-                pc.Projector
-                );
+            if (select.Columns.Count > 0 && select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, select.Columns, projection.Select.From, null, null, null, true, null, null, false),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, projection.Select, null, null, null, true, null, null, false),
+                    pc.Projector
+                    );
+            }
         }
 
         private Expression BindTake(Expression source, Expression take)
@@ -774,10 +828,20 @@ namespace HKH.Linq.Data.Common
             SelectExpression select = projection.Select;
             var alias = this.GetNextAlias();
             ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null, null, null, false, null, take, false),
-                pc.Projector
-                );
+            if (select.Columns.Count > 0 && select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, select.Columns, projection.Select.From, null, null, null, false, null, take, false),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, select, null, null, null, false, null, take, false),
+                    pc.Projector
+                    );
+            }
         }
 
         private Expression BindSkip(Expression source, Expression skip)
@@ -786,11 +850,21 @@ namespace HKH.Linq.Data.Common
             skip = this.Visit(skip);
             SelectExpression select = projection.Select;
             var alias = this.GetNextAlias();
-            ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-            return new ProjectionExpression(
-                new SelectExpression(alias, pc.Columns, projection.Select, null, null, null, false, skip, null, false),
-                pc.Projector
-                );
+            ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, select.Alias);
+            if (select.Columns.Count > 0 && select.Columns[0].Expression is AllColumnExpression)
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, select.Columns, projection.Select.From, null, null, null, false, skip, null, false),
+                    pc.Projector
+                    );
+            }
+            else
+            {
+                return new ProjectionExpression(
+                    new SelectExpression(alias, pc.Columns, select, null, null, null, false, skip, null, false),
+                    pc.Projector
+                    );
+            }
         }
 
         private Expression BindCast(Expression source, Type targetElementType)
@@ -829,10 +903,20 @@ namespace HKH.Linq.Data.Common
             {
                 var alias = this.GetNextAlias();
                 ProjectedColumns pc = this.ProjectColumns(projection.Projector, alias, projection.Select.Alias);
-                projection = new ProjectionExpression(
-                    new SelectExpression(alias, pc.Columns, projection.Select, where, null, null, false, null, take, isLast),
-                    pc.Projector
-                    );
+                if (projection.Select.Columns.Count > 0 && projection.Select.Columns[0].Expression is AllColumnExpression)
+                {
+                    projection = new ProjectionExpression(
+                            new SelectExpression(alias, projection.Select.Columns, projection.Select.From, where, null, null, false, null, take, isLast),
+                            pc.Projector
+                        );
+                }
+                else
+                {
+                    projection = new ProjectionExpression(
+                        new SelectExpression(alias, pc.Columns, projection.Select, where, null, null, false, null, take, isLast),
+                        pc.Projector
+                        );
+                }
             }
             if (isRoot)
             {
