@@ -40,7 +40,9 @@ namespace HKH.Linq
 
         S IQueryProvider.Execute<S>(Expression expression)
         {
-            return (S)this.Execute(expression);
+            // Jacky: dapper always return IEnumerable even if the sql like select count/sum(1)...
+            var result = this.Execute(expression);
+            return (typeof(IEnumerable).IsAssignableFrom(typeof(S))) ? (S)result : (S)(result as IEnumerable<S>).FirstOrDefault();
         }
 
         object IQueryProvider.Execute(Expression expression)
