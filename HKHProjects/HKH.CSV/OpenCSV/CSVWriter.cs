@@ -17,196 +17,205 @@ using System.Threading.Tasks;
 
 namespace HKH.CSV
 {
-	/// <summary>
-	/// CSVWriter
-	/// </summary>
-	public class CSVWriter : IDisposable
-	{
-		#region Variables
+    /// <summary>
+    /// CSVWriter
+    /// </summary>
+    public class CSVWriter : IDisposable
+    {
+        #region Variables
 
-		private const char DEFAULT_ESCAPE_CHARACTER = '"';
-		private const char DEFAULT_SEPARATOR = ',';
-		private const char DEFAULT_QUOTE_CHARACTER = '"';
-		private const char NO_QUOTE_CHARACTER = '\u0000';
-		private const char NO_ESCAPE_CHARACTER = '\u0000';
-		private const string DEFAULT_LINE_END = "\r\n";
+        private const char DEFAULT_ESCAPE_CHARACTER = '"';
+        private const char DEFAULT_SEPARATOR = ',';
+        private const char DEFAULT_QUOTE_CHARACTER = '"';
+        private const char NO_QUOTE_CHARACTER = '\u0000';
+        private const char NO_ESCAPE_CHARACTER = '\u0000';
+        private const string DEFAULT_LINE_END = "\r\n";
 
-		private Stream rawStream;
-		private StreamWriter writer;
-		private char separator;
-		private char quotechar;
-		private char escapechar;
-		private string lineEnd;
-		private bool isNewLine = true;
-		private bool needClose = false;
+        private Stream rawStream;
+        private StreamWriter writer;
+        private char separator;
+        private char quotechar;
+        private char escapechar;
+        private string lineEnd;
+        private bool isNewLine = true;
+        private bool needClose = false;
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		#endregion
+        #endregion
 
-		public CSVWriter(string filename, char separator = DEFAULT_SEPARATOR, char quotechar = DEFAULT_QUOTE_CHARACTER, char escapechar = DEFAULT_ESCAPE_CHARACTER, string lineEnd = DEFAULT_LINE_END)
-			: this(File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write), separator, quotechar, escapechar, lineEnd)
-		{
-			needClose = true;
-		}
+        public CSVWriter(string filename, char separator = DEFAULT_SEPARATOR, char quotechar = DEFAULT_QUOTE_CHARACTER, char escapechar = DEFAULT_ESCAPE_CHARACTER, string lineEnd = DEFAULT_LINE_END)
+            : this(File.Open(filename, FileMode.OpenOrCreate, FileAccess.Write), separator, quotechar, escapechar, lineEnd)
+        {
+            needClose = true;
+        }
 
-		public CSVWriter(Stream stream, char separator = DEFAULT_SEPARATOR, char quotechar = DEFAULT_QUOTE_CHARACTER, char escapechar = DEFAULT_ESCAPE_CHARACTER, string lineEnd = DEFAULT_LINE_END)
-		{
-			this.rawStream = stream;
-			this.writer = new StreamWriter(stream);
-			this.separator = separator;
-			this.quotechar = quotechar;
-			this.escapechar = escapechar;
-			this.lineEnd = lineEnd;
-		}
+        public CSVWriter(Stream stream, char separator = DEFAULT_SEPARATOR, char quotechar = DEFAULT_QUOTE_CHARACTER, char escapechar = DEFAULT_ESCAPE_CHARACTER, string lineEnd = DEFAULT_LINE_END)
+        {
+            this.rawStream = stream;
+            this.writer = new StreamWriter(stream);
+            this.separator = separator;
+            this.quotechar = quotechar;
+            this.escapechar = escapechar;
+            this.lineEnd = lineEnd;
+        }
 
-		#region Methods
+        #region Methods
 
-		public void Write(IEnumerable<IEnumerable<string>> allLines, bool applyQuotesToAll = true)
-		{
-			foreach (IEnumerable<string> line in allLines)
-			{
-				Write(line, applyQuotesToAll);
-			}
-		}
+        public void Write(IEnumerable<IEnumerable<string>> allLines, bool applyQuotesToAll = true)
+        {
+            foreach (IEnumerable<string> line in allLines)
+            {
+                Write(line, applyQuotesToAll);
+            }
+        }
 
-		public void Write(IEnumerable<string> line, bool applyQuotesToAll = true)
-		{
-			if (line == null || line.Count() == 0)
-			{
-				return;
-			}
+        public void Write(IEnumerable<string> line, bool applyQuotesToAll = true)
+        {
+            if (line == null || line.Count() == 0)
+            {
+                return;
+            }
 
-			StringBuilder builder = new StringBuilder();
-			int i = 0;
-			foreach (string value in line)
-			{
-				if (i != 0)
-				{
-					builder.Append(separator);
-				}
+            StringBuilder builder = new StringBuilder();
+            int i = 0;
+            foreach (string value in line)
+            {
+                if (i != 0)
+                {
+                    builder.Append(separator);
+                }
 
-				if (string.IsNullOrEmpty(value))
-				{
-					continue;
-				}
+                if (string.IsNullOrEmpty(value))
+                {
+                    continue;
+                }
 
-				bool stringContainsSpecialCharacters = StringContainsSpecialCharacters(value);
+                bool stringContainsSpecialCharacters = StringContainsSpecialCharacters(value);
 
-				if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
-				{
-					builder.Append(quotechar);
-				}
+                if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+                {
+                    builder.Append(quotechar);
+                }
 
-				if (stringContainsSpecialCharacters)
-				{
-					builder.Append(ProcessLine(value));
-				}
-				else
-				{
-					builder.Append(value);
-				}
+                if (stringContainsSpecialCharacters)
+                {
+                    builder.Append(ProcessLine(value));
+                }
+                else
+                {
+                    builder.Append(value);
+                }
 
-				if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
-				{
-					builder.Append(quotechar);
-				}
+                if ((applyQuotesToAll || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+                {
+                    builder.Append(quotechar);
+                }
 
-				i++;
-			}
+                i++;
+            }
 
-			builder.Append(lineEnd);
-			writer.Write(builder.ToString());
-		}
+            writer.Write(builder.ToString());
+            WriteNewLine();
+        }
 
-		public void Write(string value, bool applyQuote = true)
-		{
-			if (!isNewLine)
-			{
-				writer.Write(separator);
-			}
+        public void Write(string value, bool applyQuote = true)
+        {
+            if (!isNewLine)
+            {
+                writer.Write(separator);
+            }
 
-			if (!string.IsNullOrEmpty(value))
-			{
-				bool stringContainsSpecialCharacters = StringContainsSpecialCharacters(value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                bool stringContainsSpecialCharacters = StringContainsSpecialCharacters(value);
 
-				if ((applyQuote || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
-				{
-					writer.Write(quotechar);
-				}
+                if ((applyQuote || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+                {
+                    writer.Write(quotechar);
+                }
 
-				if (stringContainsSpecialCharacters)
-				{
-					writer.Write(ProcessLine(value).ToString());
-				}
-				else
-				{
-					writer.Write(value);
-				}
+                if (stringContainsSpecialCharacters)
+                {
+                    writer.Write(ProcessLine(value).ToString());
+                }
+                else
+                {
+                    writer.Write(value);
+                }
 
-				if ((applyQuote || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
-				{
-					writer.Write(quotechar);
-				}
-			}
+                if ((applyQuote || stringContainsSpecialCharacters) && quotechar != NO_QUOTE_CHARACTER)
+                {
+                    writer.Write(quotechar);
+                }
+            }
 
-			isNewLine = false;
-		}
+            isNewLine = false;
+        }
 
-		public void WriteNewLine()
-		{
-			writer.Write(lineEnd);
-			isNewLine = true;
-		}
+        public void WriteOriginal(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                writer.Write(value);
+                isNewLine = value.EndsWith(lineEnd);
+            }
+        }
 
-		#endregion
+        public void WriteNewLine()
+        {
+            writer.Write(lineEnd);
+            isNewLine = true;
+        }
 
-		#region Helper
+        #endregion
 
-		private bool StringContainsSpecialCharacters(string line)
-		{
-			return line.IndexOf(quotechar) != -1 || line.IndexOf(escapechar) != -1 || line.IndexOf(separator) != -1 || line.Contains(DEFAULT_LINE_END) || line.Contains("\r");
-		}
+        #region Helper
 
-		private StringBuilder ProcessLine(string value)
-		{
-			StringBuilder sb = new StringBuilder();
-			for (int j = 0; j < value.Length; j++)
-			{
-				char nextChar = value[j];
-				ProcessCharacter(sb, nextChar);
-			}
+        private bool StringContainsSpecialCharacters(string line)
+        {
+            return line.IndexOf(quotechar) != -1 || line.IndexOf(escapechar) != -1 || line.IndexOf(separator) != -1 || line.Contains(DEFAULT_LINE_END) || line.Contains("\r");
+        }
 
-			return sb;
-		}
+        private StringBuilder ProcessLine(string value)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < value.Length; j++)
+            {
+                char nextChar = value[j];
+                ProcessCharacter(sb, nextChar);
+            }
 
-		private void ProcessCharacter(StringBuilder sb, char nextChar)
-		{
-			if (escapechar != NO_ESCAPE_CHARACTER && (nextChar == quotechar || nextChar == escapechar))
-			{
-				sb.Append(escapechar).Append(nextChar);
-			}
-			else
-			{
-				sb.Append(nextChar);
-			}
-		}
+            return sb;
+        }
 
-		#endregion
+        private void ProcessCharacter(StringBuilder sb, char nextChar)
+        {
+            if (escapechar != NO_ESCAPE_CHARACTER && (nextChar == quotechar || nextChar == escapechar))
+            {
+                sb.Append(escapechar).Append(nextChar);
+            }
+            else
+            {
+                sb.Append(nextChar);
+            }
+        }
 
-		public void Flush()
-		{
-			writer.Flush();
-		}
+        #endregion
 
-		public void Dispose()
-		{
-			writer.Flush();
+        public void Flush()
+        {
+            writer.Flush();
+        }
 
-			if (needClose)
-				writer.Close();
-		}
-	}
+        public void Dispose()
+        {
+            writer.Flush();
+
+            if (needClose)
+                writer.Close();
+        }
+    }
 }

@@ -40,9 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="OpenCSV\CSVEnumerator.cs" />
     <Compile Include="OpenCSV\CSVParser.cs" />
     <Compile Include="OpenCSV\CSVReader.cs" />
