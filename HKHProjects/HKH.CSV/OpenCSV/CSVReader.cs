@@ -193,6 +193,8 @@ namespace HKH.CSV
 				{
 					line = ReadLine();
 					AddRow(dt, line);
+
+					currentLineNumber++;
 				}
 			}
 
