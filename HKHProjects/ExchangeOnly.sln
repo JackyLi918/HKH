@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{0D956E4C-8DDF-42D9-9669-F4CEB7A68370}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,16 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{3903CE9B-DDB1-4EB2-9DC3-877066365113}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NPOI", "NPOI", "{D5074F39-5C68-4764-A4E9-14482AC2015D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPOI", "..\NPOIProjects\NPOI\NPOI.csproj", "{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPOI.OOXML", "..\NPOIProjects\NPOI.OOXML\NPOI.OOXML.csproj", "{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPOI.OpenXml4Net", "..\NPOIProjects\NPOI.OpenXml4Net\NPOI.OpenXml4Net.csproj", "{1FB526F5-3272-4867-BDCD-94B39537C231}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPOI.OpenXmlFormats", "..\NPOIProjects\NPOI.OpenXmlFormats\NPOI.OpenXmlFormats.csproj", "{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HKH.DataProvider", "DataProvider\HKH.DataProvider\HKH.DataProvider.csproj", "{F9F8E166-54F4-42C3-8FEE-714F57F90BE3}"
 EndProject
@@ -61,46 +51,6 @@ Global
 		{33279F0B-E19C-4913-A367-62486897E6AF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{33279F0B-E19C-4913-A367-62486897E6AF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{33279F0B-E19C-4913-A367-62486897E6AF}.Release|x86.ActiveCfg = Release|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE}.Release|x86.ActiveCfg = Release|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E}.Release|x86.ActiveCfg = Release|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1FB526F5-3272-4867-BDCD-94B39537C231}.Release|x86.ActiveCfg = Release|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9F8E166-54F4-42C3-8FEE-714F57F90BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9F8E166-54F4-42C3-8FEE-714F57F90BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F8E166-54F4-42C3-8FEE-714F57F90BE3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -152,10 +102,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{33279F0B-E19C-4913-A367-62486897E6AF} = {0D956E4C-8DDF-42D9-9669-F4CEB7A68370}
 		{06A8A419-5318-48EA-BB73-1078478AF5AE} = {3903CE9B-DDB1-4EB2-9DC3-877066365113}
-		{C2A7E26E-288B-44A4-87C4-C4A7D4185CCE} = {D5074F39-5C68-4764-A4E9-14482AC2015D}
-		{FC28A0FD-705C-4D63-AB9B-E6154A863D0E} = {D5074F39-5C68-4764-A4E9-14482AC2015D}
-		{1FB526F5-3272-4867-BDCD-94B39537C231} = {D5074F39-5C68-4764-A4E9-14482AC2015D}
-		{F5EED667-25DE-4ED3-809F-2B05FDE7DF2D} = {D5074F39-5C68-4764-A4E9-14482AC2015D}
 		{F9F8E166-54F4-42C3-8FEE-714F57F90BE3} = {0D956E4C-8DDF-42D9-9669-F4CEB7A68370}
 		{ACB95BEA-F7BB-4B08-9737-D3AC0091892D} = {0D956E4C-8DDF-42D9-9669-F4CEB7A68370}
 		{5BAA52EF-5C81-426E-B250-598EAD5903FF} = {0D956E4C-8DDF-42D9-9669-F4CEB7A68370}
@@ -163,6 +109,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		SolutionGuid = {AAD0A2F8-7B90-4655-B7C2-F7C55AF00606}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = HKHProjects.vsmdi
