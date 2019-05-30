@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HKH.CSV
 {
@@ -76,21 +74,15 @@ namespace HKH.CSV
 		}
 
 		#region Methods
+		public IEnumerable<IEnumerable<string>> ReadSample(int count)
+		{
+			return ReadCore(count);
+		}
 
 		public IEnumerable<IEnumerable<string>> ReadAll()
 		{
-			List<IEnumerable<string>> allElements = new List<IEnumerable<string>>();
-			while (hasNext)
-			{
-				IEnumerable<string> nextLineAsTokens = ReadLine();
-				if (nextLineAsTokens != null)
-				{
-					allElements.Add(nextLineAsTokens);
-				}
-			}
-			return allElements;
+			return ReadCore(-1);
 		}
-
 		public IEnumerable<string> ReadLine()
 		{
 			string[] result = null;
@@ -117,41 +109,13 @@ namespace HKH.CSV
 
 			return result;
 		}
-
+		public DataTable ReadSample(int count, bool fHeader = false)
+		{
+			return ReadCore(count, fHeader);
+		}
 		public DataTable ReadAll(bool fHeader = false)
 		{
-			DataTable dt = new DataTable();
-			IEnumerable<string> line = ReadLine();
-
-			if (line != null)
-			{
-				if (fHeader)
-				{
-					for (int i = 0; i < line.Count(); i++)
-					{
-						string colName = line.ElementAt(i);
-						dt.Columns.Add(string.IsNullOrEmpty(colName) ? string.Format("Column{0}", i + 1) : colName);
-					}
-				}
-				else
-				{
-					for (int i = 0; i < line.Count(); i++)
-					{
-						dt.Columns.Add(string.Format("Column{0}", i + 1));
-					}
-
-					//read first line if not header
-					AddRow(dt, line);
-				}
-
-				while (hasNext)
-				{
-					line = ReadLine();
-					AddRow(dt, line);
-				}
-			}
-
-			return dt;
+			return ReadCore(-1, fHeader);
 		}
 
 		private void AddRow(DataTable dt, IEnumerable<string> line)
@@ -177,6 +141,64 @@ namespace HKH.CSV
 			Array.Copy(buffer, 0, t, 0, buffer.Length);
 			Array.Copy(lastRead, 0, t, buffer.Length, lastRead.Length);
 			return t;
+		}
+
+		private IEnumerable<IEnumerable<string>> ReadCore(int count)
+		{
+			List<IEnumerable<string>> lines = new List<IEnumerable<string>>();
+			int currentLineNumber = -1;
+
+			while (hasNext && (count == -1 || currentLineNumber < count))
+			{
+				IEnumerable<string> nextLineAsTokens = ReadLine();
+				if (nextLineAsTokens != null)
+				{
+					lines.Add(nextLineAsTokens);
+					currentLineNumber++;
+				}
+			}
+			return lines;
+		}
+		private DataTable ReadCore(int count, bool fHeader = false)
+		{
+			DataTable dt = new DataTable();
+			int currentLineNumber = -1;
+
+			IEnumerable<string> line = ReadLine();
+
+			if (line != null)
+			{
+				if (fHeader)
+				{
+					for (int i = 0; i < line.Count(); i++)
+					{
+						string colName = line.ElementAt(i);
+						dt.Columns.Add(string.IsNullOrEmpty(colName) ? string.Format("Column{0}", i + 1) : colName);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < line.Count(); i++)
+					{
+						dt.Columns.Add(string.Format("Column{0}", i + 1));
+					}
+
+					//read first line if not header
+					AddRow(dt, line);
+
+					currentLineNumber++;
+				}
+
+				while (hasNext && (count == -1 || currentLineNumber < count))
+				{
+					line = ReadLine();
+					AddRow(dt, line);
+
+					currentLineNumber++;
+				}
+			}
+
+			return dt;
 		}
 
 		private string NextLine()
