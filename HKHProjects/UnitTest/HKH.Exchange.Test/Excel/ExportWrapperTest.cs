@@ -69,7 +69,7 @@ namespace HKH.Exchange.Test
 
             IRow titleRow = args.Sheet.CreateRow(expObj.NextRowNum());
             ICell cell = titleRow.CreateCell(0);
-            args.Sheet.AddMergedRegion(new CellRangeAddress(titleRow.RowNum, titleRow.RowNum, 0, args.Export.DetailsMapping.MaxColumnIndex));
+            args.Sheet.AddMergedRegion(new CellRangeAddress(titleRow.RowNum, titleRow.RowNum, 0, args.Export.Body.MaxColumnIndex));
 
             ICellStyle style = args.Sheet.Workbook.CreateCellStyle();
             style.Alignment = HorizontalAlignment.Center;
@@ -92,7 +92,7 @@ namespace HKH.Exchange.Test
 
             IRow endRow = args.Sheet.CreateRow(expObj.NextRowNum());
             ICell cell = endRow.CreateCell(0);
-            args.Sheet.AddMergedRegion(new CellRangeAddress(endRow.RowNum, endRow.RowNum, 0, args.Export.DetailsMapping.MaxColumnIndex));
+            args.Sheet.AddMergedRegion(new CellRangeAddress(endRow.RowNum, endRow.RowNum, 0, args.Export.Body.MaxColumnIndex));
 
             ICellStyle style = args.Sheet.Workbook.CreateCellStyle();
 

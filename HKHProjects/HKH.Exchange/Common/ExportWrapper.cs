@@ -9,8 +9,8 @@
 *****************************************************/
 
 using System.IO;
-using HKH.Exchange.Excel;
 using HKH.Exchange.CSV;
+using HKH.Exchange.Excel;
 
 namespace HKH.Exchange.Common
 {
@@ -25,13 +25,13 @@ namespace HKH.Exchange.Common
 
 		#region Methods
 
-		public static void ExportExcel<T, TList>(string configFile, string tableId, string exportId, string targetFile, TList tList,
-			DataValidatingHandler<T, TList> dataValidater = null, ExtendDataWritingHandler<T, TList> extendDataWriter = null, TableWritingHandler tableHeaderWriter = null,
-			TableWritingHandler tableFooterWriter = null, PageWritingHandler pageHeaderWriter = null, PageWritingHandler pageFooterWriter = null, GetValueHandler<T> getValueCallback = null)
-			where T : class
-			where TList : class
+		public static void ExportExcel<TBody, TBodyList>(string configFile, string tableId, string exportId, string targetFile, TBodyList tList,
+			DataValidatingHandler<TBody, TBodyList> dataValidater = null, ExtendDataWritingHandler<TBody, TBodyList> extendDataWriter = null, TableWritingHandler tableHeaderWriter = null,
+			TableWritingHandler tableFooterWriter = null, PageWritingHandler pageHeaderWriter = null, PageWritingHandler pageFooterWriter = null, GetValueHandler<TBody> getValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			NPOIExport<T, TList> export = CreateNPOIExport<T, TList>(configFile, tableId, exportId, dataValidater, extendDataWriter, tableHeaderWriter, tableFooterWriter, pageHeaderWriter, pageFooterWriter, getValueCallback, null);
+			NPOIExport<TBody, TBodyList> export = CreateNPOIExport<TBody, TBodyList>(configFile, tableId, exportId, dataValidater, extendDataWriter, tableHeaderWriter, tableFooterWriter, pageHeaderWriter, pageFooterWriter, getValueCallback, null);
 			export.Export(targetFile, tList);
 			export.Dispose();
 		}
@@ -41,51 +41,51 @@ namespace HKH.Exchange.Common
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <param name="tList"></param>
-		public static void ExportExcel<T, TList>(string configFile, string tableId, string exportId, Stream stream, TList tList,
-			DataValidatingHandler<T, TList> dataValidater = null, ExtendDataWritingHandler<T, TList> extendDataWriter = null, TableWritingHandler tableHeaderWriter = null,
-			TableWritingHandler tableFooterWriter = null, PageWritingHandler pageHeaderWriter = null, PageWritingHandler pageFooterWriter = null, GetValueHandler<T> getValueCallback = null)
-			where T : class
-			where TList : class
+		public static void ExportExcel<TBody, TBodyList>(string configFile, string tableId, string exportId, Stream stream, TBodyList tList,
+			DataValidatingHandler<TBody, TBodyList> dataValidater = null, ExtendDataWritingHandler<TBody, TBodyList> extendDataWriter = null, TableWritingHandler tableHeaderWriter = null,
+			TableWritingHandler tableFooterWriter = null, PageWritingHandler pageHeaderWriter = null, PageWritingHandler pageFooterWriter = null, GetValueHandler<TBody> getValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			NPOIExport<T, TList> export = CreateNPOIExport<T, TList>(configFile, tableId, exportId, dataValidater, extendDataWriter, tableHeaderWriter, tableFooterWriter, pageHeaderWriter, pageFooterWriter, getValueCallback, null);
+			NPOIExport<TBody, TBodyList> export = CreateNPOIExport<TBody, TBodyList>(configFile, tableId, exportId, dataValidater, extendDataWriter, tableHeaderWriter, tableFooterWriter, pageHeaderWriter, pageFooterWriter, getValueCallback, null);
 			export.Export(stream, tList);
 			export.Dispose();
 		}
 
-		public static void FillExcel<T, TList, TBasic>(string configFile, string tableId, string exportId, string templateFile, string targetFile, TList tList, TBasic tBasic, GetValueHandler<object> getBasicValueCallback = null)
-			where T : class
-			where TList : class
+		public static void FillExcel<TBody, TBodyList, THeader>(string configFile, string tableId, string exportId, string templateFile, string targetFile, TBodyList tList, THeader tHeader, GetValueHandler<object> getHeaderValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			NPOIExport<T, TList> export = CreateNPOIExport<T, TList>(configFile, tableId, exportId, null, null, null, null, null, null, null, getBasicValueCallback);
-			export.Fill<TBasic>(templateFile, targetFile, tList, tBasic);
+			NPOIExport<TBody, TBodyList> export = CreateNPOIExport<TBody, TBodyList>(configFile, tableId, exportId, null, null, null, null, null, null, null, getHeaderValueCallback);
+			export.Fill<THeader>(templateFile, targetFile, tList, tHeader);
 			export.Dispose();
 		}
 
-		public static void FillExcel<T, TList, TBasic>(string configFile, string tableId, string exportId, string templateFile, Stream targetStream, TList tList, TBasic tBasic, GetValueHandler<object> getBasicValueCallback = null)
-			where T : class
-			where TList : class
+		public static void FillExcel<TBody, TBodyList, THeader>(string configFile, string tableId, string exportId, string templateFile, Stream targetStream, TBodyList tList, THeader tHeader, GetValueHandler<object> getHeaderValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			NPOIExport<T, TList> export = CreateNPOIExport<T, TList>(configFile, tableId, exportId, null, null, null, null, null, null, null, getBasicValueCallback);
-			export.Fill(templateFile, targetStream, tList, tBasic);
+			NPOIExport<TBody, TBodyList> export = CreateNPOIExport<TBody, TBodyList>(configFile, tableId, exportId, null, null, null, null, null, null, null, getHeaderValueCallback);
+			export.Fill(templateFile, targetStream, tList, tHeader);
 			export.Dispose();
 		}
 
-		public static void ExportCSV<T, TList>(string configFile, string tableId, string exportId, string targetFile, TList tList,
-			DataValidatingHandler<T, TList> dataValidater = null, GetValueHandler<T> getValueCallback = null)
-			where T : class
-			where TList : class
+		public static void ExportCSV<TBody, TBodyList>(string configFile, string tableId, string exportId, string targetFile, TBodyList tList,
+			DataValidatingHandler<TBody, TBodyList> dataValidater = null, GetValueHandler<TBody> getValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			CSVExport<T, TList> export = CreateCSVExport<T, TList>(configFile, tableId, exportId, dataValidater, getValueCallback);
+			CSVExport<TBody, TBodyList> export = CreateCSVExport<TBody, TBodyList>(configFile, tableId, exportId, dataValidater, getValueCallback);
 			export.Export(targetFile, tList);
 			export.Dispose();
 		}
 
-		public static void ExportCSV<T, TList>(string configFile, string tableId, string exportId, Stream targetStream, TList tList,
-			DataValidatingHandler<T, TList> dataValidater = null, GetValueHandler<T> getValueCallback = null)
-			where T : class
-			where TList : class
+		public static void ExportCSV<TBody, TBodyList>(string configFile, string tableId, string exportId, Stream targetStream, TBodyList tList,
+			DataValidatingHandler<TBody, TBodyList> dataValidater = null, GetValueHandler<TBody> getValueCallback = null)
+			where TBody : class
+			where TBodyList : class
 		{
-			CSVExport<T, TList> export = CreateCSVExport<T, TList>(configFile, tableId, exportId, dataValidater, getValueCallback);
+			CSVExport<TBody, TBodyList> export = CreateCSVExport<TBody, TBodyList>(configFile, tableId, exportId, dataValidater, getValueCallback);
 			export.Export(targetStream, tList);
 			export.Dispose();
 		}
@@ -94,13 +94,13 @@ namespace HKH.Exchange.Common
 
 		#region Helper
 
-		private static NPOIExport<T, TList> CreateNPOIExport<T, TList>(string configFile, string tableId, string exportId,
-			DataValidatingHandler<T, TList> dataValidater, ExtendDataWritingHandler<T, TList> extendDataWriter, TableWritingHandler tableHeaderWriter,
-			TableWritingHandler tableFooterWriter, PageWritingHandler pageHeaderWriter, PageWritingHandler pageFooterWriter, GetValueHandler<T> getValueCallback, GetValueHandler<object> getBasicValueCallback)
-			where T : class
-			where TList : class
+		private static NPOIExport<TBody, TBodyList> CreateNPOIExport<TBody, TBodyList>(string configFile, string tableId, string exportId,
+			DataValidatingHandler<TBody, TBodyList> dataValidater, ExtendDataWritingHandler<TBody, TBodyList> extendDataWriter, TableWritingHandler tableHeaderWriter,
+			TableWritingHandler tableFooterWriter, PageWritingHandler pageHeaderWriter, PageWritingHandler pageFooterWriter, GetValueHandler<TBody> getValueCallback, GetValueHandler<object> getHeaderValueCallback)
+			where TBody : class
+			where TBodyList : class
 		{
-			NPOIExport<T, TList> export = new NPOIExport<T, TList>(configFile, tableId);
+			NPOIExport<TBody, TBodyList> export = new NPOIExport<TBody, TBodyList>(configFile, tableId);
 			export.ExportId = exportId;
 
 			if (dataValidater != null)
@@ -124,18 +124,18 @@ namespace HKH.Exchange.Common
 			if (getValueCallback != null)
 				export.GetValueCallback += getValueCallback;
 
-			if (getBasicValueCallback != null)
-				export.GetBasicValueCallback += getBasicValueCallback;
+			if (getHeaderValueCallback != null)
+				export.GetHeaderValueCallback += getHeaderValueCallback;
 
 			return export;
 		}
 
-		private static CSVExport<T, TList> CreateCSVExport<T, TList>(string configFile, string tableId, string exportId,
-			DataValidatingHandler<T, TList> dataValidater, GetValueHandler<T> getValueCallback)
-			where T : class
-			where TList : class
+		private static CSVExport<TBody, TBodyList> CreateCSVExport<TBody, TBodyList>(string configFile, string tableId, string exportId,
+			DataValidatingHandler<TBody, TBodyList> dataValidater, GetValueHandler<TBody> getValueCallback)
+			where TBody : class
+			where TBodyList : class
 		{
-			CSVExport<T, TList> export = new CSVExport<T, TList>(configFile, tableId);
+			CSVExport<TBody, TBodyList> export = new CSVExport<TBody, TBodyList>(configFile, tableId);
 			export.ExportId = exportId;
 
 			if (dataValidater != null)

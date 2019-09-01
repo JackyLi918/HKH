@@ -60,23 +60,23 @@ namespace HKH.Exchange.Excel
 				return new T();
 		}
 
-		protected override void SetValue(T tModel, string propertyName, object value)
+		protected override void SetValue(T tObj, string propertyName, object value)
 		{
 			if (isDataRow)
-				(tModel as DataRow)[propertyName] = value;
+				(tObj as DataRow)[propertyName] = value;
 			else
-				tModel.SetValue(propertyName, value, true);
+				tObj.SetValue(propertyName, value, true);
 		}
 
-		protected override void AppendToTList(T tModel, TList tList)
+		protected override void AppendToTList(T tObj, TList tList)
 		{
 			if (tList == null)
 				return;
 
 			if (isDataRow)
-				(tList as DataTable).Rows.Add(tModel as DataRow);
+				(tList as DataTable).Rows.Add(tObj as DataRow);
 			else
-				(tList as IList<T>).Add(tModel);
+				(tList as IList<T>).Add(tObj);
 		}
 
 		protected override bool ValidateSourceData(IRow row, ISheet sheet)
@@ -93,11 +93,11 @@ namespace HKH.Exchange.Excel
 			}
 		}
 
-		protected override bool ValidateTargetData(T tModel, TList tList)
+		protected override bool ValidateTargetData(T tObj, TList tList)
 		{
 			if (TargetDataValidating != null)
 			{
-				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tModel, tList, GetImport(ImportId));
+				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, GetImport(ImportId));
 				TargetDataValidating(this, args);
 				return !args.Cancel;
 			}

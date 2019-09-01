@@ -82,7 +82,7 @@ namespace HKH.Exchange.Configuration
 	/// <summary>
 	/// Mapping
 	/// </summary>
-	public class BasicExportColumnMapping : ExportColumnMapping
+	public class ExportHeaderColumnMapping : ExportColumnMapping
 	{
 		protected int rowIndex = -1;
 
@@ -100,7 +100,7 @@ namespace HKH.Exchange.Configuration
 		public string Location { get { return colName + rowIndex.ToString(); } }
 	}
 
-	public class DetailsExportColumnMapping : ExportColumnMapping
+	public class ExportBodyColumnMapping : ExportColumnMapping
 	{
 		private string title = string.Empty;
 

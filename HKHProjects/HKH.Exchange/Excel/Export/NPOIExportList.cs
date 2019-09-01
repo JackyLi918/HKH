@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HKH.Exchange.Excel
 {
-	public class NPOIExportList<T> : NPOIExportBase<T, IList<T>> where T : class
+	public class NPOIExportList<TBody> : NPOIExportBase<TBody, IList<TBody>> where TBody : class
 	{
 		#region Constructor
 
@@ -21,19 +21,19 @@ namespace HKH.Exchange.Excel
 
 		#region Base Class Overrides
 
-		protected override int GetCount(IList<T> tList)
+		protected override int GetCount(IList<TBody> tList)
 		{
 			return tList.Count;
 		}
 
-		protected override T GetTObject(IList<T> tList, int index)
+		protected override TBody GetTObject(IList<TBody> tList, int index)
 		{
 			return tList[index];
 		}
 
-		protected override object GetValue(T tModel, string propertyName)
+		protected override object GetValue(TBody tObj, string propertyName)
 		{
-			return tModel.GetValue(propertyName);
+			return tObj.GetValue(propertyName);
 		}
 
 		#endregion

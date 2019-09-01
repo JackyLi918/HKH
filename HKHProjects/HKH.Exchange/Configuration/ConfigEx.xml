@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<excelConfiguration>
+<exchanges>
 	<!--
 		id：Identity
 		source：Excel Sheet name or sheet index(if integer)
@@ -13,13 +13,13 @@
 				[xlsFormat]: excel version, xls/xlsx, default is xlsx
 			-->
 			<export id="1" dateFormat="yyyy年mm月dd日" numberFormat ="0.00"  xlsFormat="xls">
-				<basic>
+				<header>
 					<columnMapping col="B" row="2" offset="true" prop ="{SrcRowNum(+1)}" propType="expression" />
-				</basic>
+				</header>
 				<!--
 				[outputTitle]：output title as first row if true. Option
 				-->
-				<details outputTitle="true" firstRowIndex="0" pageSize="0" fillMode ="copy">
+				<body outputTitle="true" firstRowIndex="0" fillMode ="copy">
 					<!--
 						col：Excel Column Name (A, B, C ....)
 						prop：Class property name or column name of datatable
@@ -40,7 +40,7 @@
 					<columnMapping col ="E" prop ="Java" />
 					<columnMapping col ="F" prop ="Html" />
 					<columnMapping col ="G" prop ="Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" propType="expression" title="总分" />
-				</details>
+				</body>
 			</export>
 		</exports>
 		<imports>
@@ -60,4 +60,4 @@
 			</import>
 		</imports>
 	</tableMapping>
-</excelConfiguration>
+</exchanges>

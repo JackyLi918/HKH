@@ -129,13 +129,13 @@ namespace HKH.Exchange.Configuration
                 if ("#comment" == xn.Name)
                     continue;
 
-                if ("basic" == xn.Name)
+                if ("header" == xn.Name)
                 {
-                    export.BasicMapping = LoadBasicExport(xn);
+                    export.Header = LoadExportHeader(xn);
                 }
-                else if ("details" == xn.Name)
+                else if ("body" == xn.Name)
                 {
-                    export.DetailsMapping = LoadDetailsExport(xn);
+                    export.Body = LoadExportBody(xn);
                 }
             }
 
@@ -149,24 +149,24 @@ namespace HKH.Exchange.Configuration
             return (XlsFormat)Enum.Parse(typeof(XlsFormat), val, true);
         }
 
-        private BasicExport LoadBasicExport(XmlNode node)
+        private ExportHeader LoadExportHeader(XmlNode node)
         {
-            BasicExport basicExport = new BasicExport();
+            ExportHeader header = new ExportHeader();
 
             foreach (XmlNode xn in node.ChildNodes)
             {
                 if ("#comment" == xn.Name)
                     continue;
-                BasicExportColumnMapping excolumn = LoadBasicExportColumnMapping(xn);
-                basicExport.Add(excolumn.Location, excolumn);
+                ExportHeaderColumnMapping excolumn = LoadExportHeaderColumnMapping(xn);
+                header.Add(excolumn.Location, excolumn);
             }
 
-            return basicExport;
+            return header;
         }
 
-        private BasicExportColumnMapping LoadBasicExportColumnMapping(XmlNode node)
+        private ExportHeaderColumnMapping LoadExportHeaderColumnMapping(XmlNode node)
         {
-            BasicExportColumnMapping column = new BasicExportColumnMapping();
+            ExportHeaderColumnMapping column = new ExportHeaderColumnMapping();
 
             foreach (XmlAttribute xa in node.Attributes)
             {
@@ -194,31 +194,28 @@ namespace HKH.Exchange.Configuration
             return column;
         }
 
-        private DetailsExport LoadDetailsExport(XmlNode node)
+        private ExportBody LoadExportBody(XmlNode node)
         {
-            DetailsExport detailsExport = new DetailsExport();
+            ExportBody body = new ExportBody();
 
             foreach (XmlAttribute xa in node.Attributes)
             {
                 switch (xa.Name)
                 {
                     case "outputTitle":
-                        detailsExport.OutPutTitle = xa.Value.Trim().SafeToBool();
+                        body.OutPutTitle = xa.Value.Trim().SafeToBool();
                         break;
                     case "firstRowIndex":
-                        detailsExport.FirstRowIndex = xa.Value.Trim().SafeToInt() - 1;
-						detailsExport.FirstRowIndex = detailsExport.FirstRowIndex < 0 ? 0 : detailsExport.FirstRowIndex;
-                        break;
-                    case "pageSize":
-                        detailsExport.PageSize = xa.Value.Trim().SafeToInt();
+                        body.FirstRowIndex = xa.Value.Trim().SafeToInt() - 1;
+						body.FirstRowIndex = body.FirstRowIndex < 0 ? 0 : body.FirstRowIndex;
                         break;
 					case "fillMode":
                         if (xa.Value == "copy")
-                            detailsExport.RowMode = FillRowMode.Copy;
+                            body.RowMode = FillRowMode.Copy;
                         else if (xa.Value == "fill")
-                            detailsExport.RowMode = FillRowMode.Fill;
+                            body.RowMode = FillRowMode.Fill;
                         else
-                            detailsExport.RowMode = FillRowMode.New;
+                            body.RowMode = FillRowMode.New;
                         break;
                     default:
                         break;
@@ -230,18 +227,18 @@ namespace HKH.Exchange.Configuration
                 if ("#comment" == xn.Name)
                     continue;
 
-                DetailsExportColumnMapping excolumn = LoadDetailsExportColumnMapping(xn);
-                detailsExport.Add(excolumn.ColumnName, excolumn);
+                ExportBodyColumnMapping excolumn = LoadExportBodyColumnMapping(xn);
+                body.Add(excolumn.ColumnName, excolumn);
             }
 
-            detailsExport.MaxColumnIndex = detailsExport.Max(c => c.Value.ColumnIndex);
+            body.MaxColumnIndex = body.Max(c => c.Value.ColumnIndex);
 
-            return detailsExport;
+            return body;
         }
 
-        private DetailsExportColumnMapping LoadDetailsExportColumnMapping(XmlNode node)
+        private ExportBodyColumnMapping LoadExportBodyColumnMapping(XmlNode node)
         {
-            DetailsExportColumnMapping column = new DetailsExportColumnMapping();
+            ExportBodyColumnMapping column = new ExportBodyColumnMapping();
 
             foreach (XmlAttribute xa in node.Attributes)
             {

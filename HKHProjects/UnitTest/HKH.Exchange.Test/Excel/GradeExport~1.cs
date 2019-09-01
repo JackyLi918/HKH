@@ -23,7 +23,7 @@ namespace HKH.Exchange.Test
 			Export export = GetExport(ExportId);
 			IRow titleRow = sheet.CreateRow(NextRowNum());
 			ICell cell = titleRow.CreateCell(0);
-			sheet.AddMergedRegion(new CellRangeAddress(titleRow.RowNum, titleRow.RowNum, 0, export.DetailsMapping.MaxColumnIndex));
+			sheet.AddMergedRegion(new CellRangeAddress(titleRow.RowNum, titleRow.RowNum, 0, export.Body.MaxColumnIndex));
 
 			ICellStyle style = workBook.CreateCellStyle();
 			style.Alignment = HorizontalAlignment.Center;
@@ -45,7 +45,7 @@ namespace HKH.Exchange.Test
 			Export export = GetExport(ExportId);
 			IRow endRow = sheet.CreateRow(NextRowNum());
 			ICell cell = endRow.CreateCell(0);
-			sheet.AddMergedRegion(new CellRangeAddress(endRow.RowNum, endRow.RowNum, 0, export.DetailsMapping.MaxColumnIndex));
+			sheet.AddMergedRegion(new CellRangeAddress(endRow.RowNum, endRow.RowNum, 0, export.Body.MaxColumnIndex));
 
 			ICellStyle style = workBook.CreateCellStyle();
 

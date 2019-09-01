@@ -30,9 +30,9 @@ namespace HKH.Exchange.Excel
 			return tList.Rows[index];
 		}
 
-		protected override object GetValue(DataRow tModel, string propertyName)
+		protected override object GetValue(DataRow tObj, string propertyName)
 		{
-			return tModel[propertyName];
+			return tObj[propertyName];
 		}
 
 		#endregion

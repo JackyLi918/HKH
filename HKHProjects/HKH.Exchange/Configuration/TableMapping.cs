@@ -84,17 +84,17 @@ namespace HKH.Exchange.Configuration
 
         public XlsFormat XlsFormat { get; set; }
 
-        public BasicExport BasicMapping { get; set; }
-        public DetailsExport DetailsMapping { get; set; }
+        public ExportHeader Header { get; set; }
+        public ExportBody Body { get; set; }
     }
 
-    public class BasicExport : Dictionary<string, BasicExportColumnMapping>
+    public class ExportHeader : Dictionary<string, ExportHeaderColumnMapping>
     {
     }
 
-    public class DetailsExport : Dictionary<string, DetailsExportColumnMapping>
+    public class ExportBody : Dictionary<string, ExportBodyColumnMapping>
     {
-        internal DetailsExport()
+        internal ExportBody()
         {
             OutPutTitle = false;
             FirstRowIndex = 0;
@@ -110,11 +110,6 @@ namespace HKH.Exchange.Configuration
         /// the row index to start output detail
         /// </summary>
         public int FirstRowIndex { get; set; }
-
-        /// <summary>
-        /// detail row count per page
-        /// </summary>
-        public int PageSize { get; set; }
 
         /// <summary>
         /// 

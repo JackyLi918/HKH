@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HKH.Exchange.Common
 {
-    public abstract class ExportBase<T, TList> : ImportExportBase<T, TList>, IExportable
-        where T : class
-        where TList : class
+    public abstract class ExportBase<TBody, TBodyList> : ImportExportBase<TBody, TBodyList>, IExportable
+        where TBody : class
+        where TBodyList : class
     {
         protected const string DEFAULTDATEFORMATSTRING = "MM/dd/yyyy";
         protected const string DEFAULTNUMBERFORMATSTRING = "0.00";
@@ -56,7 +56,7 @@ namespace HKH.Exchange.Common
 		/// </summary>
 		/// <param name="targetFile"></param>
 		/// <param name="tList"></param>
-		public void Export(string targetFile, TList tList)
+		public void Export(string targetFile, TBodyList tList)
 		{
 			using (Stream stream = File.Create(targetFile))
 			{
@@ -74,7 +74,7 @@ namespace HKH.Exchange.Common
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <param name="tList"></param>
-		public void Export(Stream stream, TList tList)
+		public void Export(Stream stream, TBodyList tList)
 		{
             mode = ExportMode.Export;
 
@@ -86,7 +86,7 @@ namespace HKH.Exchange.Common
 			Reset();
 		}
 
-        protected abstract void ExportCore(Stream stream,TList tList);
+        protected abstract void ExportCore(Stream stream,TBodyList tList);
  
 		#endregion
 
@@ -99,7 +99,7 @@ namespace HKH.Exchange.Common
 		/// </summary>
 		/// <param name="tList"></param>
 		/// <param name="tObject"></param>
-		protected bool NextTObject(TList tList, out T tObject)
+		protected bool NextTObject(TBodyList tList, out TBody tObject)
 		{
 			curTIndex++;
 			if (curTIndex < GetCount(tList))
@@ -117,7 +117,7 @@ namespace HKH.Exchange.Common
 		/// </summary>
 		/// <param name="tList"></param>
 		/// <returns></returns>
-		protected abstract int GetCount(TList tList);
+		protected abstract int GetCount(TBodyList tList);
 
 		/// <summary>
 		/// get object from source list by index
@@ -125,22 +125,22 @@ namespace HKH.Exchange.Common
 		/// <param name="tList"></param>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		protected abstract T GetTObject(TList tList, int index);
+		protected abstract TBody GetTObject(TBodyList tList, int index);
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="tModel"></param>
+		/// <param name="t"></param>
 		/// <param name="propertyName"></param>
 		/// <param name="value"></param>
-		protected abstract object GetValue(T tModel, string propertyName);
+		protected abstract object GetValue(TBody tObj, string propertyName);
 
     	/// <summary>
 		///  Handle before exporting
 		/// </summary>
-		/// <param name="tModel"></param>
+		/// <param name="t"></param>
 		/// <param name="tList"></param>
-		protected virtual bool ValidateSourceData(T tModel, TList tList)
+		protected virtual bool ValidateSourceData(TBody tObj, TBodyList tList)
 		{
 			return true;
 		}

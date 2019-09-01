@@ -11,9 +11,9 @@ using NPOI.SS.UserModel;
 
 namespace HKH.Exchange.Excel
 {
-    public abstract class NPOIExportBase<T, TList> : ExportBase<T, TList>
-        where T : class
-        where TList : class
+    public abstract class NPOIExportBase<TBody, TBodyList> : ExportBase<TBody, TBodyList>
+        where TBody : class
+        where TBodyList : class
     {
         private const string Pattern_GetAllFunctions = @"(?i)\{\w+\([+-]?\d+\)\}";
 
@@ -42,7 +42,7 @@ namespace HKH.Exchange.Excel
 
         #region Public Methods
 
-        protected override void ExportCore(Stream stream, TList tList)
+        protected override void ExportCore(Stream stream, TBodyList tList)
         {
             workBook = NPOIExtension.CreateWorkbook(export.XlsFormat);
             //----set summary
@@ -63,18 +63,18 @@ namespace HKH.Exchange.Excel
             CustomPageHeader(sheet.Header);
             CustomTableHeader(sheet);
 
-            OutputDetails(tList);
+            WriteBody(tList);
 
             CustomTableFooter(sheet);
 
             workBook.Write(stream);
         }
 
-        public void Fill<TBasic>(string templateFile, string targetFile, TList tList, TBasic tBasic)
+        public void Fill<THeader>(string templateFile, string targetFile, TBodyList tList, THeader tHeader)
         {
             using (Stream stream = File.Create(targetFile))
             {
-                Fill(templateFile, stream, tList, tBasic);
+                Fill(templateFile, stream, tList, tHeader);
                 if (stream.CanWrite)
                 {
                     stream.Flush();
@@ -83,7 +83,7 @@ namespace HKH.Exchange.Excel
             }
         }
 
-        public void Fill<TBasic>(string templateFile, Stream targetStream, TList tList, TBasic tBasic)
+        public void Fill<THeader>(string templateFile, Stream targetStream, TBodyList tList, THeader tHeader)
         {
             if (string.IsNullOrEmpty(templateFile) || !File.Exists(templateFile))
                 throw Error.ArgumentNotValid("templateFile");
@@ -91,14 +91,14 @@ namespace HKH.Exchange.Excel
             using (Stream stream = File.Open(templateFile, FileMode.Open, FileAccess.ReadWrite))
             {
                 workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, stream);
-                Fill(tList, tBasic);
+                Fill(tList, tHeader);
             }
 
             workBook.Write(targetStream);
             Reset();
         }
 
-        private void Fill<TBasic>(TList tList, TBasic tBasic)
+        private void Fill<THeader>(TBodyList tList, THeader tHeader)
         {
             mode = ExportMode.Fill;
             export = GetExport(ExportId);
@@ -116,8 +116,8 @@ namespace HKH.Exchange.Excel
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
             //----end
 
-            OutputDetails(tList);
-            OutputBasic(tBasic);
+            WriteBody(tList);
+            WriteHeader(tHeader);
         }
 
         #endregion
@@ -139,17 +139,17 @@ namespace HKH.Exchange.Excel
             else
             {
                 curEIndex++;
-                return export.DetailsMapping.FirstRowIndex + curEIndex;
+                return export.Body.FirstRowIndex + curEIndex;
             }
         }
 
-        protected IRow GetNewRow(int rowNum, TList tList)
+        protected IRow GetNewRow(int rowNum, TBodyList tList)
         {
             IRow row = null; ;
 
             if (mode == ExportMode.Fill)
             {
-                switch (export.DetailsMapping.RowMode)
+                switch (export.Body.RowMode)
                 {
                     case FillRowMode.Copy:
                         //copy current row if has more row
@@ -253,10 +253,10 @@ namespace HKH.Exchange.Excel
         /// <summary>
         /// Write extend data after exported
         /// </summary>
-        /// <param name="tModel"></param>
+        /// <param name="t"></param>
         /// <param name="tList"></param>
         /// <param name="row"></param>
-        protected virtual void WriteExtendData(T tModel, TList tList, IRow row)
+        protected virtual void WriteExtendData(TBody tObj, TBodyList tList, IRow row)
         {
         }
 
@@ -276,7 +276,7 @@ namespace HKH.Exchange.Excel
         {
         }
 
-        protected virtual object GetValue<TBasic>(TBasic tObj, string propertyName)
+        protected virtual object GetValue<THeader>(THeader tObj, string propertyName)
         {
             if (tObj is DataTable)
             {
@@ -288,12 +288,12 @@ namespace HKH.Exchange.Excel
             }
             else
             {
-                PropertyInfo pi = typeof(TBasic).GetProperty(propertyName);
+                PropertyInfo pi = typeof(THeader).GetProperty(propertyName);
                 return pi.GetValue(tObj, null);
             }
         }
 
-        protected virtual string GetColumnTitle(DetailsExportColumnMapping columnMapping)
+        protected virtual string GetColumnTitle(ExportBodyColumnMapping columnMapping)
         {
             return columnMapping.Title;
         }
@@ -321,27 +321,27 @@ namespace HKH.Exchange.Excel
 
         #region Private Methods
 
-        private void OutputBasic<TBasic>(TBasic tBasic)
+        private void WriteHeader<THeader>(THeader tHeader)
         {
             int rowIndex = 0;
-            foreach (BasicExportColumnMapping columnMapping in export.BasicMapping.Values)
+            foreach (ExportHeaderColumnMapping columnMapping in export.Header.Values)
             {
-                rowIndex = (columnMapping.Offset && export.DetailsMapping.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
+                rowIndex = (columnMapping.Offset && export.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
                 IRow dataRow = sheet.GetRow(rowIndex);
                 if (columnMapping.PropertyType == PropertyType.Expression)
                     CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
                 else
-                    dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue<TBasic>(tBasic, columnMapping.PropertyName), dateFormat);
+                    dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue<THeader>(tHeader, columnMapping.PropertyName), dateFormat);
             }
         }
 
-        private void OutputDetails(TList tList)
+        private void WriteBody(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && export.DetailsMapping.OutPutTitle)
+            if (mode == ExportMode.Export && export.Body.OutPutTitle)
             {
                 IRow titleRow = sheet.CreateRow(NextRowNum());
-                foreach (DetailsExportColumnMapping columnMapping in export.DetailsMapping.Values)
+                foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
                 {
                     //write column title under sheet title
                     titleRow.CreateCell(columnMapping.ColumnIndex);
@@ -349,7 +349,7 @@ namespace HKH.Exchange.Excel
                 }
             }
 
-            T tObj = null;
+            TBody tObj = null;
 
             int rowIndex = 0;
             while (NextTObject(tList, out tObj))
@@ -358,9 +358,9 @@ namespace HKH.Exchange.Excel
                 {
                     IRow dataRow = GetNewRow(NextRowNum(), tList);
                     //write data
-                    foreach (DetailsExportColumnMapping columnMapping in export.DetailsMapping.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
                     {
-                        if (mode == ExportMode.Export || export.DetailsMapping.RowMode == FillRowMode.New)
+                        if (mode == ExportMode.Export || export.Body.RowMode == FillRowMode.New)
                             dataRow.CreateCell(columnMapping.ColumnIndex);
 
                         if (columnMapping.PropertyType == PropertyType.Expression)

@@ -20,9 +20,9 @@ namespace HKH.Exchange.Excel
 	/// <summary>
 	/// NPOIExport
 	/// </summary>
-	internal sealed class NPOIExport<T, TList> : NPOIExportBase<T, TList>
-		where T : class
-		where TList : class
+	internal sealed class NPOIExport<TBody, TBodyList> : NPOIExportBase<TBody, TBodyList>
+		where TBody : class
+		where TBodyList : class
 	{
 		#region Variables
 
@@ -30,20 +30,20 @@ namespace HKH.Exchange.Excel
 
 		#endregion
 
-		internal event DataValidatingHandler<T, TList> SourceDataValidating;
-		internal event ExtendDataWritingHandler<T, TList> ExtendDataWriting;
+		internal event DataValidatingHandler<TBody, TBodyList> SourceDataValidating;
+		internal event ExtendDataWritingHandler<TBody, TBodyList> ExtendDataWriting;
 		internal event TableWritingHandler TableHeaderWriting;
 		internal event TableWritingHandler TableFooterWriting;
 		internal event PageWritingHandler PageHeaderWriting;
 		internal event PageWritingHandler PageFooterWriting;
-		internal event GetValueHandler<T> GetValueCallback;
+		internal event GetValueHandler<TBody> GetValueCallback;
 
-		internal event GetValueHandler<object> GetBasicValueCallback;
+		internal event GetValueHandler<object> GetHeaderValueCallback;
 
 		public NPOIExport(string configurationFile, string tableID)
 			: base(configurationFile, tableID)
 		{
-			this.isDataRow = (typeof(T) == typeof(DataRow));
+			this.isDataRow = (typeof(TBody) == typeof(DataRow));
 		}
 
 		#region Properties
@@ -52,11 +52,11 @@ namespace HKH.Exchange.Excel
 
 		#region Methods
 
-		protected override bool ValidateSourceData(T tModel, TList tList)
+		protected override bool ValidateSourceData(TBody tObj, TBodyList tList)
 		{
 			if (SourceDataValidating != null)
 			{
-				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tModel, tList, GetExport(ExportId));
+				DataValidatingEventArgs<TBody, TBodyList> args = new DataValidatingEventArgs<TBody, TBodyList>(tObj, tList, GetExport(ExportId));
 				SourceDataValidating(this, args);
 				return !args.Cancel;
 			}
@@ -78,11 +78,11 @@ namespace HKH.Exchange.Excel
 				TableHeaderWriting(this, new TableWritingEventArgs(sheet, GetExport(ExportId)));
 		}
 
-		protected override void WriteExtendData(T tModel, TList tList, IRow row)
+		protected override void WriteExtendData(TBody tObj, TBodyList tList, IRow row)
 		{
 			if (ExtendDataWriting != null)
 			{
-				ExtendDataWriting(this, new ExtendDataWritingEventArgs<T, TList>(tModel, tList, row, GetExport(ExportId)));
+				ExtendDataWriting(this, new ExtendDataWritingEventArgs<TBody, TBodyList>(tObj, tList, row, GetExport(ExportId)));
 			}
 		}
 
@@ -102,49 +102,49 @@ namespace HKH.Exchange.Excel
 
 		#region Helper
 
-		protected override int GetCount(TList tList)
+		protected override int GetCount(TBodyList tList)
 		{
 			if (isDataRow)
 				return (tList as DataTable).Rows.Count;
 			else
-				return (tList as IList<T>).Count;
+				return (tList as IList<TBody>).Count;
 		}
 
-		protected override T GetTObject(TList tList, int index)
+		protected override TBody GetTObject(TBodyList tList, int index)
 		{
 			if (isDataRow)
-				return (tList as DataTable).Rows[index] as T;
+				return (tList as DataTable).Rows[index] as TBody;
 			else
-				return (tList as IList<T>)[index];
+				return (tList as IList<TBody>)[index];
 		}
 
-		protected override object GetValue<TBasic>(TBasic tObj, string propertyName)
+		protected override object GetValue<THeader>(THeader tObj, string propertyName)
 		{
-			if (GetBasicValueCallback != null)
+			if (GetHeaderValueCallback != null)
 			{
 				GetValueEventArgs<object> args = new GetValueEventArgs<object>(tObj, propertyName);
-				GetBasicValueCallback(this, args);
+				GetHeaderValueCallback(this, args);
 				if (args.Handled)
 					return args.Value;
 			}
 
-			return base.GetValue<TBasic>(tObj, propertyName);
+			return base.GetValue<THeader>(tObj, propertyName);
 		}
 
-		protected override object GetValue(T tModel, string propertyName)
+		protected override object GetValue(TBody tObj, string propertyName)
 		{
 			if (GetValueCallback != null)
 			{
-				GetValueEventArgs<T> args = new GetValueEventArgs<T>(tModel, propertyName);
+				GetValueEventArgs<TBody> args = new GetValueEventArgs<TBody>(tObj, propertyName);
 				GetValueCallback(this, args);
 				if (args.Handled)
 					return args.Value;
 			}
 
 			if (isDataRow)
-				return (tModel as DataRow)[propertyName];
+				return (tObj as DataRow)[propertyName];
 			else
-				return tModel .GetValue(propertyName);
+				return tObj.GetValue(propertyName);
 		}
 
 		#endregion
@@ -161,7 +161,7 @@ namespace HKH.Exchange.Excel
 			PageFooterWriting = null;
 			GetValueCallback = null;
 
-			GetBasicValueCallback = null;
+			GetHeaderValueCallback = null;
 		}
 	}
 
@@ -200,9 +200,9 @@ namespace HKH.Exchange.Excel
 		where T : class
 		where TList : class
 	{
-		public ExtendDataWritingEventArgs(T t, TList tList, IRow row, Export exp)
+		public ExtendDataWritingEventArgs(T tObj, TList tList, IRow row, Export exp)
 		{
-			Entity = t;
+			Entity = tObj;
 			EntityList = tList;
 			ExcelRow = row;
 			Export = exp;

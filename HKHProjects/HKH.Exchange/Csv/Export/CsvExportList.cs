@@ -19,7 +19,7 @@ namespace HKH.Exchange.CSV
 	/// <summary>
 	/// CsvExportList
 	/// </summary>
-    public class CSVExportList<T> : CSVExportBase<T, IList<T>> where T : class
+    public class CSVExportList<TBody> : CSVExportBase<TBody, IList<TBody>> where TBody : class
 	{
 		#region Constructor
 
@@ -37,19 +37,19 @@ namespace HKH.Exchange.CSV
 
 		#region Base Class Overrides
 
-		protected override int GetCount(IList<T> tList)
+		protected override int GetCount(IList<TBody> tList)
 		{
 			return tList.Count;
 		}
 
-		protected override T GetTObject(IList<T> tList, int index)
+		protected override TBody GetTObject(IList<TBody> tList, int index)
 		{
 			return tList[index];
 		}
 
-		protected override object GetValue(T tModel, string propertyName)
+		protected override object GetValue(TBody tObj, string propertyName)
 		{
-			return tModel.GetValue(propertyName);
+			return tObj.GetValue(propertyName);
 		}
 
 		#endregion

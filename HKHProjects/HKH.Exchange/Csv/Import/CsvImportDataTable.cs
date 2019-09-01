@@ -33,15 +33,15 @@ namespace HKH.Exchange.CSV
 			return successList.NewRow();
 		}
 
-		protected override void SetValue(DataRow tModel, string propertyName, object value)
+		protected override void SetValue(DataRow tObj, string propertyName, object value)
 		{
-			tModel[propertyName] = value;
+			tObj[propertyName] = value;
 		}
 
-		protected override void AppendToTList(DataRow tModel, DataTable tList)
+		protected override void AppendToTList(DataRow tObj, DataTable tList)
 		{
 			if (tList != null)
-				tList.Rows.Add(tModel);
+				tList.Rows.Add(tObj);
 		}
 
 		#endregion

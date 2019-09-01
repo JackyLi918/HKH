@@ -48,10 +48,10 @@ namespace HKH.Exchange.Common
 		where T : class
 		where TList : class
 	{
-		public DataValidatingEventArgs(T t, TList tList, IImportExportConfiguration export)
+		public DataValidatingEventArgs(T tObj, TList tList, IImportExportConfiguration export)
 		{
 			Cancel = false;
-			Entity = t;
+			Entity = tObj;
 			EntityList = tList;
 			Configuration = export;
 		}
@@ -68,9 +68,9 @@ namespace HKH.Exchange.Common
 	public class GetValueEventArgs<T>
 		where T : class
 	{
-		public GetValueEventArgs(T t, string propName)
+		public GetValueEventArgs(T tObj, string propName)
 		{
-			Entity = t;
+			Entity = tObj;
 			PropertyName = propName;
 			Handled = false;
 		}

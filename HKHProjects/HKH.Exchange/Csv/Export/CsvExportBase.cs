@@ -23,9 +23,9 @@ namespace HKH.Exchange.CSV
     /// <summary>
     /// CSVExportBase
     /// </summary>
-    public abstract class CSVExportBase<T, TList> : ExportBase<T, TList>
-        where T : class
-        where TList : class
+    public abstract class CSVExportBase<TBody, TBodyList> : ExportBase<TBody, TBodyList>
+        where TBody : class
+        where TBodyList : class
     {
 
         #region Protected Variable
@@ -52,7 +52,7 @@ namespace HKH.Exchange.CSV
 
         #region Public Methods
 
-        protected override void ExportCore(Stream stream, TList tList)
+        protected override void ExportCore(Stream stream, TBodyList tList)
         {
             _writer = new CSVWriter(stream);
 
@@ -68,19 +68,19 @@ namespace HKH.Exchange.CSV
         public override int NextRowNum()
         {
             curEIndex++;
-            return export.DetailsMapping.FirstRowIndex + curEIndex;
+            return export.Body.FirstRowIndex + curEIndex;
         }
 
         #endregion
 
         #region Private Methods
 
-        private void OutputDetails(TList tList)
+        private void OutputDetails(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && export.DetailsMapping.OutPutTitle)
+            if (mode == ExportMode.Export && export.Body.OutPutTitle)
             {
-                foreach (DetailsExportColumnMapping columnMapping in export.DetailsMapping.Values)
+                foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
                 {
                     //write column title
                     _writer.Write(columnMapping.Title);
@@ -88,7 +88,7 @@ namespace HKH.Exchange.CSV
                 _writer.WriteNewLine();
             }
 
-            T tObj = null;
+            TBody tObj = null;
 
             int rowIndex = 0;
             while (NextTObject(tList, out tObj))
@@ -96,7 +96,7 @@ namespace HKH.Exchange.CSV
                 if (ValidateSourceData(tObj, tList))
                 {
                     //write data
-                    foreach (DetailsExportColumnMapping columnMapping in export.DetailsMapping.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
                     {
                         object val = GetValue(tObj, columnMapping.PropertyName);
                         if (val is DateTime)

@@ -87,7 +87,7 @@ namespace HKH.Exchange.Common
 						continue;
 					}
 
-					T tModel = GetTInstance();
+					T t = GetTInstance();
 
 					foreach (ImportColumnMapping columnMapping in import.Values)
 					{
@@ -105,25 +105,25 @@ namespace HKH.Exchange.Common
 								//if multirows merged, do nothing,because the cacheRow is newest value.
 
 								//set value with newest cache
-								SetValue(tModel, columnMapping.PropertyName, GetCellData(cachRow , columnMapping.ColumnIndex ));
+								SetValue(t, columnMapping.PropertyName, GetCellData(cachRow , columnMapping.ColumnIndex ));
 							}
 							else
-								SetValue(tModel, columnMapping.PropertyName, null);
+								SetValue(t, columnMapping.PropertyName, null);
 						}
 						else
 						{
 							//update cache
 							SetCellData(cachRow, columnMapping.ColumnIndex, GetCellData(row, columnMapping.ColumnIndex));
 							//set value with current value
-							SetValue(tModel, columnMapping.PropertyName, GetCellData(row, columnMapping.ColumnIndex));
+							SetValue(t, columnMapping.PropertyName, GetCellData(row, columnMapping.ColumnIndex));
 						}
 					}
 
 					//process after importing, not to save if false is returned
-					if (ValidateTargetData(tModel, successList))
-						AppendToTList(tModel, successList);
+					if (ValidateTargetData(t, successList))
+						AppendToTList(t, successList);
 					else
-						AppendToTList(tModel, failList);
+						AppendToTList(t, failList);
 				}
 			}
 			finally
@@ -164,17 +164,17 @@ namespace HKH.Exchange.Common
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="tModel"></param>
+		/// <param name="t"></param>
 		/// <param name="propertyName"></param>
 		/// <param name="value"></param>
-		protected abstract void SetValue(T tModel, string propertyName, object value);
+		protected abstract void SetValue(T tObj, string propertyName, object value);
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="tModel"></param>
+		/// <param name="t"></param>
 		/// <param name="tList"></param>
-		protected abstract void AppendToTList(T tModel, TList tList);
+		protected abstract void AppendToTList(T tObj, TList tList);
 
 		/// <summary>
 		/// Handle before importing
@@ -189,8 +189,8 @@ namespace HKH.Exchange.Common
 		/// <summary>
 		///  Handle after importing
 		/// </summary>
-		/// <param name="tModel"></param>
-		protected virtual bool ValidateTargetData(T tModel, TList tList)
+		/// <param name="t"></param>
+		protected virtual bool ValidateTargetData(T tObj, TList tList)
 		{
 			return true;
 		}

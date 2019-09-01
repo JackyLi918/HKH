@@ -28,15 +28,15 @@ namespace HKH.Exchange.Excel
 			return new T();
 		}
 
-		protected override void SetValue(T tModel, string propertyName, object value)
+		protected override void SetValue(T tObj, string propertyName, object value)
 		{
-			tModel.SetValue(propertyName, value, true);
+			tObj.SetValue(propertyName, value, true);
 		}
 
-		protected override void AppendToTList(T tModel, IList<T> tList)
+		protected override void AppendToTList(T tObj, IList<T> tList)
 		{
 			if (tList != null)
-				tList.Add(tModel);
+				tList.Add(tObj);
 		}
 
 		#endregion
