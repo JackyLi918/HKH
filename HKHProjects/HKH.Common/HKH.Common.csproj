@@ -62,6 +62,7 @@
     <Compile Include="Common\QueryableExtension.cs" />
     <Compile Include="Common\StringExtension.cs" />
     <Compile Include="Common\XExpression.cs" />
+    <Compile Include="Configuration\AppSettingConfiguration.cs" />
     <Compile Include="Exception\UnLogException.cs" />
     <Compile Include="ObjectPool\IPooledObject.cs" />
     <Compile Include="ObjectPool\PooledObjectLocator.cs" />
