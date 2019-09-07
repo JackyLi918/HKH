@@ -54,7 +54,14 @@ namespace HKH.Linq.Test
         {
             var nor = new Northwind();
             TestTable tt = new TestTable() { Name = "Test" };
-            var result = nor.TestTables.Insert(tt,t=>t.ID);
+            var result = nor.TestTables.Insert(tt, t => t.ID);
+        }
+        [TestMethod]
+        public void TestDelete()
+        {
+            var nor = new Northwind();
+            long l = 2;
+            var result = nor.TestTable4s.Delete(new TestTable4() { TID = l });
         }
     }
 
@@ -79,6 +86,12 @@ namespace HKH.Linq.Test
         public int ID { get; set; }
         public string Name { get; set; }
         public int AA { get; set; }
+    }
+    public class TestTable4
+    {
+        [Column(IsPrimaryKey = true, IsGenerated = false)]
+        public long TID { get; set; }
+        public string Name { get; set; }
     }
     public class Northwind : HKH.Linq.Data.SqlServer.SqlServerDbContext
     {
@@ -107,6 +120,10 @@ namespace HKH.Linq.Test
         public virtual IEntityTable<TestTable> TestTables
         {
             get { return GetTable<TestTable>(); }
+        }
+        public virtual IEntityTable<TestTable4> TestTable4s
+        {
+            get { return GetTable<TestTable4>(); }
         }
     }
 }

@@ -32,24 +32,24 @@ namespace HKH.Common.Test
     public class AppSettingTest : AppSettingConfiguration
     {
         [AppSetting]
-        public string TestString { get; set; }
+        public string TestString { get; private set; }
         [AppSetting]
-        public int TestInt { get; set; }
+        public int TestInt { get; private set; }
         [AppSetting]
-        public bool TestBool { get; set; }
+        public bool TestBool { get; private set; }
 
         [AppSetting]
-        public string TestStringDef { get; set; }
+        public string TestStringDef { get; private set; }
         [AppSetting]
-        public int TestIntDef { get; set; }
+        public int TestIntDef { get; private set; }
         [AppSetting]
-        public bool TestBoolDef { get; set; }
+        public bool TestBoolDef { get; private set; }
 
         [AppSetting(DefaultValue = "")]
-        public string TestStringDef2 { get; set; }
+        public string TestStringDef2 { get; private set; }
         [AppSetting(DefaultValue = 100)]
-        public int TestIntDef2 { get; set; }
+        public int TestIntDef2 { get; private set; }
         [AppSetting(DefaultValue = true)]
-        public bool TestBoolDef2 { get; set; }
+        public bool TestBoolDef2 { get; private set; }
     }
 }
