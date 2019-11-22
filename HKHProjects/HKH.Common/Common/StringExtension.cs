@@ -291,7 +291,7 @@ namespace System//HKH.Common
         /// <returns></returns>
         public static bool IsNumeric(this string str)
         {
-            return Regex.IsMatch(str, @"^[+-]?\d+(.\d+)?$");
+            return Regex.IsMatch(str, @"^[+-]?\d+(\.\d+)?$");
         }
 
         /// <summary>
