@@ -9,11 +9,13 @@
 *****************************************************/
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HKH.Exchange.Configuration
 {
     public interface IImportExportConfiguration
     {
+        void CalculateColumnIndex(string[] dataHeaders);
     }
 
     public class TableMapping
@@ -24,7 +26,6 @@ namespace HKH.Exchange.Configuration
         public TableMapping()
         {
             Id = string.Empty;
-            Sheet = string.Empty;
             ClassType = string.Empty;
             _exports = new ExportCollection();
             _imports = new ImportCollection();
@@ -34,11 +35,6 @@ namespace HKH.Exchange.Configuration
         /// key field
         /// </summary>
         public string Id { get; set; }
-
-        /// <summary>
-        /// Excel Source(TableName or TableIndex)
-        /// </summary>
-        public string Sheet { get; set; }
 
         /// <summary>
         /// Class Name or DataTable Name
@@ -67,6 +63,7 @@ namespace HKH.Exchange.Configuration
         internal Export()
         {
             Id = string.Empty;
+            Sheet = "Sheet1";
             DateFormat = string.Empty;
             XlsFormat = XlsFormat.Xlsx;
         }
@@ -75,7 +72,10 @@ namespace HKH.Exchange.Configuration
         /// key field
         /// </summary>
         public string Id { get; set; }
-
+        /// <summary>
+        /// Excel Source(TableName or TableIndex)
+        /// </summary>
+        public string Sheet { get; set; }
         /// <summary>
         /// specified date format
         /// </summary>
@@ -86,6 +86,18 @@ namespace HKH.Exchange.Configuration
 
         public ExportHeader Header { get; set; }
         public ExportBody Body { get; set; }
+
+        public void CalculateColumnIndex(string[] dataHeaders)
+        {
+            if (this.Header != null && Header.Count > 0)
+                this.Header.Values.Do(cm => cm.CalculateColumnIndex(dataHeaders));
+
+            if (this.Body != null && Body.Count > 0)
+            {
+                this.Body.Values.Do(cm => cm.CalculateColumnIndex(dataHeaders));
+                Body.MaxColumnIndex = Body.Max(c => c.Value.ColumnIndex);
+            }
+        }
     }
 
     public class ExportHeader : Dictionary<string, ExportHeaderColumnMapping>
@@ -131,6 +143,7 @@ namespace HKH.Exchange.Configuration
         internal Import()
         {
             Id = string.Empty;
+            Sheet = "0";
             FirstRowIndex = 0;
             XlsFormat = XlsFormat.Auto;
         }
@@ -139,12 +152,20 @@ namespace HKH.Exchange.Configuration
         /// key field
         /// </summary>
         public string Id { get; set; }
-
+        /// <summary>
+        /// Excel Source(TableName or TableIndex)
+        /// </summary>
+        public string Sheet { get; set; }
         /// <summary>
         /// the row index to start import
         /// </summary>
         public int FirstRowIndex { get; set; }
 
         public XlsFormat XlsFormat { get; set; }
+
+        public void CalculateColumnIndex(string[] dataHeaders)
+        {
+            this.Values.Do(cm => cm.CalculateColumnIndex(dataHeaders));
+        }
     }
 }

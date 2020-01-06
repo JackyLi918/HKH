@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 
 namespace HKH.Exchange.Configuration
@@ -20,10 +21,37 @@ namespace HKH.Exchange.Configuration
 
         public static TableMapping GetTableMapping(string path, string tableID)
         {
+            if (string.IsNullOrEmpty(path))
+                return null;
+            if (string.IsNullOrEmpty(tableID) || tableID == "0")
+                return null;
+
             ExchangeConfiguration self = new ExchangeConfiguration();
             self.LoadConfiguration(path, tableID);
 
             return self[tableID];
+        }
+
+        public static Export BuildDefaultExport<T>()
+        {
+            Export export = new Export();
+            export.Body = new ExportBody();
+
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            foreach (PropertyInfo prop in properties)
+            {
+                var pType = prop.PropertyType;
+                if (prop.CanRead && (pType.IsValueType || pType.IsEnum || pType.Name.EqualsIgnoreCase("system.string")))
+                {
+                    export.Body.Add(prop.Name, new ExportBodyColumnMapping() { PropertyName = prop.Name, ColumnName = "" });
+                }
+            }
+
+            return export;
+        }
+        public static Import BuildDefaultImport<T>(List<string> colNames)
+        {
+            return null;
         }
 
         private void LoadConfiguration(string path, string tableID)
@@ -58,9 +86,6 @@ namespace HKH.Exchange.Configuration
                 {
                     case "id":
                         table.Id = xa.Value.Trim();
-                        break;
-                    case "sheet":
-                        table.Sheet = xa.Value.Trim();
                         break;
                     case "clsType":
                         table.ClassType = xa.Value.Trim();
@@ -110,6 +135,9 @@ namespace HKH.Exchange.Configuration
                     case "id":
                         export.Id = xa.Value.Trim();
                         break;
+                    case "sheet":
+                        export.Sheet = xa.Value.Trim();
+                        break;
                     case "dateFormat":
                         export.DateFormat = xa.Value.Trim();
                         break;
@@ -139,6 +167,9 @@ namespace HKH.Exchange.Configuration
                 }
             }
 
+            if (string.IsNullOrEmpty(export.Sheet))
+                export.Sheet = "Sheet1";
+
             return export;
         }
 
@@ -166,6 +197,11 @@ namespace HKH.Exchange.Configuration
 
         private ExportHeaderColumnMapping LoadExportHeaderColumnMapping(XmlNode node)
         {
+            //ColumnMapType mapType = ColumnMapType.ExcelHeader;
+            //XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
+            //if (mapTypeNode != null)
+            //    mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
+
             ExportHeaderColumnMapping column = new ExportHeaderColumnMapping();
 
             foreach (XmlAttribute xa in node.Attributes)
@@ -182,7 +218,7 @@ namespace HKH.Exchange.Configuration
                         column.PropertyName = xa.Value.Trim();
                         break;
                     case "propType":
-                        column.PropertyType = "normal".Equals(xa.Value.Trim(), StringComparison.OrdinalIgnoreCase) ? PropertyType.Normal : PropertyType.Expression;
+                        column.PropertyType = "normal".EqualsIgnoreCase(xa.Value.Trim()) ? PropertyType.Normal : PropertyType.Expression;
                         break;
                     case "offset":
                         column.Offset = xa.Value.Trim().SafeToBool();
@@ -207,9 +243,9 @@ namespace HKH.Exchange.Configuration
                         break;
                     case "firstRowIndex":
                         body.FirstRowIndex = xa.Value.Trim().SafeToInt() - 1;
-						body.FirstRowIndex = body.FirstRowIndex < 0 ? 0 : body.FirstRowIndex;
+                        body.FirstRowIndex = body.FirstRowIndex < 0 ? 0 : body.FirstRowIndex;
                         break;
-					case "fillMode":
+                    case "fillMode":
                         if (xa.Value == "copy")
                             body.RowMode = FillRowMode.Copy;
                         else if (xa.Value == "fill")
@@ -231,13 +267,16 @@ namespace HKH.Exchange.Configuration
                 body.Add(excolumn.ColumnName, excolumn);
             }
 
-            body.MaxColumnIndex = body.Max(c => c.Value.ColumnIndex);
-
             return body;
         }
 
         private ExportBodyColumnMapping LoadExportBodyColumnMapping(XmlNode node)
         {
+            //ColumnMapType mapType = ColumnMapType.ExcelHeader;
+            //XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
+            //if (mapTypeNode != null)
+            //    mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
+
             ExportBodyColumnMapping column = new ExportBodyColumnMapping();
 
             foreach (XmlAttribute xa in node.Attributes)
@@ -289,10 +328,13 @@ namespace HKH.Exchange.Configuration
                 {
                     case "id":
                         import.Id = xa.Value.Trim();
-						break;
-					case "firstRowIndex":
-						import.FirstRowIndex = xa.Value.Trim().SafeToInt() - 1;
-						import.FirstRowIndex = import.FirstRowIndex < 0 ? 0 : import.FirstRowIndex;
+                        break;
+                    case "sheet":
+                        import.Sheet = xa.Value.Trim();
+                        break;
+                    case "firstRowIndex":
+                        import.FirstRowIndex = xa.Value.Trim().SafeToInt() - 1;
+                        import.FirstRowIndex = import.FirstRowIndex < 0 ? 0 : import.FirstRowIndex;
                         break;
                     case "xlsFormat":
                         import.XlsFormat = ConvertXlsFormat(xa.Value);
@@ -316,7 +358,12 @@ namespace HKH.Exchange.Configuration
 
         private ImportColumnMapping LoadImportColumnMapping(XmlNode node)
         {
-            ImportColumnMapping column = new ImportColumnMapping();
+            ColumnMapType mapType = ColumnMapType.ExcelHeader;
+            XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
+            if (mapTypeNode != null)
+                mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
+
+            ImportColumnMapping column = new ImportColumnMapping(mapType);
 
             foreach (XmlAttribute xa in node.Attributes)
             {

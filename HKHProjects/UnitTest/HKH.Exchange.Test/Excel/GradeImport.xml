@@ -1,57 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <exchanges>
-	<tableMapping id ="1" sheet = "0" clsType = "Grade">
-		<exports>
-			<export id="1" dateFormat="yyyy-mm-dd">
-				<header>
-					<columnMapping col="B" row="2" prop="ClassName"/>
-					<columnMapping col="H" row="2" prop ="Birthday"/>
-					<columnMapping col="B" row="5" offset ="true" prop="Name"/>
-					<columnMapping col="H" row="5" offset ="true" prop ="Name2"/>
-				</header>
-				<body outputTitle="false" firstRowIndex="4" fillMode="copy">
-					<columnMapping col ="A" prop ="Name" />
-					<columnMapping col ="B" prop ="Brand"/>
-					<columnMapping col ="C" prop ="Spec"/>
-					<columnMapping col ="D" prop ="UnitName"/>
-					<columnMapping col ="E" prop ="Quantity"/>
-					<columnMapping col ="F" prop ="Price"/>
-					<columnMapping col ="G" prop ="=$E{XlsRowNum(0)}*$F{XlsRowNum(0)}" propType="expression" />
-				</body>
-			</export>
-			<export id="2" dateFormat="yyyy年mm月dd日" xlsFormat="xls">
-				<body outputTitle="true">
-					<columnMapping col ="A" prop ="{SrcRowNum(+1)}" propType="expression" title="序号" />
-					<columnMapping col ="B" prop ="ClassId" title="班级编号"/>
-					<columnMapping col ="C" prop ="StudentId" title="学生编号"/>
-					<columnMapping col ="D" prop ="Net"/>
-					<columnMapping col ="E" prop ="Java"/>
-					<columnMapping col ="F" prop ="Html" />
-					<columnMapping col ="G" prop ="=Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" propType="expression" title="总分" />
-				</body>
-			</export>
-			<export id="3" dateFormat="yyyy年mm月dd日" xlsFormat="xlsx">
-				<body outputTitle="true">
-					<columnMapping col ="A" prop ="ClassId" title="ClassNo"/>
-					<columnMapping col ="B" prop ="StudentId" title="StudentNo"/>
-					<columnMapping col ="C" prop ="Net"/>
-					<columnMapping col ="D" prop ="Java" />
-					<columnMapping col ="E" prop ="Html" />
-				</body>
-			</export>
-		</exports>
-		<imports>
-			<import id="1">
-				<columnMapping col ="A" prop ="ClassId" inherit="true"/>
-				<columnMapping col ="B" prop ="StudentId"/>
-				<columnMapping col ="C" prop ="Net" inherit="true"/>
-				<columnMapping col ="D" prop ="Java" inherit="true" from="left" />
-				<columnMapping col ="E" prop ="Html" inherit="true" from="left" />
-			</import>
-			<import id="2"  firstRowIndex="2" >
-				<columnMapping col ="A" prop ="ClassId" inherit="true"/>
-				<columnMapping col ="B" prop ="StudentId"/>
-			</import>
-		</imports>
-	</tableMapping>
+  <tableMapping id ="1" clsType = "Grade">
+    <exports>
+      <export id="1" sheet="0" dateFormat="yyyy-mm-dd">
+        <header>
+          <columnMapping col="B" row="2" prop="ClassName"/>
+          <columnMapping col="H" row="2" prop ="Birthday"/>
+          <columnMapping col="B" row="5" offset ="true" prop="Name"/>
+          <columnMapping col="H" row="5" offset ="true" prop ="Name2"/>
+        </header>
+        <body outputTitle="false" firstRowIndex="4" fillMode="copy">
+          <columnMapping col ="A" prop ="Name" />
+          <columnMapping col ="B" prop ="Brand"/>
+          <columnMapping col ="C" prop ="Spec"/>
+          <columnMapping col ="D" prop ="UnitName"/>
+          <columnMapping col ="E" prop ="Quantity"/>
+          <columnMapping col ="F" prop ="Price"/>
+          <columnMapping col ="G" prop ="=$E{XlsRowNum(0)}*$F{XlsRowNum(0)}" propType="expression" />
+        </body>
+      </export>
+      <export id="2" dateFormat="yyyy年mm月dd日" xlsFormat="xls">
+        <body outputTitle="true">
+          <columnMapping col ="A" prop ="{SrcRowNum(+1)}" propType="expression" title="序号" />
+          <columnMapping col ="B" prop ="ClassId" title="班级编号"/>
+          <columnMapping col ="C" prop ="StudentId" title="学生编号"/>
+          <columnMapping col ="D" prop ="Net"/>
+          <columnMapping col ="E" prop ="Java"/>
+          <columnMapping col ="F" prop ="Html" />
+          <columnMapping col ="G" prop ="=Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" propType="expression" title="总分" />
+        </body>
+      </export>
+      <export id="3" dateFormat="yyyy年mm月dd日" xlsFormat="xlsx">
+        <body outputTitle="true">
+          <columnMapping col ="A" prop ="ClassId" title="ClassNo"/>
+          <columnMapping col ="B" prop ="StudentId" title="StudentNo"/>
+          <columnMapping col ="C" prop ="Net"/>
+          <columnMapping col ="D" prop ="Java" />
+          <columnMapping col ="E" prop ="Html" />
+        </body>
+      </export>
+    </exports>
+    <imports>
+      <import id="1">
+        <columnMapping col ="A" prop ="ClassId" inherit="true"/>
+        <columnMapping col ="B" prop ="StudentId"/>
+        <columnMapping col ="C" prop ="Net" inherit="true"/>
+        <columnMapping col ="D" prop ="Java" inherit="true" from="left" />
+        <columnMapping col ="E" prop ="Html" inherit="true" from="left" />
+      </import>
+      <import id="2" firstRowIndex="2" >
+        <columnMapping col ="A" prop ="ClassId" inherit="true"/>
+        <columnMapping col ="B" prop ="StudentId"/>
+      </import>
+    </imports>
+  </tableMapping>
 </exchanges>

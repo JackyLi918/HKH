@@ -36,6 +36,8 @@ namespace HKH.Exchange.CSV
 
         #region Constructor
 
+        protected CSVExportBase() { }
+
         protected CSVExportBase(string configurationFile, string tableID)
             : this(configurationFile, tableID, "1")
         {
@@ -68,7 +70,7 @@ namespace HKH.Exchange.CSV
         public override int NextRowNum()
         {
             curEIndex++;
-            return export.Body.FirstRowIndex + curEIndex;
+            return exportSetting.Body.FirstRowIndex + curEIndex;
         }
 
         #endregion
@@ -78,9 +80,9 @@ namespace HKH.Exchange.CSV
         private void OutputDetails(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && export.Body.OutPutTitle)
+            if (mode == ExportMode.Export && exportSetting.Body.OutPutTitle)
             {
-                foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
+                foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
                 {
                     //write column title
                     _writer.Write(columnMapping.Title);
@@ -96,7 +98,7 @@ namespace HKH.Exchange.CSV
                 if (ValidateSourceData(tObj, tList))
                 {
                     //write data
-                    foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
                     {
                         object val = GetValue(tObj, columnMapping.PropertyName);
                         if (val is DateTime)

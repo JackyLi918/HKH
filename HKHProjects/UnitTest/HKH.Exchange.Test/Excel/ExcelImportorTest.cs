@@ -65,17 +65,17 @@ namespace HKH.Exchange.Test
 
 		private void Update(IList<Grade> list)
 		{
-			foreach (Grade grade in list)
-			{
-				DataProvider.GetInstance().ExecuteNonQuery("Insert into Grade values(@ClassId,@StudentId,@Net,@Java,@Html)",
-					new System.Data.IDbDataParameter[]{
-                        DataProvider.GetInstance().CreateParameter("@ClassId",grade.ClassId),
-                        DataProvider.GetInstance().CreateParameter("@StudentId",grade.StudentId),
-                        DataProvider.GetInstance().CreateParameter("@Net",grade.Net),
-                        DataProvider.GetInstance().CreateParameter("@Java",grade.Java),
-                        DataProvider.GetInstance().CreateParameter("@Html",grade.Html)
-                   });
-			}
+			//foreach (Grade grade in list)
+			//{
+			//	DataProvider.GetInstance().ExecuteNonQuery("Insert into Grade values(@ClassId,@StudentId,@Net,@Java,@Html)",
+			//		new System.Data.IDbDataParameter[]{
+   //                     DataProvider.GetInstance().CreateParameter("@ClassId",grade.ClassId),
+   //                     DataProvider.GetInstance().CreateParameter("@StudentId",grade.StudentId),
+   //                     DataProvider.GetInstance().CreateParameter("@Net",grade.Net),
+   //                     DataProvider.GetInstance().CreateParameter("@Java",grade.Java),
+   //                     DataProvider.GetInstance().CreateParameter("@Html",grade.Html)
+   //                });
+			//}
 		}
 	}
 }

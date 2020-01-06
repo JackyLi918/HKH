@@ -31,8 +31,11 @@ namespace HKH.Exchange.Common
 		protected TList successList = null;
 		protected TList failList = null;
 		protected Sheet sheet = null;
+        protected Import importSetting = null;
 
-		#region Constructor
+        #region Constructor
+
+        protected ImportBase() { }
 
 		protected ImportBase(string configurationFile, string tableID)
 			: this(configurationFile, tableID, "1")
@@ -70,14 +73,16 @@ namespace HKH.Exchange.Common
 
 			try
 			{
-				Import import = GetImport(ImportId);
+				importSetting = GetImport(ImportId);                
 
-				PrepareWorkSheet(import, sourceFile, _tableMapping.Sheet);
+				PrepareWorkSheet(importSetting, sourceFile, importSetting.Sheet);
 
 				//cache data to fill the merged cell
 				Row cachRow = GetRow(0);
+                string[] dataHeaders = GetDataHeaders(sheet);
+                importSetting.CalculateColumnIndex(dataHeaders);
 
-                for (int i = import.FirstRowIndex; i <= GetLastRowIndex(sheet); i++)
+                for (int i = importSetting.FirstRowIndex; i <= GetLastRowIndex(sheet); i++)
 				{
 					Row row = GetRow(i);
 
@@ -89,7 +94,7 @@ namespace HKH.Exchange.Common
 
 					T t = GetTInstance();
 
-					foreach (ImportColumnMapping columnMapping in import.Values)
+					foreach (ImportColumnMapping columnMapping in importSetting.Values)
 					{
 						if (IsValidCell (row,columnMapping .ColumnIndex ))
 						{
@@ -146,14 +151,16 @@ namespace HKH.Exchange.Common
 		protected abstract object GetCellData(Row row, int colIndex);
 		protected abstract void SetCellData(Row row, int colIndex, object value);
 
-		#endregion
+        protected abstract string[] GetDataHeaders(Sheet sheet);
 
-		/// <summary>
-		/// Load the excel file to NPOI worksheet
-		/// </summary>
-		/// <param name="xlsFile"></param>
-		/// <param name="sheetName"></param>
-		protected abstract void PrepareWorkSheet(Import import, string xlsFile, string sheetName);
+        #endregion
+
+        /// <summary>
+        /// Load the excel file to NPOI worksheet
+        /// </summary>
+        /// <param name="xlsFile"></param>
+        /// <param name="sheetName"></param>
+        protected abstract void PrepareWorkSheet(Import import, string xlsFile, string sheetName);
 
 		/// <summary>
 		/// 
