@@ -61,7 +61,10 @@ namespace HKH.Exchange.CSV
 
         protected override void PrepareWorkSheet(Import import, string xlsFile, string sheetName)
         {
-            sheet = new HKH.CSV.CSVReader(xlsFile).ReadAll(import.FirstRowIndex > 1);
+            using (var reader = new HKH.CSV.CSVReader(xlsFile))
+            {
+                sheet = reader.ReadTable(import.FirstRowIndex > 1);
+            }
         }
 
         protected override string[] GetDataHeaders(DataTable sheet)
