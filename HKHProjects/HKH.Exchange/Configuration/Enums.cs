@@ -17,35 +17,40 @@ using System.Threading.Tasks;
 namespace HKH.Exchange.Configuration
 {
 
-	public enum InheritDirection
-	{
-		Left,
-		Up
-	}
+    public enum InheritDirection
+    {
+        Left,
+        Up
+    }
 
-	public enum PropertyType
-	{
-		Normal,
-		Expression
-	}
+    public enum PropertyType
+    {
+        Normal,
+        Expression
+    }
 
-	public enum XlsFormat
-	{
-		Auto,
-		Xls,
-		Xlsx
-	}
+    public enum XlsFormat
+    {
+        Auto,
+        Xls,
+        Xlsx
+    }
 
-	public enum ExportMode
-	{
-		Export,
-		Fill
-	}
+    public enum ExportMode
+    {
+        Export,
+        Fill
+    }
 
     public enum FillRowMode
     {
         New,
         Copy,
         Fill
+    }
+    public enum ColumnMapType
+    {
+        ExcelHeader,
+        DataHeader
     }
 }

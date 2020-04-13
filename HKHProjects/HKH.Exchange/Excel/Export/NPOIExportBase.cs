@@ -44,7 +44,7 @@ namespace HKH.Exchange.Excel
 
         protected override void ExportCore(Stream stream, TBodyList tList)
         {
-            workBook = NPOIExtension.CreateWorkbook(export.XlsFormat);
+            workBook = NPOIExtension.CreateWorkbook(exportSetting.XlsFormat);
             //----set summary
             //DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
             //dsi.Company = "BlackEyes";
@@ -58,7 +58,7 @@ namespace HKH.Exchange.Excel
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
             //----end
 
-            sheet = workBook.CreateSheet(string.IsNullOrEmpty(_tableMapping.Sheet) ? "Sheet1" : _tableMapping.Sheet);
+            sheet = workBook.CreateSheet(exportSetting.Sheet);
 
             CustomPageHeader(sheet.Header);
             CustomTableHeader(sheet);
@@ -101,16 +101,18 @@ namespace HKH.Exchange.Excel
         private void Fill<THeader>(TBodyList tList, THeader tHeader)
         {
             mode = ExportMode.Fill;
-            export = GetExport(ExportId);
-            dateFormatString = string.IsNullOrEmpty(export.DateFormat) ? DEFAULTDATEFORMATSTRING : export.DateFormat;
-            numberFormatSTring = string.IsNullOrEmpty(export.NumberFormat) ? DEFAULTNUMBERFORMATSTRING : export.NumberFormat;
+            exportSetting = GetExport(ExportId);
+            exportSetting.CalculateColumnIndex(null);
+
+            dateFormatString = string.IsNullOrEmpty(exportSetting.DateFormat) ? DEFAULTDATEFORMATSTRING : exportSetting.DateFormat;
+            numberFormatSTring = string.IsNullOrEmpty(exportSetting.NumberFormat) ? DEFAULTNUMBERFORMATSTRING : exportSetting.NumberFormat;
 
             //looks as sheet index if it is Integer, otherwise TableName
             int sheetIndex = 0;
-            if (int.TryParse(_tableMapping.Sheet, out sheetIndex))
+            if (int.TryParse(exportSetting.Sheet, out sheetIndex))
                 sheet = workBook.GetSheetAt(sheetIndex);
             else
-                sheet = workBook.GetSheet(_tableMapping.Sheet);
+                sheet = workBook.GetSheet(exportSetting.Sheet);
 
             //----create date format
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
@@ -139,7 +141,7 @@ namespace HKH.Exchange.Excel
             else
             {
                 curEIndex++;
-                return export.Body.FirstRowIndex + curEIndex;
+                return exportSetting.Body.FirstRowIndex + curEIndex;
             }
         }
 
@@ -149,7 +151,7 @@ namespace HKH.Exchange.Excel
 
             if (mode == ExportMode.Fill)
             {
-                switch (export.Body.RowMode)
+                switch (exportSetting.Body.RowMode)
                 {
                     case FillRowMode.Copy:
                         //copy current row if has more row
@@ -324,9 +326,9 @@ namespace HKH.Exchange.Excel
         private void WriteHeader<THeader>(THeader tHeader)
         {
             int rowIndex = 0;
-            foreach (ExportHeaderColumnMapping columnMapping in export.Header.Values)
+            foreach (ExportHeaderColumnMapping columnMapping in exportSetting.Header.Values)
             {
-                rowIndex = (columnMapping.Offset && export.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
+                rowIndex = (columnMapping.Offset && exportSetting.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
                 IRow dataRow = sheet.GetRow(rowIndex);
                 if (columnMapping.PropertyType == PropertyType.Expression)
                     CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
@@ -338,10 +340,10 @@ namespace HKH.Exchange.Excel
         private void WriteBody(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && export.Body.OutPutTitle)
+            if (mode == ExportMode.Export && exportSetting.Body.OutPutTitle)
             {
                 IRow titleRow = sheet.CreateRow(NextRowNum());
-                foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
+                foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
                 {
                     //write column title under sheet title
                     titleRow.CreateCell(columnMapping.ColumnIndex);
@@ -358,9 +360,9 @@ namespace HKH.Exchange.Excel
                 {
                     IRow dataRow = GetNewRow(NextRowNum(), tList);
                     //write data
-                    foreach (ExportBodyColumnMapping columnMapping in export.Body.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
                     {
-                        if (mode == ExportMode.Export || export.Body.RowMode == FillRowMode.New)
+                        if (mode == ExportMode.Export || exportSetting.Body.RowMode == FillRowMode.New)
                             dataRow.CreateCell(columnMapping.ColumnIndex);
 
                         if (columnMapping.PropertyType == PropertyType.Expression)

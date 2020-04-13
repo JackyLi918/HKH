@@ -83,7 +83,7 @@ namespace HKH.Exchange.Excel
 		{
 			if (SourceDataValidating != null)
 			{
-				SourceDataValidatingEventArgs<IRow, ISheet> args = new SourceDataValidatingEventArgs<IRow, ISheet>(row, sheet, GetImport(ImportId));
+				SourceDataValidatingEventArgs<IRow, ISheet> args = new SourceDataValidatingEventArgs<IRow, ISheet>(row, sheet, importSetting);
 				SourceDataValidating(this, args);
 				return !args.Cancel;
 			}
@@ -97,7 +97,7 @@ namespace HKH.Exchange.Excel
 		{
 			if (TargetDataValidating != null)
 			{
-				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, GetImport(ImportId));
+				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, importSetting);
 				TargetDataValidating(this, args);
 				return !args.Cancel;
 			}

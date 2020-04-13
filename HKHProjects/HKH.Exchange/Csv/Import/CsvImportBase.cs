@@ -12,56 +12,76 @@ using HKH.Exchange.Common;
 
 namespace HKH.Exchange.CSV
 {
-	public abstract class CSVImportBase<T, TList> : ImportBase<DataRow, DataTable, T, TList>
-		where T : class
-		where TList : class
-	{
-		#region Constructor
+    public abstract class CSVImportBase<T, TList> : ImportBase<DataRow, DataTable, T, TList>
+        where T : class
+        where TList : class
+    {
+        #region Constructor
 
-		protected CSVImportBase(string configurationFile, string tableID)
-			: this(configurationFile, tableID, "1")
-		{
-		}
+        protected CSVImportBase() { }
 
-		protected CSVImportBase(string configurationFile, string tableID, string importId)
-			: base(configurationFile, tableID, importId)
-		{
-		}
+        protected CSVImportBase(string configurationFile, string tableID)
+            : this(configurationFile, tableID, "1")
+        {
+        }
 
-		#endregion
+        protected CSVImportBase(string configurationFile, string tableID, string importId)
+            : base(configurationFile, tableID, importId)
+        {
+        }
 
-		#region CsvImport Overrides Methods
+        #endregion
 
-		protected override DataRow GetRow(int index)
-		{
-			return sheet.Rows[index];
-		}
+        #region CsvImport Overrides Methods
 
-		protected override int GetLastRowIndex(DataTable sheet)
-		{
-			return sheet.Rows.Count - 1;
-		}
+        protected override DataRow GetRow(int index)
+        {
+            return sheet.Rows[index];
+        }
 
-		protected override bool IsValidCell(DataRow row, int colIndex)
-		{
-			return Convert.IsDBNull(row[colIndex]);
-		}
+        protected override int GetLastRowIndex(DataTable sheet)
+        {
+            return sheet.Rows.Count - 1;
+        }
 
-		protected override object GetCellData(DataRow row, int colIndex)
-		{
-			return row[colIndex];
-		}
+        protected override bool IsValidCell(DataRow row, int colIndex)
+        {
+            return Convert.IsDBNull(row[colIndex]);
+        }
 
-		protected override void SetCellData(DataRow row, int colIndex, object value)
-		{
-			row[colIndex] = value;
-		}
+        protected override object GetCellData(DataRow row, int colIndex)
+        {
+            return row[colIndex];
+        }
 
-		protected override void PrepareWorkSheet(Import import, string xlsFile, string sheetName)
-		{
-			sheet = new HKH.CSV.CSVReader(xlsFile).ReadAll(import.FirstRowIndex > 1);
-		}
+        protected override void SetCellData(DataRow row, int colIndex, object value)
+        {
+            row[colIndex] = value;
+        }
 
-		#endregion
-	}
+        protected override void PrepareWorkSheet(Import import, string xlsFile, string sheetName)
+        {
+            using (var reader = new HKH.CSV.CSVReader(xlsFile))
+            {
+                sheet = reader.ReadTable(import.FirstRowIndex > 1);
+            }
+        }
+
+        protected override string[] GetDataHeaders(DataTable sheet)
+        {
+            if (importSetting.FirstRowIndex > 0)
+            {
+                List<string> headers = new List<string>();
+                foreach (DataColumn col in sheet.Columns)
+                {
+                    headers.Add(col.ColumnName);
+                }
+                return headers.ToArray();
+            }
+
+            return null;
+        }
+
+        #endregion
+    }
 }

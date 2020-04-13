@@ -11,7 +11,8 @@
 			<xs:element name="body" type="bodyType" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string" use="required" />
-		<xs:attribute name="dateFormat" type="xs:string" use="optional" />
+    <xs:attribute name="sheet" type="xs:string" use="optional" />
+    <xs:attribute name="dateFormat" type="xs:string" use="optional" />
 		<xs:attribute name="numberFormat" type="xs:string" use="optional" />
 		<xs:attribute name="xlsFormat" type="xls_enum" use="optional" />
 	</xs:complexType>
@@ -19,7 +20,7 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="columnMapping">
 				<xs:complexType>
-					<xs:attribute name="col" type="xs:string" use="required" />
+          <xs:attribute name="col" type="xs:string" use="required" />
 					<xs:attribute name="row" type="xs:int" use="required" />
 					<xs:attribute name="offset" type="small_boolean_Type" use="optional" />
 					<xs:attribute name="prop" type="xs:string" use="required" />
@@ -32,7 +33,7 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="columnMapping">
 				<xs:complexType>
-					<xs:attribute name="col" type="xs:string" use="required" />
+          <xs:attribute name="col" type="xs:string" use="required" />
 					<xs:attribute name="prop" type="xs:string" use="required" />
 					<xs:attribute name="propType" type="propType_enum" use="optional"/>
 					<xs:attribute name="title" type="xs:string" use="optional" />
@@ -52,7 +53,8 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="columnMapping" >
 				<xs:complexType>
-					<xs:attribute name="col" type="xs:string" use="required" />
+          <xs:attribute name="mapType" type="mapType_enum" use="optional" />
+          <xs:attribute name="col" type="xs:string" use="required" />
 					<xs:attribute name="prop" type="xs:string" use="required" />
 					<xs:attribute name="from" type="from_enum" use="optional" />
 					<xs:attribute name="inherit" type="small_boolean_Type" use="optional" />
@@ -60,7 +62,8 @@
 			</xs:element>
 		</xs:choice>
 		<xs:attribute name="id" type="xs:string" use="required" />
-		<xs:attribute name="firstRowIndex" type="xs:int" use="optional" />
+    <xs:attribute name="sheet" type="xs:string" use="optional" />
+    <xs:attribute name="firstRowIndex" type="xs:int" use="optional" />
 		<xs:attribute name="xlsFormat" type="xls_enum" use="optional" />
 	</xs:complexType>
 	<xs:simpleType name="Infinite_or_int">
@@ -112,7 +115,12 @@
 			<xs:enumeration value="xlsx"></xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-
+  <xs:simpleType name="mapType_enum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="excelHeader"></xs:enumeration>
+      <xs:enumeration value="dataHeader"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
 	<xs:element name="exchanges">
 		<xs:complexType>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -123,7 +131,6 @@
 							<xs:element name="imports" type="importsType" minOccurs="0" maxOccurs="1"/>
 						</xs:sequence>
 						<xs:attribute name="id" type="xs:string" use="required" />
-						<xs:attribute name="sheet" type="xs:string" use="required" />
 						<xs:attribute name="clsType" type="xs:string" use="required" />
 					</xs:complexType>
 				</xs:element>
