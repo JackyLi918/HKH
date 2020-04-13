@@ -2,7 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+    <Authors>Jacky li</Authors>
+    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+    <Version>4.5.2.2</Version>
   </PropertyGroup>
 
 </Project>
