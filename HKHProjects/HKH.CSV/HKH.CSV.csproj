@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
@@ -10,7 +10,11 @@
     <DelaySign>true</DelaySign>
     <Authors>Jacky li</Authors>
     <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
-    <Version>4.5.2.2</Version>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Title>HKH.CSV</Title>
+    <Description>CSV read and write</Description>
+    <PackageTags>csv</PackageTags>
+    <Version>4.5.2.3</Version>
   </PropertyGroup>
 
 </Project>
