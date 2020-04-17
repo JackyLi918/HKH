@@ -63,13 +63,27 @@ namespace HKH.Exchange.CSV
         {
             using (var reader = new HKH.CSV.CSVReader(xlsFile))
             {
-                sheet = reader.ReadTable(import.FirstRowIndex > 1);
+                sheet = reader.ReadTable();
             }
         }
 
         protected override string[] GetDataHeaders(DataTable sheet)
         {
-            if (importSetting.FirstRowIndex > 0)
+            if (importSetting.ColumnMapType == ColumnMapType.ExcelHeader)
+                return null;
+
+            if (importSetting.FirstRowIndex > 0 && sheet.Rows.Count > 0)
+            {
+                List<string> headers = new List<string>();
+                foreach (var val in sheet.Rows[0].ItemArray)
+                {
+                    string col = val.ToString();
+                    if (!string.IsNullOrEmpty(col) && !headers.Contains(col))
+                        headers.Add(col);
+                }
+                return headers.ToArray();
+            }
+            else
             {
                 List<string> headers = new List<string>();
                 foreach (DataColumn col in sheet.Columns)
@@ -78,8 +92,6 @@ namespace HKH.Exchange.CSV
                 }
                 return headers.ToArray();
             }
-
-            return null;
         }
 
         #endregion

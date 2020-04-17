@@ -14,6 +14,9 @@
 			-->
       <export id="1" sheet = "Sheet1" dateFormat="yyyy年mm月dd日" numberFormat ="0.00"  xlsFormat="xls">
         <header>
+          <!--
+          [offset]: whether the row index is absoluted or relativo current row.
+          -->
           <columnMapping col="B" row="2" offset="true" prop ="{SrcRowNum(+1)}" propType="expression" />
         </header>
         <!--
@@ -47,8 +50,9 @@
       <!--
       [sheet]：Excel Sheet name or sheet index(if integer), default=0
       [xlsFormat]: excel version, xls/xlsx, default is xlsx
+      [columnMapType]: the column name is excel column header or the first row data.
       -->
-      <import id="1" sheet = "0"  firstRowIndex="0" xlsFormat="xls">
+      <import id="1" sheet = "0"  firstRowIndex="0" xlsFormat="xls" columnMapType="excelHeader" >
         <!--
 					col：Excel Column Name (A, B, C ....)
 					prop：Class property name or column name of datatable

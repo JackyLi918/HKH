@@ -35,7 +35,7 @@ namespace HKH.Exchange.Configuration
         public static Export BuildDefaultExport<T>()
         {
             Export export = new Export();
-            export.Body = new ExportBody();
+            export.Body = new ExportBody(export);
 
             PropertyInfo[] properties = typeof(T).GetProperties();
             foreach (PropertyInfo prop in properties)
@@ -43,7 +43,7 @@ namespace HKH.Exchange.Configuration
                 var pType = prop.PropertyType;
                 if (prop.CanRead && (pType.IsValueType || pType.IsEnum || pType.Name.EqualsIgnoreCase("system.string")))
                 {
-                    export.Body.Add(prop.Name, new ExportBodyColumnMapping() { PropertyName = prop.Name, ColumnName = "" });
+                    export.Body.Add(prop.Name, new ExportBodyColumnMapping(export) { PropertyName = prop.Name, ColumnName = "" });
                 }
             }
 
@@ -159,11 +159,11 @@ namespace HKH.Exchange.Configuration
 
                 if ("header" == xn.Name)
                 {
-                    export.Header = LoadExportHeader(xn);
+                    export.Header = LoadExportHeader(xn, export);
                 }
                 else if ("body" == xn.Name)
                 {
-                    export.Body = LoadExportBody(xn);
+                    export.Body = LoadExportBody(xn, export);
                 }
             }
 
@@ -180,29 +180,29 @@ namespace HKH.Exchange.Configuration
             return (XlsFormat)Enum.Parse(typeof(XlsFormat), val, true);
         }
 
-        private ExportHeader LoadExportHeader(XmlNode node)
+        private ExportHeader LoadExportHeader(XmlNode node, Export export)
         {
-            ExportHeader header = new ExportHeader();
+            ExportHeader header = new ExportHeader(export);
 
             foreach (XmlNode xn in node.ChildNodes)
             {
                 if ("#comment" == xn.Name)
                     continue;
-                ExportHeaderColumnMapping excolumn = LoadExportHeaderColumnMapping(xn);
+                ExportHeaderColumnMapping excolumn = LoadExportHeaderColumnMapping(xn, export);
                 header.Add(excolumn.Location, excolumn);
             }
 
             return header;
         }
 
-        private ExportHeaderColumnMapping LoadExportHeaderColumnMapping(XmlNode node)
+        private ExportHeaderColumnMapping LoadExportHeaderColumnMapping(XmlNode node, Export export)
         {
             //ColumnMapType mapType = ColumnMapType.ExcelHeader;
             //XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
             //if (mapTypeNode != null)
             //    mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
 
-            ExportHeaderColumnMapping column = new ExportHeaderColumnMapping();
+            ExportHeaderColumnMapping column = new ExportHeaderColumnMapping(export);
 
             foreach (XmlAttribute xa in node.Attributes)
             {
@@ -230,9 +230,9 @@ namespace HKH.Exchange.Configuration
             return column;
         }
 
-        private ExportBody LoadExportBody(XmlNode node)
+        private ExportBody LoadExportBody(XmlNode node, Export export)
         {
-            ExportBody body = new ExportBody();
+            ExportBody body = new ExportBody(export);
 
             foreach (XmlAttribute xa in node.Attributes)
             {
@@ -263,21 +263,21 @@ namespace HKH.Exchange.Configuration
                 if ("#comment" == xn.Name)
                     continue;
 
-                ExportBodyColumnMapping excolumn = LoadExportBodyColumnMapping(xn);
+                ExportBodyColumnMapping excolumn = LoadExportBodyColumnMapping(xn, export);
                 body.Add(excolumn.ColumnName, excolumn);
             }
 
             return body;
         }
 
-        private ExportBodyColumnMapping LoadExportBodyColumnMapping(XmlNode node)
+        private ExportBodyColumnMapping LoadExportBodyColumnMapping(XmlNode node, Export export)
         {
             //ColumnMapType mapType = ColumnMapType.ExcelHeader;
             //XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
             //if (mapTypeNode != null)
             //    mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
 
-            ExportBodyColumnMapping column = new ExportBodyColumnMapping();
+            ExportBodyColumnMapping column = new ExportBodyColumnMapping(export);
 
             foreach (XmlAttribute xa in node.Attributes)
             {
@@ -339,6 +339,9 @@ namespace HKH.Exchange.Configuration
                     case "xlsFormat":
                         import.XlsFormat = ConvertXlsFormat(xa.Value);
                         break;
+                    case "columnMapType":
+                        import.ColumnMapType = ("dataheader".EqualsIgnoreCase(xa.Value) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader);
+                        break;
                     default:
                         break;
                 }
@@ -349,21 +352,16 @@ namespace HKH.Exchange.Configuration
                 if ("#comment" == xn.Name)
                     continue;
 
-                ImportColumnMapping imcolumn = LoadImportColumnMapping(xn);
+                ImportColumnMapping imcolumn = LoadImportColumnMapping(xn, import);
                 import.Add(imcolumn.ColumnName, imcolumn);
             }
 
             return import;
         }
 
-        private ImportColumnMapping LoadImportColumnMapping(XmlNode node)
+        private ImportColumnMapping LoadImportColumnMapping(XmlNode node, Import import)
         {
-            ColumnMapType mapType = ColumnMapType.ExcelHeader;
-            XmlNode mapTypeNode = node.Attributes.GetNamedItem("mapType");
-            if (mapTypeNode != null)
-                mapType = "dataheader".EqualsIgnoreCase(mapTypeNode.Value.Trim()) ? ColumnMapType.DataHeader : ColumnMapType.ExcelHeader;
-
-            ImportColumnMapping column = new ImportColumnMapping(mapType);
+            ImportColumnMapping column = new ImportColumnMapping(import);
 
             foreach (XmlAttribute xa in node.Attributes)
             {

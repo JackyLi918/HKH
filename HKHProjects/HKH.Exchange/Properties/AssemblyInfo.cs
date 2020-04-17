@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HKH.Exchange")]
-[assembly: AssemblyDescription("Data importing/exporting based on NPOI/CSV")]
-[assembly: AssemblyConfiguration("")]
+//[assembly: AssemblyTitle("HKH.Exchange")]
+//[assembly: AssemblyDescription("Data importing/exporting based on NPOI/CSV")]
+//[assembly: AssemblyConfiguration("")]
 //[assembly: AssemblyCompany("BlackEyes")]
-[assembly: AssemblyProduct("HKH.Exchange")]
+//[assembly: AssemblyProduct("HKH.Exchange")]
 //[assembly: AssemblyCopyright("Copyright © BlackEyes 2011")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+//[assembly: AssemblyTrademark("")]
+//[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -35,5 +35,4 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyVersion("3.6.*")]
 //[assembly: AssemblyFileVersion("3.6.0.0")]
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("HKHProjectsTest")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("HKH.Exchange.Test")]

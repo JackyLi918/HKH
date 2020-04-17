@@ -1,182 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5BAA52EF-5C81-426E-B250-598EAD5903FF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HKH.Exchange</RootNamespace>
-    <AssemblyName>HKH.Exchange</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+    <Authors>Jacky li</Authors>
+    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Title>HKH.Exchange</Title>
+    <Description>Data importing/exporting based on NPOI/CSV</Description>
+    <PackageTags>npoi;excel;xls;xlsx;csv;import;export</PackageTags>
+    <Version>4.5.2</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NPOI, Version=2.4.0.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0.1\lib\net40\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML, Version=2.4.0.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0.1\lib\net40\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net, Version=2.4.0.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.0.1, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NPOI.2.4.0.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="HKH.Common" Version="4.5.2.2" />
+    <PackageReference Include="HKH.CSV" Version="4.5.2.3" />
+    <PackageReference Include="NPOI" Version="2.5.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Common\EventHandlers.cs" />
-    <Compile Include="Common\ExportBase.cs" />
-    <Compile Include="Common\IImportable.cs" />
-    <Compile Include="Common\ImportWrapper.cs" />
-    <Compile Include="Common\Utility.cs" />
-    <Compile Include="Configuration\ColumnMapping.cs" />
-    <Compile Include="Configuration\Enums.cs" />
-    <Compile Include="Configuration\ExchangeConfiguration.cs" />
-    <Compile Include="Configuration\ExchangeConfigurationException.cs" />
-    <Compile Include="Configuration\TableMapping.cs" />
-    <Compile Include="CSV\Export\CSVExportBase.cs" />
-    <Compile Include="CSV\Export\CSVExportDataTable.cs" />
-    <Compile Include="CSV\Export\CSVExportList.cs" />
-    <Compile Include="CSV\Export\Wrapper\CSVExport.cs" />
-    <Compile Include="CSV\Import\CSVImportBase.cs" />
-    <Compile Include="CSV\Import\CSVImportDataTable.cs" />
-    <Compile Include="CSV\Import\CSVImportList.cs" />
-    <Compile Include="CSV\Import\Wrapper\CSVImport.cs" />
-    <Compile Include="Common\ImportExportBase.cs" />
-    <Compile Include="Excel\Export\ExportExpression.cs" />
-    <Compile Include="Common\ExportWrapper.cs" />
-    <Compile Include="Excel\Export\Wrapper\NPOIExport.cs" />
-    <Compile Include="Excel\Export\NPOIExportBase.cs" />
-    <Compile Include="Excel\Export\NPOIExportDataTable.cs" />
-    <Compile Include="Excel\Export\NPOIExportList.cs" />
-    <Compile Include="Excel\NPOIExtension.cs" />
-    <Compile Include="Common\ImportBase.cs" />
-    <Compile Include="Excel\Import\NPOIImportBase.cs" />
-    <Compile Include="Excel\Import\NPOIImportDataTable.cs" />
-    <Compile Include="Excel\Import\NPOIImportList.cs" />
-    <Compile Include="Excel\Import\Wrapper\NPOIImport.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml"/>
+    <None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd"/>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Configuration\ExchangeConfigurationSchema.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="HKH.Exchange.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Configuration\ConfigEx.xml">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HKH.Common\HKH.Common.csproj">
-      <Project>{33279f0b-e19c-4913-a367-62486897e6af}</Project>
-      <Name>HKH.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HKH.CSV\HKH.CSV.csproj">
-      <Project>{acb95bea-f7bb-4b08-9737-d3ac0091892d}</Project>
-      <Name>HKH.CSV</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

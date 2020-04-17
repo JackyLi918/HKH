@@ -23,6 +23,11 @@ namespace HKH.Exchange.Test
 			gImport.Import(csvFile, dt, null);
 			Assert.AreEqual(66, dt.Rows.Count);
 
+			gImport = new GradecsvImportor(configFile, tableId, "3");
+			dt = new dsGrade().Grade;
+			gImport.Import(csvFile, dt, null);
+			Assert.AreEqual(66, dt.Rows.Count);
+
 			//DataProvider.GetInstance().Update(dt);
 			List<Grade> success= new List<Grade>();
 			List<Grade> fail = new List<Grade>();
