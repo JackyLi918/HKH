@@ -52,6 +52,10 @@
         <columnMapping col ="A" prop ="ClassId" inherit="true"/>
         <columnMapping col ="B" prop ="StudentId"/>
       </import>
+      <import id="3" firstRowIndex="2" columnMapType="dataHeader">
+        <columnMapping col ="EID" prop ="ClassId" inherit="true"/>
+        <columnMapping col ="Alert" prop ="StudentId"/>
+      </import>
     </imports>
   </tableMapping>
 </exchanges>

@@ -20,15 +20,10 @@ namespace HKH.Exchange.Configuration
 
     public class TableMapping
     {
-        private ExportCollection _exports = null;
-        private ImportCollection _imports = null;
-
         public TableMapping()
         {
             Id = string.Empty;
             ClassType = string.Empty;
-            _exports = new ExportCollection();
-            _imports = new ImportCollection();
         }
 
         /// <summary>
@@ -41,17 +36,9 @@ namespace HKH.Exchange.Configuration
         /// </summary>
         public string ClassType { get; set; }
 
-        public ExportCollection Exports
-        {
-            get { return _exports; }
-            internal set { _exports = value; }
-        }
+        public ExportCollection Exports { get; internal set; } = new ExportCollection();
 
-        public ImportCollection Imports
-        {
-            get { return _imports; }
-            internal set { _imports = value; }
-        }
+        public ImportCollection Imports { get; internal set; } = new ImportCollection();
     }
 
     public class ExportCollection : Dictionary<string, Export>
@@ -102,17 +89,24 @@ namespace HKH.Exchange.Configuration
 
     public class ExportHeader : Dictionary<string, ExportHeaderColumnMapping>
     {
+        internal ExportHeader(Export export)
+        {
+            this.Export = export;
+        }
+
+        public Export Export { get; private set; }
     }
 
     public class ExportBody : Dictionary<string, ExportBodyColumnMapping>
     {
-        internal ExportBody()
+        internal ExportBody(Export export)
         {
             OutPutTitle = false;
             FirstRowIndex = 0;
             RowMode = FillRowMode.New;
+            this.Export = export;
         }
-
+        public Export Export { get; private set; }
         /// <summary>
         /// indicate whether output colomn name/title as first row
         /// </summary>
@@ -142,12 +136,15 @@ namespace HKH.Exchange.Configuration
     {
         internal Import()
         {
+        }
+        internal Import(ColumnMapType mapType)
+        {
             Id = string.Empty;
             Sheet = "0";
             FirstRowIndex = 0;
             XlsFormat = XlsFormat.Auto;
+            this.ColumnMapType = mapType;
         }
-
         /// <summary>
         /// key field
         /// </summary>
@@ -162,6 +159,8 @@ namespace HKH.Exchange.Configuration
         public int FirstRowIndex { get; set; }
 
         public XlsFormat XlsFormat { get; set; }
+
+        public ColumnMapType ColumnMapType { get; internal set; } = ColumnMapType.ExcelHeader;
 
         public void CalculateColumnIndex(string[] dataHeaders)
         {

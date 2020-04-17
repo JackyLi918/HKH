@@ -1,73 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9743F55-6874-4B4A-9E97-01F423E60DCC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HKH.DataProvider.Dapper</RootNamespace>
-    <AssemblyName>HKH.DataProvider.Dapper</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+    <Authors>Jacky li</Authors>
+    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Title>HKH.DataProvider.Dapper</Title>
+    <Description>HKH.DataProvider with dapper intergated</Description>
+    <PackageTags>dataaccess;sqlserver;odbc;oledb;dapper</PackageTags>
+    <RootNamespace>HKH.Data.Dapper</RootNamespace>
+    <Version>4.5.2</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="HKH.DataProvider" Version="4.5.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="DataProviderExtension.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlDynamicParameters.cs" />
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Dapper">
+      <Version>2.0.35</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HKH.DataProvider\HKH.DataProvider.csproj">
-      <Project>{37746c9d-f14f-41a9-a70d-1298db143710}</Project>
-      <Name>HKH.DataProvider</Name>
-    </ProjectReference>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <PackageReference Include="Dapper">
+      <Version>1.60.6</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="HKH.DataProvider.Dapper.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
