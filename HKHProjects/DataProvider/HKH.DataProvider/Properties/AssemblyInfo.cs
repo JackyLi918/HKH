@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HKH.DataProvider")]
-[assembly: AssemblyDescription("A lightweight data access module")]
-[assembly: AssemblyConfiguration("")]
+//[assembly: AssemblyTitle("HKH.DataProvider")]
+//[assembly: AssemblyDescription("A lightweight data access module")]
+//[assembly: AssemblyConfiguration("")]
 //[assembly: AssemblyCompany("BlackEyes")]
-[assembly: AssemblyProduct("HKH.DataProvider")]
+//[assembly: AssemblyProduct("HKH.DataProvider")]
 //[assembly: AssemblyCopyright("Copyright © BlackEyes 2009")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+//[assembly: AssemblyTrademark("")]
+//[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
