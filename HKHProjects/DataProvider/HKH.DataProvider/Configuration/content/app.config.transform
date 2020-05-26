@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+<configuration>
   <configSections>
-    <section name="hkhConnectionStrings" type="HKH.Data.Configuration.HKHConnectionStringsSection,HKH.DataProvider" xdt:Transform="Insert"></section>
+    <section name="hkhConnectionStrings" type="HKH.Data.Configuration.HKHConnectionStringsSection,HKH.DataProvider"></section>
   </configSections>
   <hkhConnectionStrings>
   </hkhConnectionStrings>

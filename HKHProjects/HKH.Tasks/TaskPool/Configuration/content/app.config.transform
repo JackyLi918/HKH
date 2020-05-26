@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+<configuration>
   <configSections>
-    <section name="hkh.tasks" type="HKH.Tasks.Configuration.HKHTaskSection,HKH.Tasks" xdt:Transform="Insert"></section>
+    <section name="hkh.tasks" type="HKH.Tasks.Configuration.HKHTaskSection,HKH.Tasks"></section>
   </configSections>
   <hkh.tasks>
   </hkh.tasks>

@@ -13,7 +13,9 @@
     <Title>HKH.Tasks</Title>
     <Description>Parallel task pool</Description>
     <PackageTags>parallel;task pool</PackageTags>
-    <Version>1.0</Version>
+    <Version>1.0.0.1</Version>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HKH.Common" Version="4.5.2.2" />

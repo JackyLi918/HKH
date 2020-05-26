@@ -15,7 +15,9 @@
     <Description>A lightweight data access module</Description>
     <PackageTags>dataaccess;sqlserver;odbc;oledb</PackageTags>
     <RootNamespace>HKH.Data</RootNamespace>
-    <Version>4.5.2</Version>
+    <Version>4.5.2.1</Version>
+    <AssemblyVersion>4.5.2.1</AssemblyVersion>
+    <FileVersion>4.5.2.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HKH.Common" Version="4.5.2.2" />
