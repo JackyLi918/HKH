@@ -91,7 +91,7 @@ namespace HKH.Tasks.Configuration
         public Type TaskType
         {
             get { return GetTaskType(); }
-            set { this[_propTaskType] = value.FullName; }
+            set { this[_propTaskType] = value.AssemblyQualifiedName; }
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace HKH.Tasks.Configuration
         public Type TaskQueueType
         {
             get { return GetTaskQueueType(); }
-            set { this[_propTaskQueueType] = value.FullName; }
+            set { this[_propTaskQueueType] = value.AssemblyQualifiedName; }
         }
 
         /// <summary>
