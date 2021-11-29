@@ -85,7 +85,7 @@ namespace HKH.Exchange.CSV
         {
             if (SourceDataValidating != null)
             {
-                SourceDataValidatingEventArgs<DataRow, DataTable> args = new SourceDataValidatingEventArgs<DataRow, DataTable>(row, sheet, importSetting);
+                SourceDataValidatingEventArgs<DataRow, DataTable> args = new SourceDataValidatingEventArgs<DataRow, DataTable>(row, sheet, Setting);
                 SourceDataValidating(this, args);
                 return !args.Cancel;
             }
@@ -99,7 +99,7 @@ namespace HKH.Exchange.CSV
         {
             if (TargetDataValidating != null)
             {
-                DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, importSetting);
+                DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, Setting);
                 TargetDataValidating(this, args);
                 return !args.Cancel;
             }

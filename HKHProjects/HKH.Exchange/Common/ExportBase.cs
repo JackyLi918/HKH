@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HKH.Exchange.Common
 {
-    public abstract class ExportBase<TBody, TBodyList> : ImportExportBase<TBody, TBodyList>, IExportable
+    public abstract class ExportBase<TBody, TBodyList> : ImportExportBase<TBody, TBodyList>, IExportable<TBody, TBodyList>
         where TBody : class
         where TBodyList : class
     {
@@ -17,7 +17,6 @@ namespace HKH.Exchange.Common
 
         #region Protected Variable
 
-        protected Export exportSetting = null;
         protected int curTIndex;
         protected int rowCount = 0;
         protected string dateFormatString = DEFAULTDATEFORMATSTRING;
@@ -45,6 +44,7 @@ namespace HKH.Exchange.Common
 
         #endregion
 
+        public Export Setting { get; protected set; }
         public string ExportId { get; set; }
         public string DateFormatString { get { return dateFormatString; } }
         public string NumberFormatString { get { return numberFormatSTring; } }
@@ -69,7 +69,18 @@ namespace HKH.Exchange.Common
                 }
             }
         }
-
+        public void Export(Export export, string targetFile, TBodyList tList)
+        {
+            using (Stream stream = File.Create(targetFile))
+            {
+                Export(export, stream, tList);
+                if (stream.CanWrite)
+                {
+                    stream.Flush();
+                    stream.Close();
+                }
+            }
+        }
         /// <summary>
         /// Export data to a stream
         /// </summary>
@@ -77,19 +88,30 @@ namespace HKH.Exchange.Common
         /// <param name="tList"></param>
         public void Export(Stream stream, TBodyList tList)
         {
+            Setting = GetExport(ExportId);
+            ExportCore(Setting, stream, tList);
+        }
+        public void Export(Export export, Stream stream, TBodyList tList)
+        {
+            ExportCore(export, stream, tList);
+        }
+        private void ExportCore(Export export, Stream stream, TBodyList tList)
+        {
             mode = ExportMode.Export;
 
-            exportSetting = GetExport(ExportId);
-            exportSetting.CalculateColumnIndex(null);
-
-            dateFormatString = string.IsNullOrEmpty(exportSetting.DateFormat) ? DEFAULTDATEFORMATSTRING : exportSetting.DateFormat;
-            numberFormatSTring = string.IsNullOrEmpty(exportSetting.NumberFormat) ? DEFAULTNUMBERFORMATSTRING : exportSetting.NumberFormat;
-
+            Setting = export;
+            InitFormat();
             ExportCore(stream, tList);
             Reset();
         }
-
         protected abstract void ExportCore(Stream stream, TBodyList tList);
+        protected void InitFormat()
+        {
+            Setting.CalculateColumnIndex(null);
+
+            dateFormatString = string.IsNullOrEmpty(Setting.DateFormat) ? DEFAULTDATEFORMATSTRING : Setting.DateFormat;
+            numberFormatSTring = string.IsNullOrEmpty(Setting.NumberFormat) ? DEFAULTNUMBERFORMATSTRING : Setting.NumberFormat;
+        }
 
         #endregion
 

@@ -252,7 +252,7 @@ namespace System//HKH.Common
 
         public static string ToBinEncodedString(this string input)
         {
-            var ba = System.Text.Encoding.Unicode.GetBytes(input);
+            var ba = Encoding.Unicode.GetBytes(input);
             return ToHexEncodedString(ba, null);
         }
 
@@ -280,6 +280,46 @@ namespace System//HKH.Common
             return output.ToString();
         }
 
+        public static string ToSqlLikeValue(this string s, bool left = true, bool right = true, bool allowWildChar = true)
+        {
+            var builder = new StringBuilder();
+            if (left)
+                builder.Append('%');
+
+            if (allowWildChar)
+            {
+                builder.Append(s);
+            }
+            else
+            {
+                foreach (char c in s)
+                {
+                    switch (c)
+                    {
+                        case '[':
+                            builder.Append("[[]");
+                            break;
+                        case ']':
+                            builder.Append("[]]");
+                            break;
+                        case '_':
+                            builder.Append("[_]");
+                            break;
+                        case '%':
+                            builder.Append("[%]");
+                            break;
+                        default:
+                            builder.Append(c);
+                            break;
+                    }
+                }
+            }
+
+            if (right)
+                builder.Append('%');
+
+            return builder.ToString();
+        }
         #endregion
 
         #region Format validate
@@ -376,26 +416,19 @@ namespace System//HKH.Common
 
         #region Safe Convert
 
-        public static int SafeToInt(this string src)
+        //public static T As<T>(this string s, T defaultValue = default(T))
+        //{
+        //    Type t = typeof(T);
+        //}
+
+        public static int SafeToInt(this string src, int defaultValue = 0)
         {
-            return SafeToInt(src, 0);
+            return int.TryParse(src, out int result) ? result : defaultValue;
         }
 
-        public static int SafeToInt(this string src, int defaultValue)
+        public static double SafeToDouble(this string src, double defaultValue = 0.0)
         {
-            int result = 0;
-            return int.TryParse(src, out result) ? result : defaultValue;
-        }
-
-        public static double SafeToDouble(this string src)
-        {
-            return SafeToDouble(src, 0.0);
-        }
-
-        public static double SafeToDouble(this string src, double defaultValue)
-        {
-            double result = 0.0;
-            return double.TryParse(src, out result) ? result : defaultValue;
+            return double.TryParse(src, out double result) ? result : defaultValue;
         }
 
         public static DateTime SafeToDateTime(this string src)
@@ -405,57 +438,33 @@ namespace System//HKH.Common
 
         public static DateTime SafeToDateTime(this string src, DateTime defaultValue)
         {
-            DateTime result = defaultValue;
+            DateTime result;
             return DateTime.TryParse(src, out result) ? result : defaultValue;
-        }
-
-        /// <summary>
-        /// Parse Json data string to C# DateTime
-        /// </summary>
-        /// <param name="jsonDate"></param>
-        /// <returns></returns>
-        public static DateTime JsonToDateTime(this string jsonDate)
-        {
-            return JsonToDateTime(jsonDate, DateTimeKind.Local);
-        }
-
-        /// <summary>
-        /// Parse Json data string to C# DateTime
-        /// </summary>
-        /// <param name="jsonDate"></param>
-        /// <param name="kind"></param>
-        /// <returns></returns>
-        public static DateTime JsonToDateTime(this string jsonDate, DateTimeKind kind)
-        {
-            Regex regex = new Regex(@"^/Date\(([0-9]+)(\+[0-9]+)?\)/$");
-
-            if (!regex.IsMatch(jsonDate))
-                throw new FormatException("Bad format of Json date.");
-
-            long InitialJavaScriptDateTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
-            DateTime utcDateTime = new DateTime(long.Parse(regex.Replace(jsonDate, "$1")) * 10000 + InitialJavaScriptDateTicks, DateTimeKind.Utc);
-
-            DateTime dateTime;
-            switch (kind)
-            {
-                case DateTimeKind.Unspecified:
-                    dateTime = DateTime.SpecifyKind(utcDateTime.ToLocalTime(), DateTimeKind.Unspecified);
-                    break;
-                case DateTimeKind.Local:
-                    dateTime = utcDateTime.ToLocalTime();
-                    break;
-                default:
-                    dateTime = utcDateTime;
-                    break;
-            }
-
-            return dateTime;
         }
 
         public static bool SafeToBool(this string src)
         {
-            bool result = false;
-            return bool.TryParse(src, out result) ? result : false;
+            return bool.TryParse(src, out bool result) ? result : false;
+        }
+
+        public static int AsInt(this string src, int defaultValue = 0)
+        {
+            return SafeToInt(src, defaultValue);
+        }
+
+        public static double AsDouble(this string src, double defaultValue = 0.0)
+        {
+            return SafeToDouble(src, defaultValue);
+        }
+
+        public static DateTime AsDateTime(this string src)
+        {
+            return SafeToDateTime(src);
+        }
+
+        public static bool AsBool(this string src)
+        {
+            return SafeToBool(src);
         }
 
         #endregion

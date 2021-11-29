@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,19 +18,31 @@ using HKH.Exchange.Configuration;
 
 namespace HKH.Exchange.Common
 {
-    public interface IImportable<T, TList> : IDisposable
+    public interface IImportable : IDisposable
+    {
+        Import Setting { get; }
+    }
+    public interface IImportable<T, TList> : IImportable
         where T : class
         where TList : class
     {
-        string ImportId { get; set; }
-        void Import(string sourceFile, TList successList, TList failList);
+        void Import(string sourceFile, TList successList, TList failList = null);
+        void Import(Import import, string sourceFile, TList successList, TList failList = null);
     }
 
     public interface IExportable : IDisposable
     {
+        Export Setting { get; }
         short? ExcelDateFormat { get; }
         string DateFormatString { get; }
         string NumberFormatString { get; }
         int NextRowNum();
+    }
+    public interface IExportable<T, TList> : IExportable
+    {
+        void Export(Stream stream, TList tList);
+        void Export(Export export, Stream stream, TList tList);
+        void Export(string targetFile, TList tList);
+        void Export(Export export, string targetFile, TList tList);
     }
 }

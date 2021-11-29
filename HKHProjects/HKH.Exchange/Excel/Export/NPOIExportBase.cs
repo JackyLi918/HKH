@@ -44,7 +44,7 @@ namespace HKH.Exchange.Excel
 
         protected override void ExportCore(Stream stream, TBodyList tList)
         {
-            workBook = NPOIExtension.CreateWorkbook(exportSetting.XlsFormat);
+            workBook = NPOIExtension.CreateWorkbook(Setting.XlsFormat);
             //----set summary
             //DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
             //dsi.Company = "BlackEyes";
@@ -58,7 +58,7 @@ namespace HKH.Exchange.Excel
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
             //----end
 
-            sheet = workBook.CreateSheet(exportSetting.Sheet);
+            sheet = workBook.CreateSheet(Setting.Sheet);
 
             CustomPageHeader(sheet.Header);
             CustomTableHeader(sheet);
@@ -72,6 +72,9 @@ namespace HKH.Exchange.Excel
 
         public void Fill<THeader>(string templateFile, string targetFile, TBodyList tList, THeader tHeader)
         {
+            if (string.IsNullOrEmpty(templateFile) || !File.Exists(templateFile))
+                throw Error.ArgumentNotValid("templateFile");
+
             using (Stream stream = File.Create(targetFile))
             {
                 Fill(templateFile, stream, tList, tHeader);
@@ -90,29 +93,75 @@ namespace HKH.Exchange.Excel
 
             using (Stream stream = File.Open(templateFile, FileMode.Open, FileAccess.ReadWrite))
             {
-                workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, stream);
-                Fill(tList, tHeader);
+                Fill(stream, targetStream, tList, tHeader);
+                stream.Close();
             }
+        }
+        public void Fill<THeader>(Stream templateStream, Stream targetStream, TBodyList tList, THeader tHeader)
+        {
+            Setting = GetExport(ExportId);
+
+            templateStream.Seek(0, SeekOrigin.Begin);
+            workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, templateStream);
+            FillCore(Setting, tList, tHeader);
 
             workBook.Write(targetStream);
             Reset();
         }
+        public void Fill<THeader>(Export setting, string templateFile, string targetFile, TBodyList tList, THeader tHeader)
+        {
+            if (string.IsNullOrEmpty(templateFile) || !File.Exists(templateFile))
+                throw Error.ArgumentNotValid("templateFile");
 
-        private void Fill<THeader>(TBodyList tList, THeader tHeader)
+            using (Stream stream = File.Create(targetFile))
+            {
+                Fill(setting, templateFile, stream, tList, tHeader);
+                if (stream.CanWrite)
+                {
+                    stream.Flush();
+                    stream.Close();
+                }
+            }
+        }
+
+        public void Fill<THeader>(Export setting, string templateFile, Stream targetStream, TBodyList tList, THeader tHeader)
+        {
+            if (string.IsNullOrEmpty(templateFile) || !File.Exists(templateFile))
+                throw Error.ArgumentNotValid("templateFile");
+
+            using (Stream stream = File.Open(templateFile, FileMode.Open, FileAccess.ReadWrite))
+            {
+                Fill(setting, stream, targetStream, tList, tHeader);
+                stream.Close();
+            }
+        }
+        public void Fill<THeader>(Export setting, Stream templateStream, Stream targetStream, TBodyList tList, THeader tHeader)
+        {
+            Setting = setting;
+
+            templateStream.Seek(0, SeekOrigin.Begin);
+            workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, templateStream);
+            FillCore(Setting, tList, tHeader);
+
+            workBook.Write(targetStream);
+            Reset();
+        }
+        private void FillCore<THeader>(Export setting, TBodyList tList, THeader tHeader)
+        {
+            Setting = setting;
+            FillCore(tList, tHeader);
+        }
+        private void FillCore<THeader>(TBodyList tList, THeader tHeader)
         {
             mode = ExportMode.Fill;
-            exportSetting = GetExport(ExportId);
-            exportSetting.CalculateColumnIndex(null);
-
-            dateFormatString = string.IsNullOrEmpty(exportSetting.DateFormat) ? DEFAULTDATEFORMATSTRING : exportSetting.DateFormat;
-            numberFormatSTring = string.IsNullOrEmpty(exportSetting.NumberFormat) ? DEFAULTNUMBERFORMATSTRING : exportSetting.NumberFormat;
+            InitFormat();
 
             //looks as sheet index if it is Integer, otherwise TableName
             int sheetIndex = 0;
-            if (int.TryParse(exportSetting.Sheet, out sheetIndex))
+            if (int.TryParse(Setting.Sheet, out sheetIndex))
                 sheet = workBook.GetSheetAt(sheetIndex);
             else
-                sheet = workBook.GetSheet(exportSetting.Sheet);
+                sheet = workBook.GetSheet(Setting.Sheet);
 
             //----create date format
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
@@ -141,7 +190,7 @@ namespace HKH.Exchange.Excel
             else
             {
                 curEIndex++;
-                return exportSetting.Body.FirstRowIndex + curEIndex;
+                return Setting.Body.FirstRowIndex + curEIndex;
             }
         }
 
@@ -151,7 +200,7 @@ namespace HKH.Exchange.Excel
 
             if (mode == ExportMode.Fill)
             {
-                switch (exportSetting.Body.RowMode)
+                switch (Setting.Body.RowMode)
                 {
                     case FillRowMode.Copy:
                         //copy current row if has more row
@@ -326,9 +375,9 @@ namespace HKH.Exchange.Excel
         private void WriteHeader<THeader>(THeader tHeader)
         {
             int rowIndex = 0;
-            foreach (ExportHeaderColumnMapping columnMapping in exportSetting.Header.Values)
+            foreach (ExportHeaderColumnMapping columnMapping in Setting.Header.Values)
             {
-                rowIndex = (columnMapping.Offset && exportSetting.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
+                rowIndex = (columnMapping.Offset && Setting.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
                 IRow dataRow = sheet.GetRow(rowIndex);
                 if (columnMapping.PropertyType == PropertyType.Expression)
                     CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
@@ -340,10 +389,10 @@ namespace HKH.Exchange.Excel
         private void WriteBody(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && exportSetting.Body.OutPutTitle)
+            if (mode == ExportMode.Export && Setting.Body.OutPutTitle)
             {
                 IRow titleRow = sheet.CreateRow(NextRowNum());
-                foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
+                foreach (ExportBodyColumnMapping columnMapping in Setting.Body.Values)
                 {
                     //write column title under sheet title
                     titleRow.CreateCell(columnMapping.ColumnIndex);
@@ -360,9 +409,9 @@ namespace HKH.Exchange.Excel
                 {
                     IRow dataRow = GetNewRow(NextRowNum(), tList);
                     //write data
-                    foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in Setting.Body.Values)
                     {
-                        if (mode == ExportMode.Export || exportSetting.Body.RowMode == FillRowMode.New)
+                        if (mode == ExportMode.Export || Setting.Body.RowMode == FillRowMode.New)
                             dataRow.CreateCell(columnMapping.ColumnIndex);
 
                         if (columnMapping.PropertyType == PropertyType.Expression)

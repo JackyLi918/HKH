@@ -2,8 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -141,6 +143,22 @@ namespace System //HKH.Common
             }
 
             return lst;
+        }
+
+        public static T DeepClone<T>(this T obj)
+        {
+            if (obj is string || obj.GetType().IsValueType) return obj;
+
+            object newObj;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(ms, obj);
+                ms.Seek(0, SeekOrigin.Begin);
+                newObj = bf.Deserialize(ms);
+                ms.Close();
+            }
+            return (T)newObj;
         }
     }
 }
