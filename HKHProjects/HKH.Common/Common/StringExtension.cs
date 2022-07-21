@@ -250,14 +250,15 @@ namespace System//HKH.Common
             }
         }
 
-        public static string ToBinEncodedString(this string input)
+        public static string ToBinString(this string input)
         {
-            var ba = System.Text.Encoding.Unicode.GetBytes(input);
-            return ToHexEncodedString(ba, null);
+            var ba = Encoding.Unicode.GetBytes(input);
+            return ToHexString(ba, null);
         }
 
         public static byte[] ToByteArray(this string input)
         {
+            input = input.Trim();
             if (input.Length > 2 && input.ToLower().StartsWith("0x"))
                 input = input.Substring(2, input.Length - 2);
 
@@ -269,7 +270,7 @@ namespace System//HKH.Common
             return ba;
         }
 
-        public static string ToHexEncodedString(this byte[] input, string prefix = "0x")
+        public static string ToHexString(this byte[] input, string prefix = "0x")
         {
             StringBuilder output = new StringBuilder(BitConverter.ToString(input));
             output.Replace("-", "");
@@ -463,7 +464,7 @@ namespace System//HKH.Common
 }
 
 /*
- *      //F(n)=(1/¡Ì5)*{[(1+¡Ì5)/2]^n - [(1-¡Ì5)/2]^n}
+ *      //F(n)=(1/ï¿½ï¿½5)*{[(1+ï¿½ï¿½5)/2]^n - [(1-ï¿½ï¿½5)/2]^n}
         private int GetFibonacci(int i)
         {
             double y = Math.Sqrt(5);
