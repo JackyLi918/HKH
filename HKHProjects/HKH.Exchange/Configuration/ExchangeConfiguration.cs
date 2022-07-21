@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using Newtonsoft.Json;
 
 namespace HKH.Exchange.Configuration
 {
@@ -12,13 +13,30 @@ namespace HKH.Exchange.Configuration
         {
         }
 
-        public static ExchangeConfiguration GetInstance(string path)
+        public static ExchangeConfiguration Load(string path)
         {
             ExchangeConfiguration self = new ExchangeConfiguration();
-            self.LoadConfiguration(path, null);
+            if (path.EndsWith(".xml"))
+                self.LoadXml(path, null);
+            else
+                self.LoadJson(path, null);
             return self;
         }
+        public void Write(string path)
+        {
+            if (path.EndsWith(".xml"))
+                WriteXml(path);
+            else
+                WriteJson(path);
+        }
+        private void WriteXml(string path)
+        {
+            
+        }
+        private void WriteJson(string path)
+        {
 
+        }
         public static TableMapping GetTableMapping(string path, string tableID)
         {
             if (string.IsNullOrEmpty(path))
@@ -27,12 +45,15 @@ namespace HKH.Exchange.Configuration
                 return null;
 
             ExchangeConfiguration self = new ExchangeConfiguration();
-            self.LoadConfiguration(path, tableID);
+            if (path.EndsWith(".xml"))
+                self.LoadXml(path, tableID);
+            else
+                self.LoadJson(path, tableID);
 
             return self[tableID];
         }
 
-        public static Export BuildDefaultExport<T>()
+        internal static Export BuildDefaultExport<T>()
         {
             Export export = new Export();
             export.Body = new ExportBody(export);
@@ -49,12 +70,13 @@ namespace HKH.Exchange.Configuration
 
             return export;
         }
-        public static Import BuildDefaultImport<T>(List<string> colNames)
+        internal static Import BuildDefaultImport<T>(List<string> colNames)
         {
             return null;
         }
 
-        private void LoadConfiguration(string path, string tableID)
+        #region load from xml
+        private void LoadXml(string path, string tableID)
         {
             XmlDocument document = new XmlDocument();
             document.Load(path);
@@ -385,5 +407,30 @@ namespace HKH.Exchange.Configuration
             }
             return column;
         }
+        #endregion
+
+        #region load from json
+        private void LoadJson(string path, string tableID)
+        {
+            //XmlDocument document = new XmlDocument();
+            //document.Load(path);
+            //if (string.IsNullOrEmpty(tableID))
+            //{
+            //    foreach (XmlNode xn in document.DocumentElement.ChildNodes)
+            //    {
+            //        if ("#comment" == xn.Name)
+            //            continue;
+            //        TableMapping table = LoadTableMapping(xn);
+            //        Add(table.Id, table);
+            //    }
+            //}
+            //else
+            //{
+            //    XmlNode tableNode = document.SelectSingleNode(string.Format("//tableMapping[@id='{0}']", tableID));
+            //    if (tableNode != null)
+            //        Add(tableID, LoadTableMapping(tableNode));
+            //}
+        }
+        #endregion
     }
 }

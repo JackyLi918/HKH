@@ -20,12 +20,13 @@
   <ItemGroup>
     <PackageReference Include="HKH.Common" Version="4.5.2.2" />
     <PackageReference Include="HKH.CSV" Version="4.5.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NPOI" Version="2.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml"/>
-    <None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd"/>
+    <None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml" />
+    <None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd" />
   </ItemGroup>
 
 </Project>
