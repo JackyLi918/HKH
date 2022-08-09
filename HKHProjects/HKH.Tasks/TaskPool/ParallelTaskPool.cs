@@ -21,125 +21,141 @@ using HKH.Tasks.Configuration;
 
 namespace HKH.Tasks
 {
-	/// <summary>
-	/// ParallelTaskPool
-	/// </summary>
-	public class ParallelTaskPool
-	{
-		#region Variables
+    /// <summary>
+    /// ParallelTaskPool
+    /// </summary>
+    public class ParallelTaskPool
+    {
+        #region Variables
 
-		private static TaskPoolState _state = TaskPoolState.Unstarted;
-		private static ConcurrentDictionary<string, IParallelTaskQueue> _pool = new ConcurrentDictionary<string, IParallelTaskQueue>();
+        private static TaskPoolState _state = TaskPoolState.Unstarted;
+        private static ConcurrentDictionary<string, IParallelTaskQueue> _pool = new ConcurrentDictionary<string, IParallelTaskQueue>();
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		public static TaskPoolState State
-		{
-			get { return _state; }
-		}
+        public static TaskPoolState State
+        {
+            get { return _state; }
+        }
 
-		public static bool IsIdle
-		{
-			get
-			{
-				if (_state == TaskPoolState.Unstarted || _state == TaskPoolState.Stopping)
-					return true;
-				else if (_state == TaskPoolState.Running)
-				{
-					return !_pool.Any(kvp => !kvp.Value.Dispatcher.IsIdle);
-				}
+        public static bool IsIdle
+        {
+            get
+            {
+                if (_state == TaskPoolState.Unstarted || _state == TaskPoolState.Stopping)
+                    return true;
+                else if (_state == TaskPoolState.Running)
+                {
+                    return !_pool.Any(kvp => !kvp.Value.Dispatcher.IsIdle);
+                }
 
-				return false;
-			}
-		}
+                return false;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		public static void Start()
-		{
-			if (_state == TaskPoolState.Unstarted)
-			{
-				_state = TaskPoolState.Starting;
-				Init();
+        public static void Start()
+        {
+            if (_state == TaskPoolState.Unstarted)
+            {
+                _state = TaskPoolState.Starting;
 
-				foreach (var queue in _pool)
-				{
-					new Thread(queue.Value.Dispatcher.Start).Start();
-				}
-				_state = TaskPoolState.Running;
-			}
-		}
+#if NETFRAMEWORK
+                Init();
+#endif
 
-		public static void Stop()
-		{
-			if (_state == TaskPoolState.Running)
-			{
-				_state = TaskPoolState.Stopping;
-				foreach (var kvp in _pool)
-				{
-					kvp.Value.Dispatcher.Stop();
-				}
+                foreach (var queue in _pool)
+                {
+                    new Thread(queue.Value.Dispatcher.Start).Start();
+                }
+                _state = TaskPoolState.Running;
+            }
+        }
 
-				while (_pool.Any(kvp => !kvp.Value.Dispatcher.IsIdle))
-					Thread.Sleep(1000);
+        public static void Stop()
+        {
+            if (_state == TaskPoolState.Running)
+            {
+                _state = TaskPoolState.Stopping;
+                foreach (var kvp in _pool)
+                {
+                    kvp.Value.Dispatcher.Stop();
+                }
 
-				foreach (var kvp in _pool)
-				{
-					kvp.Value.Dispose();
-				}
+                while (_pool.Any(kvp => !kvp.Value.Dispatcher.IsIdle))
+                    Thread.Sleep(1000);
 
-				_pool.Clear();
-				_state = TaskPoolState.Unstarted;
-			}
-		}
+                foreach (var kvp in _pool)
+                {
+                    kvp.Value.Dispose();
+                }
 
-		public static void Enqueue(IParallelTask task)
-		{
-			string taskType = task.GetType().FullName;
-			if (!_pool.ContainsKey(taskType))
-			{
-				throw new IndexOutOfRangeException(string.Format("The Task Queue to {0} no exists.", taskType));
-			}
-			if (!_pool[taskType].Contains(task))
-				_pool[taskType].TryAdd(task);
-		}
+                _pool.Clear();
+                _state = TaskPoolState.Unstarted;
+            }
+        }
 
-		#endregion
+        public static void Enqueue(IParallelTask task)
+        {
+            string taskType = task.GetType().FullName;
+            if (!_pool.ContainsKey(taskType))
+            {
+                throw new IndexOutOfRangeException(string.Format("The Task Queue to {0} no exists.", taskType));
+            }
+            if (!_pool[taskType].Contains(task))
+                _pool[taskType].TryAdd(task);
+        }
 
-		#region Helper
+        public static void AddTaskQueue(HKHTaskElement setting)
+        {
+            string taskType = setting.TaskType.FullName;
 
-		private static void Init()
-		{
-			HKHTaskSection Settings = ConfigurationManager.GetSection("hkh.tasks") as HKHTaskSection;
+            if (!_pool.ContainsKey(taskType))
+            {
+                ParallelTaskQueue taskQueue = Activator.CreateInstance(setting.TaskQueueType) as ParallelTaskQueue;
+                ParallelTaskDispatcher dispatcher = new ParallelTaskDispatcher(setting, taskQueue);
+                taskQueue.Dispatcher = dispatcher;
 
-			if (Settings != null)
-			{
-				for (int i = 0; i < Settings.HKHTasks.Count; i++)
-				{
-					HKHTaskElement setting = Settings.HKHTasks[i];
-					ParallelTaskQueue taskQueue = Activator.CreateInstance(setting.TaskQueueType) as ParallelTaskQueue;
-					ParallelTaskDispatcher dispatcher = new ParallelTaskDispatcher(setting, taskQueue);
-					taskQueue.Dispatcher = dispatcher;
+                if (_pool.TryAdd(setting.TaskType.FullName, taskQueue) && _state == TaskPoolState.Running)
+                {
+                    new Thread(dispatcher.Start).Start();
+                }
+            }
+        }
 
-					_pool.TryAdd(setting.TaskType.FullName, taskQueue);
-				}
-			}
-			else
-				throw new ConfigurationErrorsException("hkh.tasks section was not found.");
-		}
+        #endregion
 
-		#endregion
-	}
+        #region Helper
 
-	public enum TaskPoolState
-	{
-		Unstarted,
-		Starting,
-		Running,
-		Stopping
-	}
+        private static void Init()
+        {
+            HKHTaskSection Settings = ConfigurationManager.GetSection("hkh.tasks") as HKHTaskSection;
+
+            if (Settings != null)
+            {
+                for (int i = 0; i < Settings.HKHTasks.Count; i++)
+                {
+                    HKHTaskElement setting = Settings.HKHTasks[i];
+                    AddTaskQueue(setting);
+                }
+            }
+            else
+                throw new ConfigurationErrorsException("hkh.tasks section was not found.");
+        }
+
+        #endregion
+    }
+
+    public enum TaskPoolState
+    {
+        Unstarted,
+        Starting,
+        Running,
+        Stopping
+    }
 }

@@ -21,9 +21,9 @@ namespace HKH.Tools
             new frmAppSetting().ShowDialog();
         }
 
-		private void toolStripButton1_Click(object sender, EventArgs e)
-		{
-			new frmGenerateProxy().ShowDialog();
-		}
+        private void tsbImageConvert_Click(object sender, EventArgs e)
+        {
+            new frmHexImage().ShowDialog();
+        }
     }
 }
