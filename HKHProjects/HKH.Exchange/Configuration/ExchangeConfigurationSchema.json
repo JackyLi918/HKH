@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "xlsFormat": {
+      "type": "string",
+      "enum": [ "auto", "xls", "xlsx" ]
+    },
+    "importColMapping": {
+      "type": "object",
+      "properties": {
+        "col": { "type": "string" },
+        "prop": { "type": "string" },
+        "from": {
+          "type": "string",
+          "enum": [ "left", "up" ]
+        },
+        "inherit": { "type": "boolean" }
+      },
+      "required": [ "col", "prop" ]
+    },
+    "import": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sheet": { "type": "string" },
+        "firstRowIndex": { "type": "integer" },
+        "xlsFormat": { "$ref": "#/definitions/xlsFormat" },
+        "columnMapType": {
+          "type": "string",
+          "enum": [ "excelHeader", "dataHeader" ]
+        },
+        "mappings": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/importColMapping"
+            }
+          ]
+        }
+      }
+    },
+    "propType": {
+      "type": "string",
+      "enum": [ "normal", "const", "expression" ]
+    },
+    "exportHeaderColMapping": {
+      "type": "object",
+      "properties": {
+        "col": { "type": "string" },
+        "row": { "type": "integer" },
+        "prop": { "type": "string" },
+        "offset": { "type": "boolean" },
+        "propType": { "$ref": "#/definitions/propType" }
+      },
+      "required": [ "col", "row", "prop" ]
+    },
+    "exportBodyColMapping": {
+      "type": "object",
+      "properties": {
+        "col": { "type": "string" },
+        "prop": { "type": "string" },
+        "propType": { "$ref": "#/definitions/propType" },
+        "title": { "type": "string" }
+      },
+      "required": [ "col", "prop" ]
+    },
+    "export": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sheet": { "type": "string" },
+        "dateFormat": { "type": "string" },
+        "numberFormat": { "type": "string" },
+        "xlsFormat": { "$ref": "#/definitions/xlsFormat" },
+        "header": {
+          "type": "object",
+          "properties": {
+            "mappings": {
+              "type": "array",
+              "items": [
+                {
+                  "$ref": "#/definitions/exportHeaderColMapping"
+                }
+              ]
+            }
+          },
+          "maximum": 1
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "outputTitle": { "type": "boolean" },
+            "firstRowIndex": { "type": "integer" },
+            "fillMode": {
+              "type": "string",
+              "enum": [ "new", "copy", "fill" ]
+            },
+            "mappings": {
+              "type": "array",
+              "items": [
+                {
+                  "$ref": "#/definitions/exportBodyColMapping"
+                }
+              ]
+            }
+          },
+          "maximum": 1
+        }
+      }
+    },
+    "tableMapping": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clsType": { "type": "string" },
+        "exports": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/export"
+            }
+          ],
+          "maximum": 1
+        },
+        "imports": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/import"
+            }
+          ],
+          "maximum": 1
+        }
+      },
+      "required": [ "id", "clsType" ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "exchanges": {
+      "type": "array",
+      "items": [
+        {
+          "$ref": "#/definitions/tableMapping"
+        }
+      ],
+      "uniqueItems": true
+    }
+  }
+}

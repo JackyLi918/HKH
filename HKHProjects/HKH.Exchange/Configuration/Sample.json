@@ -1,0 +1,106 @@
+{
+  "exchanges": [
+    {
+      "id": "1",
+      "clsType": "Grade",
+      "exports": [
+        {
+          "id": "1",
+          "sheet": "Sheet1",
+          "dateFormat": "yyyy年mm月dd日",
+          "numberFormat": "0.00",
+          "xlsFormat": "xls",
+          "header": {
+            "mappings": [
+              {
+                "row": 2,
+                "col": "B",
+                "offset": true,
+                "prop": "{SrcRowNum(+1)}",
+                "propType": "expression"
+              }
+            ]
+          },
+          "body": {
+            "outputTitle": true,
+            "firstRowIndex": 0,
+            "fillMode": "copy",
+            "mappings": [
+              {
+                "col": "A",
+                "prop": "{SrcRowNum(+1)}",
+                "title": "序号",
+                "propType": "expression"
+              },
+              {
+                "col": "B",
+                "prop": "ClassId",
+                "title": "班级编号"
+              },
+              {
+                "col": "C",
+                "prop": "StudentId",
+                "title": "学生编号"
+              },
+              {
+                "col": "D",
+                "prop": "Net"
+              },
+              {
+                "col": "E",
+                "prop": "Java"
+              },
+              {
+                "col": "F",
+                "prop": "Html"
+              },
+              {
+                "col": "G",
+                "prop": "Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})",
+                "title": "总分",
+                "propType": "expression"
+              }
+            ]
+          }
+        }
+      ],
+      "imports": [
+        {
+          "id": "1",
+          "sheet": "0",
+          "firstRowIndex": 0,
+          "xlsFormat": "xls",
+          "columnMapType": "excelHeader",
+          "mappings": [
+            {
+              "col": "A",
+              "prop": "ClassId",
+              "inherit": true
+            },
+            {
+              "col": "B",
+              "prop": "StudentId"
+            },
+            {
+              "col": "C",
+              "prop": "Net",
+              "inherit": true
+            },
+            {
+              "col": "D",
+              "prop": "Java",
+              "inherit": true,
+              "from": "left"
+            },
+            {
+              "col": "E",
+              "prop": "Html",
+              "inherit": true,
+              "from": "left"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

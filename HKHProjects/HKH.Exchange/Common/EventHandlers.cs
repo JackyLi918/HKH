@@ -8,13 +8,7 @@
  * 
 *****************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HKH.Exchange.Configuration;
-using HKH.Exchange.Excel;
 
 namespace HKH.Exchange.Common
 {

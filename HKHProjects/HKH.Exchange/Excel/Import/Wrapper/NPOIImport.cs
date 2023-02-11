@@ -11,11 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HKH.Exchange.Common;
-using HKH.Exchange.Configuration;
 using NPOI.SS.UserModel;
 
 namespace HKH.Exchange.Excel

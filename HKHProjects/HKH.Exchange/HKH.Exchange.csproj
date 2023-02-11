@@ -19,12 +19,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Configuration\ExchangeConfigurationSchema.json" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="NPOI" Version="2.6.0" />
+		<PackageReference Include="System.Text.Json" Version="7.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml" />
-		<None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd" />
+		<Content Include="Configuration\ExchangeConfigurationSchema.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace HKH.Exchange.CSV
 {
-    /// <summary>
+	/// <summary>
 	/// load from excel file to dataset
 	/// </summary>
 	public abstract class CSVImportDataTable : CSVImportBase<DataRow, DataTable>

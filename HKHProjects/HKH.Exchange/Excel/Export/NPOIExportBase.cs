@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Reflection;
@@ -143,7 +142,7 @@ namespace HKH.Exchange.Excel
             workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, templateStream);
             FillCore(Setting, tList, tHeader);
 
-            workBook.Write(targetStream);
+            workBook.Write(targetStream, true);
             Reset();
         }
         private void FillCore<THeader>(Export setting, TBodyList tList, THeader tHeader)

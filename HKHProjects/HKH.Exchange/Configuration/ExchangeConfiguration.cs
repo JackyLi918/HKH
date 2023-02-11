@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml;
-using Newtonsoft.Json;
 
 namespace HKH.Exchange.Configuration
 {
@@ -35,7 +35,7 @@ namespace HKH.Exchange.Configuration
         }
         private void WriteJson(string path)
         {
-
+           var s= JsonSerializer.Serialize(this, new JsonSerializerOptions(JsonSerializerOptions.Default) { ReferenceHandler= ReferenceHandler.Preserve });
         }
         public static TableMapping GetTableMapping(string path, string tableID)
         {
