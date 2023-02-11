@@ -115,7 +115,7 @@ namespace System //HKH.Common
             return result;
         }
 
-        internal static List<string> DumpCache(bool getter, bool setter)
+        public static List<string> DumpCache(bool getter, bool setter)
         {
             List<string> lst = new List<string>();
 

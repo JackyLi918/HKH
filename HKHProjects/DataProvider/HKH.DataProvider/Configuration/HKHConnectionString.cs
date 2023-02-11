@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using HKH.Common;
 using HKH.Common.Security;
 using Microsoft.Extensions.Configuration;
@@ -8,11 +7,11 @@ namespace HKH.Data.Configuration
 {
     public class HKHConnectionString : INullable
     {
-#if NET6_0_OR_GREATER
-               private const string _defaultBuilder = "HKH.Data.SqlServer.MsSqlServerObjectBuilder,HKH.DataProvider.MsSqlServer"; 
-#else
+//#if NET6_0_OR_GREATER
+ //              private const string _defaultBuilder = "HKH.Data.SqlServer.MsSqlServerObjectBuilder,HKH.DataProvider.MsSqlServer"; 
+//#else
         private const string _defaultBuilder = "HKH.Data.SqlServer.SqlServerObjectBuilder,HKH.DataProvider.SqlServer";
-#endif
+//#endif
         private const string _defaultAlgo = "HKH.Data.Configuration.DataBaseEncryption,HKH.DataProvider";
 
         public string Name { get; set; }

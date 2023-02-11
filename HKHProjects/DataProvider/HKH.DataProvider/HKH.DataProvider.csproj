@@ -1,38 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>true</DelaySign>
-    <Authors>Jacky li</Authors>
-    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Title>HKH.DataProvider</Title>
-    <Description>A lightweight data access module</Description>
-    <PackageTags>dataaccess;sqlserver;odbc;oledb</PackageTags>
-    <RootNamespace>HKH.Data</RootNamespace>
-    <Version>5.0.0.0</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>true</DelaySign>
+		<Authors>Jacky li</Authors>
+		<PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Title>HKH.DataProvider</Title>
+		<Description>A lightweight data access module</Description>
+		<PackageTags>dataaccess;sqlserver;odbc;oledb</PackageTags>
+		<RootNamespace>HKH.Data</RootNamespace>
+		<Version>5.0.0.0</Version>
+		<Copyright>Copyright © BlackEyes 2009</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Configuration\HKHConnectionStringsExample.json" />
-    <None Remove="Configuration\HKHConnectionStringsSchema.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Configuration\HKHConnectionStringsExample.json" />
+		<Content Include="Configuration\HKHConnectionStringsSchema.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Configuration\HKHConnectionStringsExample.json" />
-    <Content Include="Configuration\HKHConnectionStringsSchema.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\HKH.Common\HKH.Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\HKH.Common\HKH.Common.csproj" />
+	</ItemGroup>
 </Project>

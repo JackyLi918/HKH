@@ -16,6 +16,7 @@
 	  <PackageTags>dataaccess;odbc;</PackageTags>
 	  <RootNamespace>HKH.Data.Odbc</RootNamespace>
 	  <Version>5.0.0.0</Version>
+	  <Copyright>Copyright © BlackEyes 2009</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

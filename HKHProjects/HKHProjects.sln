@@ -5,7 +5,6 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{0D956E4C-8DDF-42D9-9669-F4CEB7A68370}"
 	ProjectSection(SolutionItems) = preProject
-		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
 		hkh.snk = hkh.snk
 	EndProjectSection
 EndProject
@@ -129,8 +128,8 @@ Global
 		{5BAA52EF-5C81-426E-B250-598EAD5903FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5BAA52EF-5C81-426E-B250-598EAD5903FF}.Release|x86.ActiveCfg = Release|Any CPU
 		{5BAA52EF-5C81-426E-B250-598EAD5903FF}.Release|x86.Build.0 = Release|Any CPU
-		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Any CPU.Build.0 = Debug|x86
+		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{387F44C5-C8C4-4F3B-A3B5-51561A4C4FF3}.Debug|x86.ActiveCfg = Debug|x86

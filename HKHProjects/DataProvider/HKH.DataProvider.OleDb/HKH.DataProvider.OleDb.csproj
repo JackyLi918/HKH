@@ -16,6 +16,7 @@
 	  <PackageTags>dataaccess;oledb;</PackageTags>
 	  <RootNamespace>HKH.Data.OleDb</RootNamespace>
 	  <Version>5.0.0.0</Version>
+	  <Copyright>Copyright © BlackEyes 2009</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
