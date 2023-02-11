@@ -9,11 +9,7 @@
 *****************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 
 namespace HKH.Data.Dapper
@@ -21,7 +17,7 @@ namespace HKH.Data.Dapper
 	/// <summary>
 	/// SqlDynamicParameters
 	/// </summary>
-    public class SqlDynamicParameters : SqlMapper.IDynamicParameters
+	public class SqlDynamicParameters : SqlMapper.IDynamicParameters
 	{
 		public SqlDynamicParameters(IDbDataParameter[] parameters)
 		{

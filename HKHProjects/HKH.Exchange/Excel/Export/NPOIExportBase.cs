@@ -67,7 +67,7 @@ namespace HKH.Exchange.Excel
 
             CustomTableFooter(sheet);
 
-            workBook.Write(stream);
+            workBook.Write(stream, true);
         }
 
         public void Fill<THeader>(string templateFile, string targetFile, TBodyList tList, THeader tHeader)
@@ -105,7 +105,7 @@ namespace HKH.Exchange.Excel
             workBook = NPOIExtension.CreateWorkbook(XlsFormat.Auto, templateStream);
             FillCore(Setting, tList, tHeader);
 
-            workBook.Write(targetStream);
+            workBook.Write(targetStream, true);
             Reset();
         }
         public void Fill<THeader>(Export setting, string templateFile, string targetFile, TBodyList tList, THeader tHeader)

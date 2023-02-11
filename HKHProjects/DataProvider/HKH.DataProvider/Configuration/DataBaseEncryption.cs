@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HKH.Common.Security;
 
 namespace HKH.Data.Configuration
@@ -11,7 +8,7 @@ namespace HKH.Data.Configuration
 		private const string DEFAULT_IV = "Honkerhero";
 
 		public DataBaseEncryption()
-			: base(AesKeySize.Bits128, DEFAULT_KEY,DEFAULT_IV)
+			: base(AESKeySize.Bits128, DEFAULT_KEY,DEFAULT_IV)
 		{
 		}
 	}

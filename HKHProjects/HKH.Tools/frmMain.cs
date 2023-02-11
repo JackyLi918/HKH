@@ -20,10 +20,14 @@ namespace HKH.Tools
         {
             new frmAppSetting().ShowDialog();
         }
+        private void tsbDbBackupAndRestore_Click(object sender, EventArgs e)
+        {
+            new frmDbBackupAndRestore().ShowDialog();
+        }     
+        private void tsbImageConvert_Click(object sender, EventArgs e)
+        {
+            new frmHexImage().ShowDialog();
+        }
 
-		private void toolStripButton1_Click(object sender, EventArgs e)
-		{
-			new frmGenerateProxy().ShowDialog();
-		}
     }
 }

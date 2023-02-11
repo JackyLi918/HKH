@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+	  <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	  <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+	  <SignAssembly>false</SignAssembly>
+	  <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+	  <DelaySign>true</DelaySign>
+	  <Authors>Jacky li</Authors>
+	  <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <Title>HKH.CurrencyFormat</Title>
+	  <Description>common library for HKH projects</Description>
+	  <PackageTags>CNY format;RMB/CNY format</PackageTags>
+	  <Version>5.0.0.0</Version>
+	  <Copyright>Copyright © BlackEyes 2009</Copyright>
+  </PropertyGroup>
+
+</Project>

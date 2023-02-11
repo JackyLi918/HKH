@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-  <configSections>
-    <section name="hkh.tasks" type="HKH.Tasks.Configuration.HKHTaskSection,HKH.Tasks"></section>
-  </configSections>
-  <hkh.tasks>
-  </hkh.tasks>
-</configuration>

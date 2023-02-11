@@ -1,37 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>true</DelaySign>
-    <Authors>Jacky li</Authors>
-    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Title>HKH.Tasks</Title>
-    <Description>Parallel task pool</Description>
-    <PackageTags>parallel;task pool</PackageTags>
-    <Version>1.0.0.2</Version>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
-    <FileVersion>1.0.0.2</FileVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="HKH.Common" Version="4.5.2.2" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TaskPool\Configuration\HKHTasksExample.xml" Pack="True" PackagePath="content\docs\HKHTasksExample.xml" />
-    <None Include="TaskPool\Configuration\HKHTasksSchema.xsd" Pack="True" PackagePath="content\docs\HKHTasksSchema.xsd" />
-    <None Include="TaskPool\Configuration\content\app.config.transform" Pack="True" PackagePath="content\app.config.transform" />
-    <None Include="TaskPool\Configuration\content\web.config.transform" Pack="True" PackagePath="content\web.config.transform" />
-  </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>true</DelaySign>
+		<Authors>Jacky li</Authors>
+		<PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Title>HKH.Tasks</Title>
+		<Description>Parallel task pool</Description>
+		<PackageTags>parallel;task pool</PackageTags>
+		<Version>2.0.0.0</Version>
+		<Copyright>Copyright © BlackEyes 2009</Copyright>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\HKH.Common\HKH.Common.csproj" />
+	</ItemGroup>
 
 </Project>

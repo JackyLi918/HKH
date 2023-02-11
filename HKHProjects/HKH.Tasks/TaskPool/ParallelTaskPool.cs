@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HKH.Tasks.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace HKH.Tasks
 {
@@ -59,15 +60,13 @@ namespace HKH.Tasks
 
         #region Methods
 
-        public static void Start()
+        public static void Start(IConfiguration configuration)
         {
             if (_state == TaskPoolState.Unstarted)
             {
                 _state = TaskPoolState.Starting;
 
-#if NETFRAMEWORK
-                Init();
-#endif
+                Init(configuration);
 
                 foreach (var queue in _pool)
                 {
@@ -111,7 +110,7 @@ namespace HKH.Tasks
                 _pool[taskType].TryAdd(task);
         }
 
-        public static void AddTaskQueue(HKHTaskElement setting)
+        public static void AddTaskQueue(HKHTaskSetting setting)
         {
             string taskType = setting.TaskType.FullName;
 
@@ -132,20 +131,16 @@ namespace HKH.Tasks
 
         #region Helper
 
-        private static void Init()
+        private static void Init(IConfiguration configuration)
         {
-            HKHTaskSection Settings = ConfigurationManager.GetSection("hkh.tasks") as HKHTaskSection;
-
-            if (Settings != null)
+            var settings = HKHTaskSettings.Load(configuration);
+            if (settings?.Count > 0)
             {
-                for (int i = 0; i < Settings.HKHTasks.Count; i++)
+                foreach (var setting in settings.Values)
                 {
-                    HKHTaskElement setting = Settings.HKHTasks[i];
                     AddTaskQueue(setting);
                 }
             }
-            else
-                throw new ConfigurationErrorsException("hkh.tasks section was not found.");
         }
 
         #endregion

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using HKH.Data.Configuration;
-using System.Text.RegularExpressions;
 
 namespace HKH.Data
 {
@@ -11,13 +7,13 @@ namespace HKH.Data
 	{
 		#region Protected Variables
 
-		protected HKHConnectionStringElement configuration = null;
+		protected HKHConnectionString configuration = null;
 
 		#endregion
 
 		#region Constructor
 
-		protected DataBaseObjectBuilder(HKHConnectionStringElement configuration)
+		protected DataBaseObjectBuilder(HKHConnectionString configuration)
 			: base(configuration.ConnectionString)
 		{
 			this.configuration = configuration;
@@ -26,14 +22,14 @@ namespace HKH.Data
 		protected DataBaseObjectBuilder(string connectionString)
 			: base(connectionString)
 		{
-			this.configuration = HKHConnectionStringElement.Null;
+			this.configuration = HKHConnectionString.Null;
 		}
 
 		#endregion
 
 		#region IDataBaseObjectBuilder Members
 
-		public HKHConnectionStringElement Configuration
+		public HKHConnectionString Configuration
 		{
 			get { return configuration; }
 		}

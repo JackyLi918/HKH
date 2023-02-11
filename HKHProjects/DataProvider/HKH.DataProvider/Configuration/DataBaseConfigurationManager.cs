@@ -1,54 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace HKH.Data.Configuration
 {
-	public class DataBaseConfigurationManager
-	{
-		private static HKHConnectionStringsSection _connectionStrings = null;
-		private static HKHConnectionStringElement _defaultConnectionString = null;
+    public class DataBaseConfigurationManager
+    {
+        private static HKHConnectionStrings _connectionStrings = null;
+        private static HKHConnectionString _defaultConnectionString = null;
 
-		static DataBaseConfigurationManager()
-		{
-			_connectionStrings = (HKHConnectionStringsSection)ConfigurationManager.GetSection(HKHConnectionStringsSection.TagName);
+        public static void Load(IConfiguration configuration)
+        {
+            _connectionStrings = HKHConnectionStrings.Load(configuration);
 
-			if (_connectionStrings.ConnectionStrings.Count > 0)
-			{
-				foreach (HKHConnectionStringElement config in _connectionStrings.ConnectionStrings)
-				{
-					if (config.IsDefault)
-					{
-						_defaultConnectionString = config;
-						break;
-					}
-				}
+            if (_connectionStrings.Count > 0)
+            {
+                _defaultConnectionString = _connectionStrings.FirstOrDefault(x => x.Value.IsDefault).Value;
 
-				//set the first one is default if no any config is marked as defaut explicitly.
-				if (_defaultConnectionString == null)
-				{
-					_defaultConnectionString = _connectionStrings.ConnectionStrings[0];
-					//_defaultConnectionString.IsDefault = true;
-				}
-			}
-			else
-				throw new HKH.Data.DataBaseConfigurationException("No availiable connectionstring!");
-		}
+                //set the first one is default if no any config is marked as defaut explicitly.
+                if (_defaultConnectionString == null)
+                {
+                    _defaultConnectionString = _connectionStrings.First().Value;
+                    //_defaultConnectionString.IsDefault = true;
+                }
+            }
+        }
+        public static HKHConnectionString DefaultConfiguration
+        {
+            get { return _defaultConnectionString; }
+        }
 
-		public static HKHConnectionStringElement DefaultConfiguration
-		{
-			get { return _defaultConnectionString; }
-		}
+        public static HKHConnectionStrings Configurations
+        {
+            get { return _connectionStrings; }
+        }
 
-		public static HKHConnectionStringCollection Configurations
-		{
-			get { return _connectionStrings.ConnectionStrings; }
-		}
-
-		public static HKHConnectionStringElement GetConfiguration(string configurationName)
-		{
-			return _connectionStrings.ConnectionStrings[configurationName];
-		}
-	}
+        public static HKHConnectionString GetConfiguration(string configurationName)
+        {
+            return _connectionStrings[configurationName];
+        }
+    }
 }

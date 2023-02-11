@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using HKH.Common;
@@ -250,14 +249,15 @@ namespace System//HKH.Common
             }
         }
 
-        public static string ToBinEncodedString(this string input)
+        public static string ToBinString(this string input)
         {
             var ba = Encoding.Unicode.GetBytes(input);
-            return ToHexEncodedString(ba, null);
+            return ToHexString(ba, null);
         }
 
         public static byte[] ToByteArray(this string input)
         {
+            input = input.Trim();
             if (input.Length > 2 && input.ToLower().StartsWith("0x"))
                 input = input.Substring(2, input.Length - 2);
 
@@ -269,7 +269,7 @@ namespace System//HKH.Common
             return ba;
         }
 
-        public static string ToHexEncodedString(this byte[] input, string prefix = "0x")
+        public static string ToHexString(this byte[] input, string prefix = "0x")
         {
             StringBuilder output = new StringBuilder(BitConverter.ToString(input));
             output.Replace("-", "");
@@ -280,46 +280,6 @@ namespace System//HKH.Common
             return output.ToString();
         }
 
-        public static string ToSqlLikeValue(this string s, bool left = true, bool right = true, bool allowWildChar = true)
-        {
-            var builder = new StringBuilder();
-            if (left)
-                builder.Append('%');
-
-            if (allowWildChar)
-            {
-                builder.Append(s);
-            }
-            else
-            {
-                foreach (char c in s)
-                {
-                    switch (c)
-                    {
-                        case '[':
-                            builder.Append("[[]");
-                            break;
-                        case ']':
-                            builder.Append("[]]");
-                            break;
-                        case '_':
-                            builder.Append("[_]");
-                            break;
-                        case '%':
-                            builder.Append("[%]");
-                            break;
-                        default:
-                            builder.Append(c);
-                            break;
-                    }
-                }
-            }
-
-            if (right)
-                builder.Append('%');
-
-            return builder.ToString();
-        }
         #endregion
 
         #region Format validate
@@ -416,19 +376,26 @@ namespace System//HKH.Common
 
         #region Safe Convert
 
-        //public static T As<T>(this string s, T defaultValue = default(T))
-        //{
-        //    Type t = typeof(T);
-        //}
-
-        public static int SafeToInt(this string src, int defaultValue = 0)
+        public static int SafeToInt(this string src)
         {
-            return int.TryParse(src, out int result) ? result : defaultValue;
+            return SafeToInt(src, 0);
         }
 
-        public static double SafeToDouble(this string src, double defaultValue = 0.0)
+        public static int SafeToInt(this string src, int defaultValue)
         {
-            return double.TryParse(src, out double result) ? result : defaultValue;
+            int result = 0;
+            return int.TryParse(src, out result) ? result : defaultValue;
+        }
+
+        public static double SafeToDouble(this string src)
+        {
+            return SafeToDouble(src, 0.0);
+        }
+
+        public static double SafeToDouble(this string src, double defaultValue)
+        {
+            double result = 0.0;
+            return double.TryParse(src, out result) ? result : defaultValue;
         }
 
         public static DateTime SafeToDateTime(this string src)
@@ -438,33 +405,57 @@ namespace System//HKH.Common
 
         public static DateTime SafeToDateTime(this string src, DateTime defaultValue)
         {
-            DateTime result;
+            DateTime result = defaultValue;
             return DateTime.TryParse(src, out result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// Parse Json data string to C# DateTime
+        /// </summary>
+        /// <param name="jsonDate"></param>
+        /// <returns></returns>
+        public static DateTime JsonToDateTime(this string jsonDate)
+        {
+            return JsonToDateTime(jsonDate, DateTimeKind.Local);
+        }
+
+        /// <summary>
+        /// Parse Json data string to C# DateTime
+        /// </summary>
+        /// <param name="jsonDate"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static DateTime JsonToDateTime(this string jsonDate, DateTimeKind kind)
+        {
+            Regex regex = new Regex(@"^/Date\(([0-9]+)(\+[0-9]+)?\)/$");
+
+            if (!regex.IsMatch(jsonDate))
+                throw new FormatException("Bad format of Json date.");
+
+            long InitialJavaScriptDateTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
+            DateTime utcDateTime = new DateTime(long.Parse(regex.Replace(jsonDate, "$1")) * 10000 + InitialJavaScriptDateTicks, DateTimeKind.Utc);
+
+            DateTime dateTime;
+            switch (kind)
+            {
+                case DateTimeKind.Unspecified:
+                    dateTime = DateTime.SpecifyKind(utcDateTime.ToLocalTime(), DateTimeKind.Unspecified);
+                    break;
+                case DateTimeKind.Local:
+                    dateTime = utcDateTime.ToLocalTime();
+                    break;
+                default:
+                    dateTime = utcDateTime;
+                    break;
+            }
+
+            return dateTime;
         }
 
         public static bool SafeToBool(this string src)
         {
-            return bool.TryParse(src, out bool result) ? result : false;
-        }
-
-        public static int AsInt(this string src, int defaultValue = 0)
-        {
-            return SafeToInt(src, defaultValue);
-        }
-
-        public static double AsDouble(this string src, double defaultValue = 0.0)
-        {
-            return SafeToDouble(src, defaultValue);
-        }
-
-        public static DateTime AsDateTime(this string src)
-        {
-            return SafeToDateTime(src);
-        }
-
-        public static bool AsBool(this string src)
-        {
-            return SafeToBool(src);
+            bool result = false;
+            return bool.TryParse(src, out result) ? result : false;
         }
 
         #endregion
@@ -472,7 +463,7 @@ namespace System//HKH.Common
 }
 
 /*
- *      //F(n)=(1/¡Ì5)*{[(1+¡Ì5)/2]^n - [(1-¡Ì5)/2]^n}
+ *      //F(n)=(1/ï¿½ï¿½5)*{[(1+ï¿½ï¿½5)/2]^n - [(1-ï¿½ï¿½5)/2]^n}
         private int GetFibonacci(int i)
         {
             double y = Math.Sqrt(5);

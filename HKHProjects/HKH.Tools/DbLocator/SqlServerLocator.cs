@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Sql;
 using System.Data;
+using System.Data.Sql;
 using System.Linq;
-using System.Text;
-using HKH.Common;
-using HKH.Data;
 using System.Runtime.InteropServices;
+using System.Text;
+using HKH.Data;
 
 namespace HKH.Tools.DbLocator
 {
@@ -15,7 +14,7 @@ namespace HKH.Tools.DbLocator
         private const string ConnStr = "Data Source={0};Initial Catalog={1};";
         private const string WLogin = "Integrated Security=True;";
         private const string SLogin = "User ID={0};Password={1};";
-        private const string builderType = "HKH.Data.SqlServer.SqlServerObjectBuilder,HKH.DataProvider";
+        private const string builderType = "HKH.Data.SqlServer.SqlServerObjectBuilder,HKH.DataProvider.SqlServer";
 
         /// <summary>
         /// 获取所有Sql-Server服务器
@@ -87,7 +86,7 @@ namespace HKH.Tools.DbLocator
             }
         }
 
-        private static string GetConnectionString(string srvName, string dbName, bool isSqlLogin, string userName, string pwd)
+        internal static string GetConnectionString(string srvName, string dbName, bool isSqlLogin, string userName, string pwd)
         {
             //Data Source=LWT;Initial Catalog=master;Integrated Security=True
             //Data Source=LWT;Initial Catalog=master;User ID=sa;Password=sa123

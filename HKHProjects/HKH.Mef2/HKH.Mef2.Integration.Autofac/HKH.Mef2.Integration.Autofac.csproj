@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+	  <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	  <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+	  <SignAssembly>false</SignAssembly>
+	  <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+	  <DelaySign>true</DelaySign>
+	  <Authors>Jacky li</Authors>
+	  <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <Title>HKH.Mef2.Integration.Autofac</Title>
+	  <Description>mef2 integratioin with Autofac</Description>
+	  <PackageTags>mef;mef2;integratioin;mef2 integratioin;Autofac;</PackageTags>
+	  <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HKH.Mef2.Integration.Abstractions\HKH.Mef2.Integration.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

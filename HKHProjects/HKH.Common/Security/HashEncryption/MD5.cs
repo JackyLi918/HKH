@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HKH.Common.Security
+﻿namespace HKH.Common.Security
 {
 	public class MD5 : HashEncryption
 	{

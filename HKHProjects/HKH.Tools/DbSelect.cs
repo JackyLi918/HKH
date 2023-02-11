@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using HKH.Tools.DbLocator;
 
@@ -36,7 +30,7 @@ namespace HKH.Tools
 
         private void cbDbName_DropDown(object sender, EventArgs e)
         {
-            if (cbDbName.Items.Count == 0 && !(string.IsNullOrEmpty(cbServerName.Text.Trim()) || string.IsNullOrEmpty(tbUserName.Text.Trim()) || string.IsNullOrEmpty(tbPassword.Text.Trim())))
+            if (cbDbName.Items.Count == 0 && !string.IsNullOrEmpty(cbServerName.Text.Trim()) && (rbSQLServer.Checked && !string.IsNullOrEmpty(tbUserName.Text.Trim()) || rbWindow.Checked))
                 cbDbName.DataSource = SqlServerLocator.GetDatabases(cbServerName.Text, rbSQLServer.Checked, tbUserName.Text, tbPassword.Text);
         }
 
@@ -56,5 +50,9 @@ namespace HKH.Tools
                 MessageBox.Show("连接失败！");
         }
 
+        private void btnCopyConnString_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(SqlServerLocator.GetConnectionString(cbServerName.Text, cbDbName.Text, rbSQLServer.Checked, tbUserName.Text, tbPassword.Text));
+        }
     }
 }
