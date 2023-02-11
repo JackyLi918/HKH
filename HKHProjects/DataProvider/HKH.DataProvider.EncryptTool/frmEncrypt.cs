@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 using HKH.Common.Security;
 using HKH.Data.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace HKH.DataProvider.EncryptTool
 {
     public partial class frmEncrypt : Form
     {
         private IEncryption encryption = null;
-        private XmlNode xnConnectionStrings = null;
 
         public frmEncrypt()
         {
@@ -56,23 +48,25 @@ namespace HKH.DataProvider.EncryptTool
         private void btnSelect_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = ".Net config file(*.config)|*.config";
+            ofd.Filter = "json config file(*.json)|*.json";
             ofd.Multiselect = false;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 txtConfigFile.Text = ofd.FileName;
                 //load configuration
-                ConfigXmlDocument cxd = new ConfigXmlDocument();
-                cxd.Load(txtConfigFile.Text);
-                xnConnectionStrings = cxd.SelectSingleNode("/configuration/" + HKHConnectionStringsSection.TagName);
-                
+                var configurationBuilder = new ConfigurationBuilder()
+                 .AddJsonFile(txtConfigFile.Text, optional: false, reloadOnChange: true);
+
+                IConfiguration configuration = configurationBuilder.Build();
+                DataBaseConfigurationManager.Load(configuration);
+
                 cbConfigs.SelectedIndexChanged -= cbConfigs_SelectedIndexChanged;
                 cbConfigs.Items.Clear();
-                foreach (XmlNode xnConfig in xnConnectionStrings.ChildNodes)
+                foreach (var config in DataBaseConfigurationManager.Configurations.ConnectionStrings)
                 {
-                    cbConfigs.Items.Add(xnConfig.Attributes["name"].Value);
+                    cbConfigs.Items.Add(config.Name);
                     //default select 
-                    if (xnConfig.Attributes["isDefault"] != null && xnConfig.Attributes["isDefault"].Value.ToLower() == "true")
+                    if (config.IsDefault)
                         cbConfigs.SelectedIndex = cbConfigs.Items.Count - 1;
                 }
 
@@ -87,15 +81,8 @@ namespace HKH.DataProvider.EncryptTool
 
         private void cbConfigs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            XmlNode xnConfig = xnConnectionStrings.SelectSingleNode("add[@name=\"" + cbConfigs.SelectedItem + "\"]");
-            HKHConnectionStringElement hse = new HKHConnectionStringElement(xnConfig.Attributes["name"].Value, xnConfig.Attributes["connectionString"].Value);
-            //set encryption
-            if (xnConfig.Attributes["encrypt"] != null && xnConfig.Attributes["encrypt"].Value.ToLower() == "true")
-                hse.Encrypt = true;
-            if (xnConfig.Attributes["algo"] != null)
-                hse.Algo = xnConfig.Attributes["algo"].Value;
-
-            encryption = hse.GetEncryptionAlgo();
+            var config = DataBaseConfigurationManager.GetConfiguration(cbConfigs.SelectedItem.ToString());
+            encryption = config.GetEncryptionAlgo();
         }
     }
 }

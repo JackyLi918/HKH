@@ -1,36 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>true</DelaySign>
-    <Authors>Jacky li</Authors>
-    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Title>HKH.Common</Title>
-    <Description>common library for HKH projects</Description>
-    <PackageTags>objectpool;objectextension;appsetting</PackageTags>
-    <Version>4.5.2.3</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>true</DelaySign>
+		<Authors>Jacky li</Authors>
+		<PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Title>HKH.Common</Title>
+		<Description>common library for HKH projects</Description>
+		<PackageTags>objectpool;objectextension;appsetting</PackageTags>
+		<Version>5.0.0.0</Version>
+		<Copyright>Copyright © BlackEyes 2009</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-     <PackageReference Include="System.Drawing.Common">
-       <Version>6.0.0</Version>
-     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <Reference Include="System.Configuration" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	</ItemGroup>
 </Project>

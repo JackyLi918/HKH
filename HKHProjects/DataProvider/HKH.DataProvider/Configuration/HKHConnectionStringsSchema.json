@@ -1,0 +1,31 @@
+{
+  "definitions": {
+    "hkhConnectionString": {
+      "type": "object",
+      "$id": "hkhConnectionString",
+      "properties": {
+        "name": { "type": "string" },
+        "connectionString": { "type": "string" },
+        "builder": {
+          "anyOf": [
+            {
+              "enum": [ "HKH.Data.SqlServer.SqlServerObjectBuilder,HKH.HKH.DataProvider.SqlServer", "HKH.Data.Odbc.OdbcObjectBuilder,HKH.DataProvider.Odbc", "HKH.Data.OleDb.OleDbObjectBuilder,HKH.DataProvider.OleDb" ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "isDefault": { "type": "boolean" },
+        "encrypt": { "type": "boolean" },
+        "algo": { "type": "string" }
+      },
+      "required": [ "name", "connectionString" ]
+    }
+  },
+  "type": "array",
+  "items": {
+    "type": { "$ref": "#hkhConnectionString" }
+  },
+  "uniqueItems": true
+}

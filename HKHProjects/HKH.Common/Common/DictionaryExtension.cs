@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Collections.Generic//HKH.Common
+﻿namespace System.Collections.Generic//HKH.Common
 {
     public static class DictionaryExtension
     {

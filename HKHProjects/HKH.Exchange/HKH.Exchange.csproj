@@ -1,31 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>true</DelaySign>
-    <Authors>Jacky li</Authors>
-    <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Title>HKH.Exchange</Title>
-    <Description>Data importing/exporting based on NPOI/CSV</Description>
-    <PackageTags>npoi;excel;xls;xlsx;csv;import;export</PackageTags>
-    <Version>4.5.2</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
+		<SignAssembly>false</SignAssembly>
+		<AssemblyOriginatorKeyFile>hkh.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>true</DelaySign>
+		<Authors>Jacky li</Authors>
+		<PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Title>HKH.Exchange</Title>
+		<Description>Data importing/exporting based on NPOI/CSV</Description>
+		<PackageTags>npoi;excel;xls;xlsx;csv;import;export</PackageTags>
+		<Version>5.0.0.0</Version>
+		<Copyright>Copyright © BlackEyes 2009</Copyright>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="HKH.Common" Version="4.5.2.2" />
-    <PackageReference Include="HKH.CSV" Version="4.5.2.3" />
-    <PackageReference Include="NPOI" Version="2.5.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NPOI" Version="2.6.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml"/>
-    <None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd"/>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="Configuration\ConfigEx.xml" Pack="True" PackagePath="content\docs\ConfigEx.xml" />
+		<None Include="Configuration\ExchangeConfigurationSchema.xsd" Pack="True" PackagePath="content\docs\ExchangeConfigurationSchema.xsd" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\HKH.Common\HKH.Common.csproj" />
+		<ProjectReference Include="..\HKH.CSV\HKH.CSV.csproj" />
+	</ItemGroup>
 
 </Project>

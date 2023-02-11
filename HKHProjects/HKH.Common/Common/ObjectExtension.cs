@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System //HKH.Common
 {
@@ -120,7 +115,7 @@ namespace System //HKH.Common
             return result;
         }
 
-        internal static List<string> DumpCache(bool getter, bool setter)
+        public static List<string> DumpCache(bool getter, bool setter)
         {
             List<string> lst = new List<string>();
 

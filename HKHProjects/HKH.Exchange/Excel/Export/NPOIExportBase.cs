@@ -67,7 +67,7 @@ namespace HKH.Exchange.Excel
 
             CustomTableFooter(sheet);
 
-            workBook.Write(stream);
+            workBook.Write(stream, true);
         }
 
         public void Fill<THeader>(string templateFile, string targetFile, TBodyList tList, THeader tHeader)
@@ -94,7 +94,7 @@ namespace HKH.Exchange.Excel
                 Fill(tList, tHeader);
             }
 
-            workBook.Write(targetStream);
+            workBook.Write(targetStream, true);
             Reset();
         }
 

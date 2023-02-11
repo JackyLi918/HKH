@@ -1,0 +1,20 @@
+{
+  "definitions": {
+    "hkhTask": {
+      "type": "object",
+      "$id": "hkhTask",
+      "properties": {
+        "name": { "type": "string" },
+        "taskType": { "type": "string" },
+        "taskQueueType": { "type": "string" },
+        "maxTaskCount": { "type": "integer" }
+      },
+      "required": [ "name", "taskType" ]
+    }
+  },
+  "type": "array",
+  "items": {
+    "type": { "$ref": "#hkhTask" }
+  },
+  "uniqueItems": true
+}

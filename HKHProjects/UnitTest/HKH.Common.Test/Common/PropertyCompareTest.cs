@@ -14,7 +14,7 @@ namespace HKH.Common.Test
 		public void EqualTest()
 		{
 			pcTest pt1 = new pcTest { Name = "1" };
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>("Name");
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>("Name");
 			Assert.AreEqual(pcCompare.Compare(pt1, pt1), 0);
 		}
 
@@ -23,7 +23,7 @@ namespace HKH.Common.Test
 		{
 			pcTest pt1 = new pcTest { Name = "1" };
 			pcTest pt2 = new pcTest { Name = "2" };
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>("Name");
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>("Name");
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) < 0);
 		}
 
@@ -32,7 +32,7 @@ namespace HKH.Common.Test
 		{
 			pcTest pt1 = new pcTest { PP = new pp { Name = "1" } };
 			pcTest pt2 = new pcTest { PP = new pp { Name = "2" } };
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>("PP");
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>("PP");
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) < 0);
 		}
 
@@ -40,7 +40,7 @@ namespace HKH.Common.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void ExceptionTest1()
 		{
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>(t=>t.Field);
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>(t=>t.Field);
 		}
 
 		[TestMethod]
@@ -49,7 +49,7 @@ namespace HKH.Common.Test
 		{
 			pcTest pt1 = new pcTest { PC = new pc { Name = "1" } };
 			pcTest pt2 = new pcTest { PC = new pc { Name = "2" } };
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>("PC");
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>("PC");
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) < 0);
 		}
 
@@ -59,7 +59,7 @@ namespace HKH.Common.Test
 		{
 			pcTest pt1 = new pcTest { PC = new pc { Name = "1" } };
 			pcTest pt2 = new pcTest { PC = new pc { Name = "2" } };
-			PropertyCompare<pcTest> pcCompare = new PropertyCompare<pcTest>();
+			PropertyComparer<pcTest> pcCompare = new PropertyComparer<pcTest>();
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) < 0);
 		}
 
@@ -68,12 +68,12 @@ namespace HKH.Common.Test
 		{
 			pcTest pt1 = new pcTest { Name = "1", PP = new pp { Name = "2" } };
 			pcTest pt2 = new pcTest { Name = "1", PP = new pp { Name = "1" } };
-			PropertyCompareList<pcTest> pcCompare = new PropertyCompareList<pcTest>();
+			PropertyComparerList<pcTest> pcCompare = new PropertyComparerList<pcTest>();
 			pcCompare.Add("Name");
 			pcCompare.Add("PP");
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) > 0);
 
-			pcCompare = new PropertyCompareList<pcTest>(new PropertyCompare<pcTest>(t => t.Name), new PropertyCompare<pcTest>(t => t.PP));
+			pcCompare = new PropertyComparerList<pcTest>(new PropertyComparer<pcTest>(t => t.Name), new PropertyComparer<pcTest>(t => t.PP));
 			Assert.IsTrue(pcCompare.Compare(pt1, pt2) > 0);
 		}
 	}

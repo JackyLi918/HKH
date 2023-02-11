@@ -17,7 +17,7 @@ namespace HKH.Common.Test
             IList<string> l2 = new List<string> { "dd", "ee" };
             IList<string> l3 = new List<string> { "ff" };
 
-            LinkedEnumerable<string> le = new LinkedEnumerable<string>(l1, l2, l3);
+            LinkedList<string> le = new LinkedList<string>(l1, l2, l3);
 
             Assert.AreEqual(le.Count(), 6);
             Assert.AreEqual(le.ElementAt<string>(0), "aa");
