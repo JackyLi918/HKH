@@ -1,8 +1,4 @@
 using System;
-using System.Data;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using HKH.Data.Configuration;
 
 namespace HKH.Data
@@ -43,7 +39,7 @@ namespace HKH.Data
 		/// <param name="Conn"></param>
 		/// <param name="Trans"></param>
 		/// <returns></returns>
-		internal static IDataBaseObjectBuilder GetDataBaseObjectBuilder(HKHConnectionStringElement dbConfiguration)
+		internal static IDataBaseObjectBuilder GetDataBaseObjectBuilder(HKHConnectionString dbConfiguration)
 		{
 			return GetDataBaseObjectBuilder(Type.GetType(dbConfiguration.Builder), dbConfiguration.ConnectionString);
 		}
@@ -79,7 +75,7 @@ namespace HKH.Data
 		{
 			if (!iBuilderType.IsAssignableFrom(builderType))
 			{
-				throw new HKH.Data.DataBaseConfigurationException("The BuilderType must implement IDataBaseObjectBuilder.");
+				throw new DataBaseConfigurationException("The BuilderType must implement IDataBaseObjectBuilder.");
 			}
 
 			return true;

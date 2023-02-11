@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using HKH.Data.Configuration;
 
@@ -22,7 +19,7 @@ namespace HKH.Data
         {
         }
 
-        public TransactionController(HKHConnectionStringElement dbConfiguration)
+        public TransactionController(HKHConnectionString dbConfiguration)
             : this(DataBaseObjectBuilderFactory.GetDataBaseObjectBuilder(dbConfiguration))
         {
         }

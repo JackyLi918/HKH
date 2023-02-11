@@ -19,9 +19,9 @@ namespace HKH.Common.Security.Test
 		[TestInitialize]
 		public void Init()
 		{
-			aes128 = new AES(AesKeySize.Bits128, key);
-			aes192 = new AES(AesKeySize.Bits192, key);
-			aes256 = new AES(AesKeySize.Bits256, key);
+			aes128 = new AES(AESKeySize.Bits128, key);
+			aes192 = new AES(AESKeySize.Bits192, key);
+			aes256 = new AES(AESKeySize.Bits256, key);
 		}
 
 		[TestMethod]

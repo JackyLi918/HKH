@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard2.0</TargetFrameworks>
+	  <TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
@@ -15,21 +15,14 @@
     <Description>HKH.DataProvider with dapper intergated</Description>
     <PackageTags>dataaccess;sqlserver;odbc;oledb;dapper</PackageTags>
     <RootNamespace>HKH.Data.Dapper</RootNamespace>
-    <Version>4.5.2</Version>
+    <Version>5.0.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HKH.DataProvider" Version="4.5.2" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Dapper">
-      <Version>2.0.35</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
-    <PackageReference Include="Dapper">
-      <Version>1.60.6</Version>
-    </PackageReference>
+  <ItemGroup>
+    <ProjectReference Include="..\HKH.DataProvider\HKH.DataProvider.csproj" />
   </ItemGroup>
 </Project>

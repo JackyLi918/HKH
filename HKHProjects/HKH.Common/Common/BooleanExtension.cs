@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System//HKH.Common
+﻿namespace System//HKH.Common
 {
     public static class BooleanExtension
     {

@@ -29,12 +29,12 @@ namespace HKH.Tasks
 		bool _isRunning = false;
 
 		int _sleepInterval = 100;
-		HKHTaskElement _setting = null;
+		HKHTaskSetting _setting = null;
 		ParallelTaskQueue _queue = null;
 
 		#endregion
 
-		public ParallelTaskDispatcher(HKHTaskElement setting, ParallelTaskQueue taskQueue)
+		public ParallelTaskDispatcher(HKHTaskSetting setting, ParallelTaskQueue taskQueue)
 		{
 			_setting = setting;
 			_queue = taskQueue;
@@ -42,7 +42,7 @@ namespace HKH.Tasks
 
 		#region Properties
 
-		public HKHTaskElement Setting
+		public HKHTaskSetting Setting
 		{
 			get { return _setting; }
 		}

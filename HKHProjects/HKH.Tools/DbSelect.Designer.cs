@@ -42,101 +42,102 @@
             this.rbSQLServer = new System.Windows.Forms.RadioButton();
             this.gbLoginModel = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnCopyConnString = new System.Windows.Forms.Button();
             this.gbLoginModel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblServerName
             // 
             this.lblServerName.AutoSize = true;
-            this.lblServerName.Location = new System.Drawing.Point(33, 21);
+            this.lblServerName.Location = new System.Drawing.Point(33, 27);
             this.lblServerName.Name = "lblServerName";
-            this.lblServerName.Size = new System.Drawing.Size(53, 12);
+            this.lblServerName.Size = new System.Drawing.Size(55, 13);
             this.lblServerName.TabIndex = 0;
             this.lblServerName.Text = "服务器：";
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(29, 74);
+            this.lblUserName.Location = new System.Drawing.Point(29, 84);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(53, 12);
+            this.lblUserName.Size = new System.Drawing.Size(55, 13);
             this.lblUserName.TabIndex = 1;
             this.lblUserName.Text = "用户名：";
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(29, 109);
+            this.lblPassword.Location = new System.Drawing.Point(29, 118);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(53, 12);
+            this.lblPassword.Size = new System.Drawing.Size(49, 13);
             this.lblPassword.TabIndex = 2;
             this.lblPassword.Text = "密  码：";
             // 
             // tbUserName
             // 
-            this.tbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbUserName.Enabled = false;
-            this.tbUserName.Location = new System.Drawing.Point(82, 74);
+            this.tbUserName.Location = new System.Drawing.Point(84, 80);
             this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(100, 21);
+            this.tbUserName.Size = new System.Drawing.Size(129, 20);
             this.tbUserName.TabIndex = 3;
             // 
             // tbPassword
             // 
-            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPassword.Enabled = false;
-            this.tbPassword.Location = new System.Drawing.Point(82, 106);
+            this.tbPassword.Location = new System.Drawing.Point(84, 115);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(100, 21);
+            this.tbPassword.Size = new System.Drawing.Size(129, 20);
             this.tbPassword.TabIndex = 4;
             // 
             // lblDbName
             // 
             this.lblDbName.AutoSize = true;
-            this.lblDbName.Location = new System.Drawing.Point(33, 220);
+            this.lblDbName.Location = new System.Drawing.Point(33, 242);
             this.lblDbName.Name = "lblDbName";
-            this.lblDbName.Size = new System.Drawing.Size(53, 12);
+            this.lblDbName.Size = new System.Drawing.Size(55, 13);
             this.lblDbName.TabIndex = 5;
             this.lblDbName.Text = "数据库：";
             // 
             // tbDbName
             // 
-            this.tbDbName.Location = new System.Drawing.Point(86, 220);
+            this.tbDbName.Location = new System.Drawing.Point(86, 238);
             this.tbDbName.Name = "tbDbName";
-            this.tbDbName.Size = new System.Drawing.Size(100, 21);
+            this.tbDbName.Size = new System.Drawing.Size(162, 20);
             this.tbDbName.TabIndex = 6;
             // 
             // cbServerName
             // 
-            this.cbServerName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbServerName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbServerName.FormattingEnabled = true;
-            this.cbServerName.Location = new System.Drawing.Point(86, 21);
+            this.cbServerName.Location = new System.Drawing.Point(86, 23);
             this.cbServerName.Name = "cbServerName";
-            this.cbServerName.Size = new System.Drawing.Size(121, 20);
+            this.cbServerName.Size = new System.Drawing.Size(121, 21);
             this.cbServerName.TabIndex = 7;
             this.cbServerName.DropDown += new System.EventHandler(this.cbServerName_DropDown);
             this.cbServerName.SelectedIndexChanged += new System.EventHandler(this.cbServerName_SelectedIndexChanged);
             // 
             // cbDbName
             // 
-            this.cbDbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbDbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbDbName.FormattingEnabled = true;
-            this.cbDbName.Location = new System.Drawing.Point(86, 221);
+            this.cbDbName.Location = new System.Drawing.Point(86, 238);
             this.cbDbName.Name = "cbDbName";
-            this.cbDbName.Size = new System.Drawing.Size(121, 20);
+            this.cbDbName.Size = new System.Drawing.Size(162, 21);
             this.cbDbName.TabIndex = 8;
             this.cbDbName.DropDown += new System.EventHandler(this.cbDbName_DropDown);
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(35, 257);
+            this.btnTest.Location = new System.Drawing.Point(35, 278);
             this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 23);
+            this.btnTest.Size = new System.Drawing.Size(75, 25);
             this.btnTest.TabIndex = 9;
             this.btnTest.Text = "测试连接";
             this.btnTest.UseVisualStyleBackColor = true;
@@ -146,9 +147,9 @@
             // 
             this.rbWindow.AutoSize = true;
             this.rbWindow.Checked = true;
-            this.rbWindow.Location = new System.Drawing.Point(32, 20);
+            this.rbWindow.Location = new System.Drawing.Point(32, 22);
             this.rbWindow.Name = "rbWindow";
-            this.rbWindow.Size = new System.Drawing.Size(113, 16);
+            this.rbWindow.Size = new System.Drawing.Size(117, 17);
             this.rbWindow.TabIndex = 11;
             this.rbWindow.TabStop = true;
             this.rbWindow.Text = "Windows方式登录";
@@ -158,9 +159,9 @@
             // rbSQLServer
             // 
             this.rbSQLServer.AutoSize = true;
-            this.rbSQLServer.Location = new System.Drawing.Point(32, 42);
+            this.rbSQLServer.Location = new System.Drawing.Point(32, 46);
             this.rbSQLServer.Name = "rbSQLServer";
-            this.rbSQLServer.Size = new System.Drawing.Size(131, 16);
+            this.rbSQLServer.Size = new System.Drawing.Size(128, 17);
             this.rbSQLServer.TabIndex = 12;
             this.rbSQLServer.TabStop = true;
             this.rbSQLServer.Text = "SQL Server方式登录";
@@ -168,17 +169,17 @@
             // 
             // gbLoginModel
             // 
-            this.gbLoginModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbLoginModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbLoginModel.Controls.Add(this.tbPassword);
             this.gbLoginModel.Controls.Add(this.rbSQLServer);
             this.gbLoginModel.Controls.Add(this.lblUserName);
             this.gbLoginModel.Controls.Add(this.rbWindow);
             this.gbLoginModel.Controls.Add(this.lblPassword);
             this.gbLoginModel.Controls.Add(this.tbUserName);
-            this.gbLoginModel.Location = new System.Drawing.Point(35, 58);
+            this.gbLoginModel.Location = new System.Drawing.Point(35, 63);
             this.gbLoginModel.Name = "gbLoginModel";
-            this.gbLoginModel.Size = new System.Drawing.Size(200, 141);
+            this.gbLoginModel.Size = new System.Drawing.Size(229, 153);
             this.gbLoginModel.TabIndex = 13;
             this.gbLoginModel.TabStop = false;
             this.gbLoginModel.Text = "登录方式";
@@ -188,16 +189,27 @@
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.Location = new System.Drawing.Point(213, 21);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(75, 25);
             this.btnRefresh.TabIndex = 14;
             this.btnRefresh.Text = "刷新";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // btnCopyConnString
+            // 
+            this.btnCopyConnString.Location = new System.Drawing.Point(173, 278);
+            this.btnCopyConnString.Name = "btnCopyConnString";
+            this.btnCopyConnString.Size = new System.Drawing.Size(75, 25);
+            this.btnCopyConnString.TabIndex = 15;
+            this.btnCopyConnString.Text = "复制连接串";
+            this.btnCopyConnString.UseVisualStyleBackColor = true;
+            this.btnCopyConnString.Click += new System.EventHandler(this.btnCopyConnString_Click);
+            // 
             // DbSelect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnCopyConnString);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.gbLoginModel);
             this.Controls.Add(this.btnTest);
@@ -207,7 +219,7 @@
             this.Controls.Add(this.lblDbName);
             this.Controls.Add(this.lblServerName);
             this.Name = "DbSelect";
-            this.Size = new System.Drawing.Size(299, 324);
+            this.Size = new System.Drawing.Size(299, 323);
             this.gbLoginModel.ResumeLayout(false);
             this.gbLoginModel.PerformLayout();
             this.ResumeLayout(false);
@@ -231,5 +243,6 @@
         private System.Windows.Forms.RadioButton rbSQLServer;
         private System.Windows.Forms.GroupBox gbLoginModel;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnCopyConnString;
     }
 }

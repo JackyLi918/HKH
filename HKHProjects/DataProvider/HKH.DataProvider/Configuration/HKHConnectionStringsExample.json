@@ -1,0 +1,12 @@
+{
+  "hkhConnectionStrings": [
+    {
+      "name": "defaultConn",
+      "connectionString": "Data Source=jacky\\sql2000;Initial Catalog=SCMIMDB;User ID=sa;Password=sa;Integrated Security=false;",
+      "builder": "HKH.Data.SqlServer.SqlServerObjectBuilder,HKH.DataProvider",
+      "isDefault": true,
+      "encrypt": false,
+      "algo": ""
+    }
+  ]
+}

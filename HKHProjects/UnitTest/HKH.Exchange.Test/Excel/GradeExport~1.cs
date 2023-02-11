@@ -32,7 +32,7 @@ namespace HKH.Exchange.Test
 			font.Color = HSSFColor.Red.Index;
 			font.FontName = "宋体";
 			font.FontHeight = 20 * 20;
-			font.Boldweight = 10;
+			font.IsBold = true;
 			font.IsItalic = true;
 
 			style.SetFont(font);

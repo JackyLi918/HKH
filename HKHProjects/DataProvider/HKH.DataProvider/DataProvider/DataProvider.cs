@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using System.Data.Common;
-using HKH.Common;
 using HKH.Data.Configuration;
 
 namespace HKH.Data
@@ -42,7 +40,7 @@ namespace HKH.Data
         /// </summary>
         /// <param name="dbConfiguration"></param>
         /// <returns></returns>
-        public static IDataProvider GetInstance(HKHConnectionStringElement dbConfiguration)
+        public static IDataProvider GetInstance(HKHConnectionString dbConfiguration)
         {
             IDataProvider dataProvider = null;
             if (!dataProviders.TryGetValue(dbConfiguration.Name, out dataProvider))

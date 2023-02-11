@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HKH.Configuration
 {
@@ -50,11 +47,11 @@ namespace HKH.Configuration
             bool result = false;
             value = string.Empty;
 
-            if (ConfigurationManager.AppSettings.AllKeys.Any(k => k == key))
-            {
-                result = true;
-                value = ConfigurationManager.AppSettings[key];
-            }
+            //if (ConfigurationManager.AppSettings.AllKeys.Any(k => k == key))
+            //{
+            //    result = true;
+            //    value = ConfigurationManager.AppSettings[key];
+            //}
 
             return result;
         }

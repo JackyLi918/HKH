@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace HKH.Common.Security
 {
@@ -26,16 +22,16 @@ namespace HKH.Common.Security
             switch (sType)
             {
                 case SHAType.SHA256:
-                    algorithm = System.Security.Cryptography.SHA256Managed.Create();
+                    algorithm = SHA256.Create();
                     break;
                 case SHAType.SHA384:
-                    algorithm = System.Security.Cryptography.SHA384Managed.Create();
+                    algorithm = SHA384.Create();
                     break;
                 case SHAType.SHA512:
-                    algorithm = System.Security.Cryptography.SHA512Managed.Create();
+                    algorithm = SHA512.Create();
                     break;
                 default:
-                    algorithm = System.Security.Cryptography.SHA1Managed.Create();
+                    algorithm = SHA1.Create();
                     break;
             }
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace HKH.Common.Security
 {
@@ -21,8 +17,7 @@ namespace HKH.Common.Security
 
         public TripleDES(string key, string iv)
         {
-            algorithm = new TripleDESCryptoServiceProvider();
-
+            algorithm = System.Security.Cryptography.TripleDES.Create();
             Initialize(key, iv, CipherMode.CBC);
         }
 

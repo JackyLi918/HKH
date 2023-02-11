@@ -50,30 +50,30 @@
             // 
             // tsbAppSetting
             // 
-            this.tsbAppSetting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbAppSetting.Image = ((System.Drawing.Image)(resources.GetObject("tsbAppSetting.Image")));
             this.tsbAppSetting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAppSetting.Name = "tsbAppSetting";
-            this.tsbAppSetting.Size = new System.Drawing.Size(23, 22);
+            this.tsbAppSetting.Size = new System.Drawing.Size(105, 22);
             this.tsbAppSetting.Text = "应用程序配置";
+            this.tsbAppSetting.Visible = false;
             this.tsbAppSetting.Click += new System.EventHandler(this.tsbAppSetting_Click);
             // 
             // tsbDbBackupAndRestore
             // 
-            this.tsbDbBackupAndRestore.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbDbBackupAndRestore.Image = ((System.Drawing.Image)(resources.GetObject("tsbDbBackupAndRestore.Image")));
             this.tsbDbBackupAndRestore.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDbBackupAndRestore.Name = "tsbDbBackupAndRestore";
-            this.tsbDbBackupAndRestore.Size = new System.Drawing.Size(23, 22);
-            this.tsbDbBackupAndRestore.Text = "数据库备份还原";
+            this.tsbDbBackupAndRestore.Size = new System.Drawing.Size(66, 22);
+            this.tsbDbBackupAndRestore.Text = "数据库";
+            this.tsbDbBackupAndRestore.ToolTipText = "数据库连接测试";
+            this.tsbDbBackupAndRestore.Click += new System.EventHandler(this.tsbDbBackupAndRestore_Click);
             // 
             // tsbImageConvert
             // 
-            this.tsbImageConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbImageConvert.Image = ((System.Drawing.Image)(resources.GetObject("tsbImageConvert.Image")));
             this.tsbImageConvert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbImageConvert.Name = "tsbImageConvert";
-            this.tsbImageConvert.Size = new System.Drawing.Size(23, 22);
+            this.tsbImageConvert.Size = new System.Drawing.Size(118, 22);
             this.tsbImageConvert.Text = "图片字符串转换";
             this.tsbImageConvert.Click += new System.EventHandler(this.tsbImageConvert_Click);
             // 
@@ -84,6 +84,7 @@
             this.ClientSize = new System.Drawing.Size(511, 425);
             this.Controls.Add(this.tsMain);
             this.Name = "frmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "黑瞳工具箱";
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();

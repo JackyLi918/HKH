@@ -1,20 +1,16 @@
-using System;
 using System.Data;
-using System.Data.Common;
-using System.Collections.Generic;
-using System.Text;
 using HKH.Data.Configuration;
 
 namespace HKH.Data
 {
 	public interface IDataBaseObjectBuilder : IBaseDataBaseObjectBuilder, ICommandBuiler
 	{
-		#region Members
+        #region Members
 
-		/// <summary>
-		/// Gets the DataProviderConfiguration of this builder
-		/// </summary>
-        HKHConnectionStringElement Configuration { get; }
+        /// <summary>
+        /// Gets the DataProviderConfiguration of this builder
+        /// </summary>
+        HKHConnectionString Configuration { get; }
 
 		/// <summary>
 		/// Get an IDbCommand object with empty commandtext
