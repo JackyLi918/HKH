@@ -13,7 +13,7 @@
 		<Title>HKH.Tasks</Title>
 		<Description>Parallel task pool</Description>
 		<PackageTags>parallel;task pool</PackageTags>
-		<Version>2.0.0.0</Version>
+		<Version>2.0.0.1</Version>
 		<Copyright>Copyright © BlackEyes 2009</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
