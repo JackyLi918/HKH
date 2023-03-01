@@ -61,7 +61,7 @@ namespace HKH.Tasks.Configuration
                 if (string.IsNullOrEmpty(taskTypeName)) { throw new HKHTaskSettingException("taskType is required."); }
                 taskConfig.TaskType = GetTaskType(taskTypeName);
 
-                var taskQueueTypeName = section.GetSection("taskType").Value;
+                var taskQueueTypeName = section.GetSection("taskQueueType").Value;
                 taskConfig.TaskQueueType = GetTaskQueueType(string.IsNullOrEmpty(taskQueueTypeName) ? _defaultTaskQueueType : taskQueueTypeName);
 
                 var maxTaskCount = section.GetSection("maxTaskCount").Value;
