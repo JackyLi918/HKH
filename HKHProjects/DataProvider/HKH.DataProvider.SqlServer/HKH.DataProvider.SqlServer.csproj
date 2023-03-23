@@ -11,7 +11,7 @@
 	  <Authors>Jacky li</Authors>
 	  <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	  <Title>HKH.DataProvider</Title>
+	  <Title>HKH.DataProvider.SqlServer</Title>
 	  <Description>A lightweight data access module</Description>
 	  <PackageTags>dataaccess;sqlserver;</PackageTags>
 	  <RootNamespace>HKH.Data.SqlServer</RootNamespace>
