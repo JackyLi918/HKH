@@ -387,6 +387,17 @@ namespace System//HKH.Common
             return int.TryParse(src, out result) ? result : defaultValue;
         }
 
+        public static long SafeToInt64(this string src)
+        {
+            return SafeToInt64(src, 0);
+        }
+
+        public static long SafeToInt64(this string src, long defaultValue)
+        {
+            long result = 0;
+            return long.TryParse(src, out result) ? result : defaultValue;
+        }
+
         public static double SafeToDouble(this string src)
         {
             return SafeToDouble(src, 0.0);
