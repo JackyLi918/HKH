@@ -278,36 +278,6 @@ namespace HKH.Exchange.Excel
             }
         }
 
-        //TODO: jacky, this code doesnot work for npoi2.0
-        //protected IColor GetColor(Color sysColor)
-        //{
-        //	return GetColor(sysColor.R, sysColor.G, sysColor.B);
-        //}
-
-        //protected IColor GetColor(byte red, byte green, byte blue)
-        //{
-        //	HSSFPalette hssfPalette = workBook.GetCustomPalette();
-        //	HSSFColor hssfColour = hssfPalette.FindColor(red, green, blue);
-        //	if (hssfColour == null)
-        //	{
-        //		if (PaletteRecord.STANDARD_PALETTE_SIZE < 255)
-        //		{
-        //			if (PaletteRecord.STANDARD_PALETTE_SIZE < 64)
-        //			{
-        //				PaletteRecord.STANDARD_PALETTE_SIZE = 64;
-        //				PaletteRecord.STANDARD_PALETTE_SIZE += 1;
-        //				hssfColour = hssfPalette.AddColor(red, green, blue);
-        //			}
-        //			else
-        //			{
-        //				hssfColour = hssfPalette.FindSimilarColor(red, green, blue);
-        //			}
-        //		}
-        //	}
-
-        //	return hssfColour;
-        //}
-
         /// <summary>
         /// 
         /// </summary>
@@ -399,17 +369,22 @@ namespace HKH.Exchange.Excel
 
         private void WriteHeader<THeader>(THeader tHeader)
         {
-            int rowIndex = 0;
             foreach (ExportHeaderColumnMapping columnMapping in Setting.Header.Values)
             {
-                rowIndex = (columnMapping.Offset && Setting.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
+                int rowIndex = (columnMapping.Offset && Setting.Body.RowMode != FillRowMode.Fill) ? columnMapping.RowIndex + curEIndex : columnMapping.RowIndex;
                 IRow dataRow = sheet.GetRow(rowIndex);
-                if (columnMapping.PropertyType == PropertyType.Expression)
-                    CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
-                else if (columnMapping.PropertyType == PropertyType.Picture)
-                    WritePicture(columnMapping, (GetValue(tHeader, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
-                else
-                    dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue<THeader>(tHeader, columnMapping.PropertyName), dateFormat);
+                switch (columnMapping.PropertyType)
+                {
+                    case PropertyType.Expression:
+                        CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                        break;
+                    case PropertyType.Picture:
+                        WritePicture(columnMapping, (GetValue(tHeader, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                        break;
+                    default:
+                        dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue<THeader>(tHeader, columnMapping.PropertyName), dateFormat);
+                        break;
+                }
             }
         }
 
@@ -427,8 +402,7 @@ namespace HKH.Exchange.Excel
                 }
             }
 
-            TBody tObj = null;
-
+            TBody tObj;
             int rowIndex = 0;
             while (NextTObject(tList, out tObj))
             {
@@ -441,12 +415,18 @@ namespace HKH.Exchange.Excel
                         if (mode == ExportMode.Export || Setting.Body.RowMode == FillRowMode.New)
                             dataRow.CreateCell(columnMapping.ColumnIndex);
 
-                        if (columnMapping.PropertyType == PropertyType.Expression)
-                            CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
-                        else if (columnMapping.PropertyType == PropertyType.Picture)
-                            WritePicture(columnMapping, (GetValue(tObj, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
-                        else
-                            dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue(tObj, columnMapping.PropertyName), dateFormat);
+                        switch (columnMapping.PropertyType)
+                        {
+                            case PropertyType.Expression:
+                                CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                                break;
+                            case PropertyType.Picture:
+                                WritePicture(columnMapping, (GetValue(tObj, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                                break;
+                            default:
+                                dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue(tObj, columnMapping.PropertyName), dateFormat);
+                                break;
+                        }
                     }
 
                     if (mode == ExportMode.Export)

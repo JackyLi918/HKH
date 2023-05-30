@@ -2,103 +2,93 @@
   "exchanges": [
     {
       "id": "1",
-      "clsType": "Grade",
+      "clsType": "OrderRecycleExportViewModel",
       "exports": [
         {
           "id": "1",
           "sheet": "Sheet1",
-          "dateFormat": "yyyy年mm月dd日",
+          "dateFormat": "yyyy/mm/dd",
           "numberFormat": "0.00",
-          "xlsFormat": "xls",
+          "xlsFormat": "xlsx",
           "header": {
             "mappings": [
               {
                 "row": 2,
+                "col": "F",
+                "offset": false,
+                "prop": "StoreName"
+              },
+              {
+                "row": 2,
+                "col": "H",
+                "offset": false,
+                "prop": "OutTime"
+              },
+              {
+                "row": 5,
+                "col": "C",
+                "offset": true,
+                "prop": "=Sum(C4:C{XlsRowNum(-1)})",
+                "propType": "expression"
+              },
+              {
+                "row": 6,
                 "col": "B",
                 "offset": true,
-                "prop": "{SrcRowNum(+1)}",
-                "propType": "expression"
+                "prop": "Comment"
+              },
+              {
+                "row": 6,
+                "col": "D",
+                "offset": true,
+                "prop": "Accounting"
+              },
+              {
+                "row": 6,
+                "col": "F",
+                "offset": true,
+                "prop": "Auditor"
+              },
+              {
+                "row": 6,
+                "col": "H",
+                "offset": true,
+                "prop": "Author"
               }
             ]
           },
           "body": {
-            "outputTitle": true,
-            "firstRowIndex": 0,
+            "outputTitle": false,
+            "firstRowIndex": 4,
             "fillMode": "copy",
             "mappings": [
               {
                 "col": "A",
-                "prop": "{SrcRowNum(+1)}",
-                "title": "序号",
-                "propType": "expression"
+                "prop": "AccountNo",
+                "title": "收款账号*"
               },
               {
                 "col": "B",
-                "prop": "ClassId",
-                "title": "班级编号"
+                "prop": "AccountName",
+                "title": "收款账号户名*"
               },
               {
                 "col": "C",
-                "prop": "StudentId",
-                "title": "学生编号"
+                "prop": "Amount",
+                "title": "付款金额*"
               },
               {
                 "col": "D",
-                "prop": "Net"
+                "prop": "Comment",
+                "title": "付款用途*"
               },
               {
                 "col": "E",
-                "prop": "Java"
-              },
-              {
-                "col": "F",
-                "prop": "Html"
-              },
-              {
-                "col": "G",
-                "prop": "Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})",
-                "title": "总分",
-                "propType": "expression"
+                "prop": "BankNo",
+                "title": "收款人开户行*"
               }
             ]
           }
-        }
-      ],
-      "imports": [
-        {
-          "id": "1",
-          "sheet": "0",
-          "firstRowIndex": 0,
-          "xlsFormat": "xls",
-          "columnMapType": "excelHeader",
-          "mappings": [
-            {
-              "col": "A",
-              "prop": "ClassId",
-              "inherit": true
-            },
-            {
-              "col": "B",
-              "prop": "StudentId"
-            },
-            {
-              "col": "C",
-              "prop": "Net",
-              "inherit": true
-            },
-            {
-              "col": "D",
-              "prop": "Java",
-              "inherit": true,
-              "from": "left"
-            },
-            {
-              "col": "E",
-              "prop": "Html",
-              "inherit": true,
-              "from": "left"
-            }
-          ]
         }
       ]
     }
