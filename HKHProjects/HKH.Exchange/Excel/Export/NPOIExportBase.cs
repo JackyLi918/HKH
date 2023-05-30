@@ -6,7 +6,9 @@ using System.Text.RegularExpressions;
 using HKH.Common;
 using HKH.Exchange.Common;
 using HKH.Exchange.Configuration;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace HKH.Exchange.Excel
 {
@@ -251,6 +253,30 @@ namespace HKH.Exchange.Excel
             else
                 cell.SetCellValue(value);
         }
+        protected virtual void WritePicture(ExportColumnMapping columnMapping, string filePath, ICell cell, int sourceRowIndex)
+        {
+            if (!File.Exists(filePath)) return;
+
+            byte[] bytes = File.ReadAllBytes(filePath);
+            WritePicture(columnMapping, bytes, PictureType.Unknown, cell, sourceRowIndex);
+        }
+        protected virtual void WritePicture(ExportColumnMapping columnMapping, byte[] bytes, PictureType picType, ICell cell, int sourceRowIndex)
+        {
+            var picIndex = workBook.AddPicture(bytes, picType);
+            var patriarch = sheet.CreateDrawingPatriarch();
+            IClientAnchor anchor;
+            IPicture pict;
+            if (Setting.XlsFormat == XlsFormat.Xls)
+            {
+                anchor = new HSSFClientAnchor(0, 0, 0, 0, cell.ColumnIndex, sourceRowIndex, cell.ColumnIndex + 1, sourceRowIndex + 1);
+                pict = (HSSFPicture)patriarch.CreatePicture(anchor, picIndex);
+            }
+            else
+            {
+                anchor = new XSSFClientAnchor(0, 0, 0, 0, cell.ColumnIndex, sourceRowIndex, cell.ColumnIndex + 1, sourceRowIndex + 1);
+                pict = (XSSFPicture)patriarch.CreatePicture(anchor, picIndex);
+            }
+        }
 
         //TODO: jacky, this code doesnot work for npoi2.0
         //protected IColor GetColor(Color sysColor)
@@ -380,6 +406,8 @@ namespace HKH.Exchange.Excel
                 IRow dataRow = sheet.GetRow(rowIndex);
                 if (columnMapping.PropertyType == PropertyType.Expression)
                     CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                else if (columnMapping.PropertyType == PropertyType.Picture)
+                    WritePicture(columnMapping, (GetValue(tHeader, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
                 else
                     dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue<THeader>(tHeader, columnMapping.PropertyName), dateFormat);
             }
@@ -415,6 +443,8 @@ namespace HKH.Exchange.Excel
 
                         if (columnMapping.PropertyType == PropertyType.Expression)
                             CalculateExpression(columnMapping, dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
+                        else if (columnMapping.PropertyType == PropertyType.Picture)
+                            WritePicture(columnMapping, (GetValue(tObj, columnMapping.PropertyName) ?? "").ToString(), dataRow.GetCell(columnMapping.ColumnIndex), rowIndex);
                         else
                             dataRow.GetCell(columnMapping.ColumnIndex).SetCellValue(GetValue(tObj, columnMapping.PropertyName), dateFormat);
                     }

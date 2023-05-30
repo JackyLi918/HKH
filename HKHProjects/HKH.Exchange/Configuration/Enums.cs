@@ -20,7 +20,8 @@ namespace HKH.Exchange.Configuration
     public enum PropertyType
     {
         Normal,
-        Expression
+        Expression,
+        Picture
     }
 
     public enum XlsFormat

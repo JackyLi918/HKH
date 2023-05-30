@@ -41,7 +41,7 @@
     },
     "propType": {
       "type": "string",
-      "enum": [ "normal", "const", "expression" ]
+      "enum": [ "normal", "const", "expression", "picture" ]
     },
     "exportHeaderColMapping": {
       "type": "object",
