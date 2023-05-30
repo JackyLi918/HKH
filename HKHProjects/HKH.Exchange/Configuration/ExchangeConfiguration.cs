@@ -580,7 +580,7 @@ namespace HKH.Exchange.Configuration
                         foreach (JsonObject jItem in jObj["mappings"].AsArray())
                         {
                             ExportBodyColumnMapping excolumn = LoadExportBodyColumnMapping(jItem, export);
-                            body.Add(excolumn.ColumnName, excolumn); break;
+                            body.Add(excolumn.ColumnName, excolumn); 
                         }
                         break;
                     default:
