@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
@@ -10,17 +10,18 @@
 		<Authors>Jacky li</Authors>
 		<PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<Title>HKH.DataProvider.Oracle</Title>
+		<Title>HKH.DataProvider.MySql</Title>
 		<Description>A lightweight data access module</Description>
-		<PackageTags>dataaccess;Oracle;</PackageTags>
-		<RootNamespace>HKH.Data.Oracle</RootNamespace>
-		<Version>5.0.0.0</Version>
+		<PackageTags>dataaccess;mysql;</PackageTags>
+		<RootNamespace>HKH.Data.MySql</RootNamespace>
+		<Version>5.0.0.1</Version>
 		<Copyright>Copyright © BlackEyes 2009</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.100" />
+	  <PackageReference Include="MySql.Data" Version="8.0.33" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\HKH.DataProvider\HKH.DataProvider.csproj" />
 	</ItemGroup>
+
 </Project>
