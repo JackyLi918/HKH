@@ -168,8 +168,10 @@ namespace HKH.Exchange.Excel
             dateFormat = workBook.CreateDataFormat().GetFormat(dateFormatString);
             //----end
 
-            WriteBody(tList);
-            WriteHeader(tHeader);
+            if (tList != null && Setting.Body != null && Setting.Body.Count > 0)
+                WriteBody(tList);
+            if (tHeader != null && Setting.Header != null && Setting.Header.Count > 0)
+                WriteHeader(tHeader);
         }
 
         #endregion
@@ -393,7 +395,7 @@ namespace HKH.Exchange.Excel
             //write columns' title
             if (mode == ExportMode.Export && Setting.Body.OutPutTitle)
             {
-                IRow titleRow = sheet.CreateRow(NextRowNum());
+                IRow titleRow = GetNewRow(NextRowNum(), tList);
                 foreach (ExportBodyColumnMapping columnMapping in Setting.Body.Values)
                 {
                     //write column title under sheet title

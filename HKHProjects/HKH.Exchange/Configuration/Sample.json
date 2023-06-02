@@ -1,4 +1,5 @@
 {
+  "$schema": "./ExchangeConfigurationSchema.json",
   "exchanges": [
     {
       "id": "1",
