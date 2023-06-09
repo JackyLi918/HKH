@@ -4,11 +4,12 @@ using HKH.Exchange.Common;
 using HKH.Exchange.Configuration;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 
 namespace HKH.Exchange.Excel
 {
-	public static class NPOIExtension
+    public static class NPOIExtension
 	{
 		public static IWorkbook CreateWorkbook(XlsFormat fmt, Stream stream = null)
 		{
@@ -153,5 +154,105 @@ namespace HKH.Exchange.Excel
 			else
 				SetCellValue(cell, Convert.ToString(value), dateFormat);
 		}
-	}
+
+		/// <summary>
+		/// NPOI missing the ShiftedRows height, waiting offical fix.  just rewrite here
+		/// </summary>
+		/// <param name="sheet"></param>
+		/// <param name="sourceRowIndex"></param>
+		/// <param name="targetRowIndex"></param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentException"></exception>
+        public static IRow CopyRow(ISheet sheet, int sourceRowIndex, int targetRowIndex)
+        {
+            if (sourceRowIndex == targetRowIndex)
+                throw new ArgumentException("sourceIndex and targetIndex cannot be same");
+            // Get the source / new row
+            IRow newRow = sheet.GetRow(targetRowIndex);
+            IRow sourceRow = sheet.GetRow(sourceRowIndex);
+
+            // If the row exist in destination, push down all rows by 1 else create a new row
+            if (newRow != null)
+            {
+                sheet.ShiftRows(targetRowIndex, sheet.LastRowNum, 1, true, false);
+            }
+            newRow = sheet.CreateRow(targetRowIndex);
+            newRow.Height = sourceRow.Height;   //copy row height
+
+            // Loop through source columns to add to new row
+            for (int i = sourceRow.FirstCellNum; i < sourceRow.LastCellNum; i++)
+            {
+                // Grab a copy of the old/new cell
+                ICell oldCell = sourceRow.GetCell(i);
+
+                // If the old cell is null jump to next cell
+                if (oldCell == null)
+                {
+                    continue;
+                }
+                ICell newCell = newRow.CreateCell(i);
+
+                if (oldCell.CellStyle != null)
+                {
+                    // apply style from old cell to new cell 
+                    newCell.CellStyle = oldCell.CellStyle;
+                }
+
+                // If there is a cell comment, copy
+                //if (oldCell.CellComment != null)
+                //{
+                //    sheet.CopyComment(oldCell, newCell);
+                //}
+
+                // If there is a cell hyperlink, copy
+                if (oldCell.Hyperlink != null)
+                {
+                    newCell.Hyperlink = oldCell.Hyperlink;
+                }
+
+                // Set the cell data type
+                newCell.SetCellType(oldCell.CellType);
+
+                // Set the cell data value
+                switch (oldCell.CellType)
+                {
+                    case CellType.Blank:
+                        newCell.SetCellValue(oldCell.StringCellValue);
+                        break;
+                    case CellType.Boolean:
+                        newCell.SetCellValue(oldCell.BooleanCellValue);
+                        break;
+                    case CellType.Error:
+                        newCell.SetCellErrorValue(oldCell.ErrorCellValue);
+                        break;
+                    case CellType.Formula:
+                        newCell.SetCellFormula(oldCell.CellFormula);
+                        break;
+                    case CellType.Numeric:
+                        newCell.SetCellValue(oldCell.NumericCellValue);
+                        break;
+                    case CellType.String:
+                        newCell.SetCellValue(oldCell.RichStringCellValue);
+                        break;
+                }
+            }
+
+            // If there are are any merged regions in the source row, copy to new row
+            for (int i = 0; i < sheet.NumMergedRegions; i++)
+            {
+                CellRangeAddress cellRangeAddress = sheet.GetMergedRegion(i);
+                if (cellRangeAddress != null && cellRangeAddress.FirstRow == sourceRow.RowNum)
+                {
+                    CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.RowNum,
+                            (newRow.RowNum +
+                                    (cellRangeAddress.LastRow - cellRangeAddress.FirstRow
+                                            )),
+                            cellRangeAddress.FirstColumn,
+                            cellRangeAddress.LastColumn);
+                    sheet.AddMergedRegion(newCellRangeAddress);
+                }
+            }
+            return newRow;
+        }
+    }
 }

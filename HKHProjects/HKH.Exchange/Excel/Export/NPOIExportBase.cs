@@ -9,6 +9,7 @@ using HKH.Exchange.Configuration;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using SixLabors.ImageSharp;
 
 namespace HKH.Exchange.Excel
 {
@@ -172,6 +173,8 @@ namespace HKH.Exchange.Excel
                 WriteBody(tList);
             if (tHeader != null && Setting.Header != null && Setting.Header.Count > 0)
                 WriteHeader(tHeader);
+
+            CustomTableFooter(sheet);
         }
 
         #endregion
@@ -209,10 +212,9 @@ namespace HKH.Exchange.Excel
                         //copy current row if has more row
                         if (curTIndex < GetCount(tList) - 1)
                         {
-                            sheet.CopyRow(rowNum, rowNum + 1);
+                            NPOIExtension.CopyRow(sheet, rowNum, rowNum + 1);
                         }
                         row = sheet.GetRow(rowNum);
-                        sheet.GetRow(rowNum + 1).Height = row.Height;
                         break;
                     case FillRowMode.Fill:
                         row = sheet.GetRow(rowNum);
@@ -259,24 +261,28 @@ namespace HKH.Exchange.Excel
         {
             if (!File.Exists(filePath)) return;
 
-            byte[] bytes = File.ReadAllBytes(filePath);
-            WritePicture(columnMapping, bytes, PictureType.Unknown, cell, sourceRowIndex);
-        }
-        protected virtual void WritePicture(ExportColumnMapping columnMapping, byte[] bytes, PictureType picType, ICell cell, int sourceRowIndex)
-        {
-            var picIndex = workBook.AddPicture(bytes, picType);
-            var patriarch = sheet.CreateDrawingPatriarch();
-            IClientAnchor anchor;
-            IPicture pict;
-            if (Setting.XlsFormat == XlsFormat.Xls)
+            var image = Image.Load(filePath);
+            using (var stream = new MemoryStream())
             {
-                anchor = new HSSFClientAnchor(0, 0, 0, 0, cell.ColumnIndex, sourceRowIndex, cell.ColumnIndex + 1, sourceRowIndex + 1);
-                pict = (HSSFPicture)patriarch.CreatePicture(anchor, picIndex);
+                image.SaveAsJpeg(stream);
+                var jpgBytes = stream.ToArray();
+                WritePicture(jpgBytes, PictureType.JPEG, 0, 0, sheet.GetColumnWidth(cell.ColumnIndex), cell.Row.Height, cell.ColumnIndex, sourceRowIndex, cell.ColumnIndex + 1, sourceRowIndex + 1);
+            }
+        }
+
+        protected virtual void WritePicture(byte[] bytes, PictureType picType, int dx1, int dy1, int dx2, int dy2, int col1, int row1, int col2, int row2)
+        {
+            int pictureIndex = workBook.AddPicture(bytes, picType);
+            IDrawing drawing = sheet.CreateDrawingPatriarch();
+            if (base.Setting.XlsFormat == XlsFormat.Xls)
+            {
+                IClientAnchor anchor = new HSSFClientAnchor(dx1, dy1, dx2, dy2, col1, row1, col2, row2);
+                _ = (HSSFPicture)drawing.CreatePicture(anchor, pictureIndex);
             }
             else
             {
-                anchor = new XSSFClientAnchor(0, 0, 0, 0, cell.ColumnIndex, sourceRowIndex, cell.ColumnIndex + 1, sourceRowIndex + 1);
-                pict = (XSSFPicture)patriarch.CreatePicture(anchor, picIndex);
+                IClientAnchor anchor = new XSSFClientAnchor(dx1, dy1, dx2, dy2, col1, row1, col2, row2);
+                _ = (XSSFPicture)drawing.CreatePicture(anchor, pictureIndex);
             }
         }
 
