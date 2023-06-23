@@ -11,6 +11,7 @@ dotnet pack ..\HKH.CurrencyFormat\HKH.CurrencyFormat.csproj -c Release
 
 dotnet pack ..\HKH.Mef2\HKH.Mef2.Integration.Abstractions\HKH.Mef2.Integration.Abstractions.csproj -c Release
 dotnet pack ..\HKH.Mef2\HKH.Mef2.Integration.Autofac\HKH.Mef2.Integration.Autofac.csproj -c Release
+dotnet pack ..\Microsoft.PinYinConverter.Core\Microsoft.PinYinConverter.Core.csproj -c Release
 
 Del ..\ReleasePackages\*.*
 Move *.nupkg ..\ReleasePackages\
