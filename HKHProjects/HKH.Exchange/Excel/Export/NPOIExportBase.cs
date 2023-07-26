@@ -252,6 +252,7 @@ namespace HKH.Exchange.Excel
 
             if (value.StartsWith("="))
             {
+                cell.SetCellType(CellType.Formula);
                 cell.SetCellFormula(value.TrimStart('='));
             }
             else
