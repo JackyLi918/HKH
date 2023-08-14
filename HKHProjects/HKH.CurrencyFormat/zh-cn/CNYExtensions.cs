@@ -1,4 +1,4 @@
-﻿namespace HKH.CurrencyFormat
+namespace HKH.CurrencyFormat
 {
     public static class CNYExtensions
     {
