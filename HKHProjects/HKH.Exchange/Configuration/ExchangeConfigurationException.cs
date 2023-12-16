@@ -30,11 +30,5 @@ namespace HKH.Exchange.Configuration
             : base(message, ex)
         {
         }
-
-        protected ExchangeConfigurationException(SerializationInfo si, StreamingContext sc)
-            : base(si, sc)
-        {
-        }
-
     }
 }

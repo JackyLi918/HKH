@@ -30,11 +30,5 @@ namespace HKH.Data.Configuration
 			:base(message, ex)
 		{
 		}
-
-		protected DataBaseConfigurationException(SerializationInfo si, StreamingContext sc)
-			: base(si, sc)
-		{
-		}
-
 	}
 }

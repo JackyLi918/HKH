@@ -30,11 +30,5 @@ namespace HKH.Tasks.Configuration
 			:base(message, ex)
 		{
 		}
-
-		protected HKHTaskSettingException(SerializationInfo si, StreamingContext sc)
-			: base(si, sc)
-		{
-		}
-
 	}
 }

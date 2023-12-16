@@ -50,9 +50,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HKH.DataProvider.Oracle", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HKH.DataProvider.MySql", "DataProvider\HKH.DataProvider.MySql\HKH.DataProvider.MySql.csproj", "{3C7906D1-61FC-4C6D-A506-A4EB94288AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.PinYinConverter.Core", "Microsoft.PinYinConverter.Core\Microsoft.PinYinConverter.Core.csproj", "{B852D8F9-D441-4973-B089-100F9FC8376F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.PinYinConverter.Core", "Microsoft.PinYinConverter.Core\Microsoft.PinYinConverter.Core.csproj", "{B852D8F9-D441-4973-B089-100F9FC8376F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.PinYinConverter.Core.Test", "UnitTest\Microsoft.PinYinConverter.Core.Test\Microsoft.PinYinConverter.Core.Test.csproj", "{D57A275D-D733-49C6-8D68-B01E91097958}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.PinYinConverter.Core.Test", "UnitTest\Microsoft.PinYinConverter.Core.Test\Microsoft.PinYinConverter.Core.Test.csproj", "{D57A275D-D733-49C6-8D68-B01E91097958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -333,9 +333,9 @@ Global
 		{D57A275D-D733-49C6-8D68-B01E91097958} = {3903CE9B-DDB1-4EB2-9DC3-877066365113}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6D0E60B5-4A3A-45E2-8DD2-FF3951177508}
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+		SolutionGuid = {6D0E60B5-4A3A-45E2-8DD2-FF3951177508}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
