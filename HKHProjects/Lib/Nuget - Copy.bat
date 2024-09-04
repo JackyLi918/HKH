@@ -21,6 +21,4 @@ dotnet pack ..\Microsoft.PinYinConverter.Core\Microsoft.PinYinConverter.Core.csp
 Del ..\ReleasePackages\*.*
 Move *.nupkg ..\ReleasePackages\
 
-::NuGetPackageUploader.exe ..\ReleasePackages\ /a
-
 pause

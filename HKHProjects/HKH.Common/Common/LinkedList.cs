@@ -10,20 +10,18 @@ namespace HKH.Common
     /// public class LinkedEnumerable<T> : IEnumerable<T>, IEnumerable
     public class LinkedList<T> : IEnumerable<T>, IEnumerable
     {
-        private IList<IEnumerable<T>> enumerableList = null;
+        private List<IEnumerable<T>> enumerableList = null;
 
         public LinkedList(params IEnumerable<T>[] enumerables)
         {
             enumerableList = new List<IEnumerable<T>>();
-            foreach (IEnumerable<T> enumerable in enumerables)
-            {
-                enumerableList.Add(enumerable);
-            }
+            enumerableList.AddRange(enumerables);
         }
 
-        public LinkedList(IList<IEnumerable<T>> enumerables)
+        public LinkedList(IList<IEnumerable<T>> enumerables)            
         {
-            enumerableList = enumerables;
+            enumerableList = new List<IEnumerable<T>>();
+            enumerableList.AddRange(enumerables);
         }
 
         #region Internal Members
@@ -34,18 +32,24 @@ namespace HKH.Common
 
         #endregion
 
-		#region IEnumerable<T> Members
+        public LinkedList<T> Add(params IEnumerable<T>[] enumerables)
+        {
+            enumerableList.AddRange(enumerables);
+            return this;
+        }
 
-		public IEnumerator<T> GetEnumerator()
+        #region IEnumerable<T> Members
+
+        public IEnumerator<T> GetEnumerator()
         {
             return new LinkedEnumerator<T>(this);
         }
 
         #endregion
 
-		#region IEnumerable Members
+        #region IEnumerable Members
 
-		IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -64,18 +68,18 @@ namespace HKH.Common
             this.linkedEnumerable = linkedEnumerable;
         }
 
-		#region IEnumerator<T> Members
+        #region IEnumerator<T> Members
 
-		public T Current
+        public T Current
         {
             get { return enumerator.Current; }
         }
 
         #endregion
 
-		#region IEnumerator Members
+        #region IEnumerator Members
 
-		object IEnumerator.Current
+        object IEnumerator.Current
         {
             get { return Current; }
         }
@@ -118,9 +122,9 @@ namespace HKH.Common
 
         #endregion
 
-		#region IDisposable Members
+        #region IDisposable Members
 
-		public void Dispose()
+        public void Dispose()
         {
             CloseEnumerator();
         }
