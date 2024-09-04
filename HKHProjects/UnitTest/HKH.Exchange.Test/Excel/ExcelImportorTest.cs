@@ -15,7 +15,7 @@ namespace HKH.Exchange.Test
         string excelFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\Excel\\testdata.xls";
 		string csvFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\Excel\\testcsv.csv";
 
-		[TestMethod]
+        [TestMethod]
 		public void TestImport()
 		{
 			System.Data.DataTable dt = new dsGrade().Grade;

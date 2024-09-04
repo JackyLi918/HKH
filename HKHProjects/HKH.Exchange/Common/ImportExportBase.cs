@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using HKH.Exchange.Configuration;
 
 namespace HKH.Exchange.Common
@@ -49,15 +44,10 @@ namespace HKH.Exchange.Common
             get
             {
                 return _tableId;
-            }
-            set
-            {
-                _tableId = value;
-                _tableMapping = ExchangeConfiguration.GetTableMapping(configurationFile, _tableId);
-            }
+            }           
         }
 
-        public Export GetExport(string exportId)
+        protected Export GetExport(string exportId)
         {
             if (_tableMapping == null || string.IsNullOrEmpty(exportId) || exportId == "0")
                 return ExchangeConfiguration.BuildDefaultExport<T>();
@@ -65,7 +55,7 @@ namespace HKH.Exchange.Common
                 return _tableMapping.Exports[exportId];
         }
 
-        public Import GetImport(string importId)
+        protected Import GetImport(string importId)
         {
             if (_tableMapping == null || string.IsNullOrEmpty(importId) || importId == "0")
             {

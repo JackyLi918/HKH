@@ -11,11 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HKH.Exchange.Common;
-using HKH.Exchange.Configuration;
 using NPOI.SS.UserModel;
 
 namespace HKH.Exchange.Excel
@@ -83,7 +79,7 @@ namespace HKH.Exchange.Excel
 		{
 			if (SourceDataValidating != null)
 			{
-				SourceDataValidatingEventArgs<IRow, ISheet> args = new SourceDataValidatingEventArgs<IRow, ISheet>(row, sheet, importSetting);
+				SourceDataValidatingEventArgs<IRow, ISheet> args = new SourceDataValidatingEventArgs<IRow, ISheet>(row, sheet, Setting);
 				SourceDataValidating(this, args);
 				return !args.Cancel;
 			}
@@ -97,7 +93,7 @@ namespace HKH.Exchange.Excel
 		{
 			if (TargetDataValidating != null)
 			{
-				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, importSetting);
+				DataValidatingEventArgs<T, TList> args = new DataValidatingEventArgs<T, TList>(tObj, tList, Setting);
 				TargetDataValidating(this, args);
 				return !args.Cancel;
 			}

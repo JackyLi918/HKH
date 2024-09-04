@@ -1,17 +1,22 @@
-NuGet.exe Pack ..\HKH.Common\HKH.Common.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\DataProvider\HKH.DataProvider\HKH.DataProvider.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\DataProvider\HKH.DataProvider.Dapper\HKH.DataProvider.Dapper.csproj -Prop Configuration=Release
-::NuGet.exe Pack ..\DataProvider\HKH.DataProvider.SqlDatabase\HKH.DataProvider.SqlDatabase.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\HKH.AOP\HKH.AOP.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\HKH.CSV\HKH.CSV.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\HKH.Exchange\HKH.Exchange.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\HKH.Tasks\HKH.Tasks.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\HKH.WCF\HKH.WCF.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\Unity.Web\Unity.Web.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\MEF.Web\MEF.Web.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\DataProvider\DapperLinq\HKH.Linq\HKH.Linq.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\DataProvider\DapperLinq\HKH.Linq.Dapper\HKH.Linq.Dapper.csproj -Prop Configuration=Release
-NuGet.exe Pack ..\DataProvider\DapperLinq\HKH.Linq.SqlServer\HKH.Linq.SqlServer.csproj -Prop Configuration=Release
+dotnet pack ..\HKH.Common\HKH.Common.csproj -c Release
+
+dotnet pack ..\DataProvider\HKH.DataProvider\HKH.DataProvider.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.Dapper\HKH.DataProvider.Dapper.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.SqlServer\HKH.DataProvider.SqlServer.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.MsSqlServer\HKH.DataProvider.MsSqlServer.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.Odbc\HKH.DataProvider.Odbc.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.Oracle\HKH.DataProvider.Oracle.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.MySql\HKH.DataProvider.MySql.csproj -c Release
+dotnet pack ..\DataProvider\HKH.DataProvider.OleDb\HKH.DataProvider.OleDb.csproj -c Release
+
+dotnet pack ..\HKH.CSV\HKH.CSV.csproj -c Release
+dotnet pack ..\HKH.Exchange\HKH.Exchange.csproj -c Release
+dotnet pack ..\HKH.Tasks\HKH.Tasks.csproj -c Release
+dotnet pack ..\HKH.CurrencyFormat\HKH.CurrencyFormat.csproj -c Release
+
+dotnet pack ..\HKH.Mef2\HKH.Mef2.Integration.Abstractions\HKH.Mef2.Integration.Abstractions.csproj -c Release
+dotnet pack ..\HKH.Mef2\HKH.Mef2.Integration.Autofac\HKH.Mef2.Integration.Autofac.csproj -c Release
+dotnet pack ..\Microsoft.PinYinConverter.Core\Microsoft.PinYinConverter.Core.csproj -c Release
 
 Del ..\ReleasePackages\*.*
 Move *.nupkg ..\ReleasePackages\

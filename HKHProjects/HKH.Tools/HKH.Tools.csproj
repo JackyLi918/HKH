@@ -59,6 +59,12 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.15\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
@@ -112,6 +118,12 @@
     <Compile Include="frmHexImage.Designer.cs">
       <DependentUpon>frmHexImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmJsonValidate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmJsonValidate.Designer.cs">
+      <DependentUpon>frmJsonValidate.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +152,9 @@
     <EmbeddedResource Include="frmHexImage.resx">
       <DependentUpon>frmHexImage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmJsonValidate.resx">
+      <DependentUpon>frmJsonValidate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,6 +172,7 @@
     <None Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

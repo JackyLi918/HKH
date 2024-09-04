@@ -1,0 +1,96 @@
+{
+  "exchanges": [
+    {
+      "id": "1",
+      "clsType": "OrderRecycleExportViewModel",
+      "exports": [
+        {
+          "id": "1",
+          "sheet": "Sheet1",
+          "dateFormat": "yyyy/mm/dd",
+          "numberFormat": "0.00",
+          "xlsFormat": "xlsx",
+          "header": {
+            "mappings": [
+              {
+                "row": 2,
+                "col": "F",
+                "offset": false,
+                "prop": "StoreName"
+              },
+              {
+                "row": 2,
+                "col": "H",
+                "offset": false,
+                "prop": "OutTime"
+              },
+              {
+                "row": 5,
+                "col": "C",
+                "offset": true,
+                "prop": "=Sum(C4:C{XlsRowNum(-1)})",
+                "propType": "expression"
+              },
+              {
+                "row": 6,
+                "col": "B",
+                "offset": true,
+                "prop": "Comment"
+              },
+              {
+                "row": 6,
+                "col": "D",
+                "offset": true,
+                "prop": "Accounting"
+              },
+              {
+                "row": 6,
+                "col": "F",
+                "offset": true,
+                "prop": "Auditor"
+              },
+              {
+                "row": 6,
+                "col": "H",
+                "offset": true,
+                "prop": "Author"
+              }
+            ]
+          },
+          "body": {
+            "outputTitle": false,
+            "firstRowIndex": 4,
+            "fillMode": "copy",
+            "mappings": [
+              {
+                "col": "A",
+                "prop": "AccountNo",
+                "title": "收款账号*"
+              },
+              {
+                "col": "B",
+                "prop": "AccountName",
+                "title": "收款账号户名*"
+              },
+              {
+                "col": "C",
+                "prop": "Amount",
+                "title": "付款金额*"
+              },
+              {
+                "col": "D",
+                "prop": "Comment",
+                "title": "付款用途*"
+              },
+              {
+                "col": "E",
+                "prop": "BankNo",
+                "title": "收款人开户行*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

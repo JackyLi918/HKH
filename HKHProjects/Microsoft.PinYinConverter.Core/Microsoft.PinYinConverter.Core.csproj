@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.0;net6.0;net8.0</TargetFrameworks>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Authors>Jacky</Authors>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Title>Microsoft.PinYinConverter.Core</Title>
+		<Version>1.1.0.0</Version>
+		<PackageId>PinYinConverter.Core</PackageId>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="CharDictionary.resources" />
+	  <None Remove="HomophoneDictionary.resources" />
+	  <None Remove="PinyinDictionary.resources" />
+	  <None Remove="StrokeDictionary.resources" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="CharDictionary.resources" />
+	  <EmbeddedResource Include="HomophoneDictionary.resources" />
+	  <EmbeddedResource Include="PinyinDictionary.resources" />
+	  <EmbeddedResource Include="StrokeDictionary.resources" />
+	</ItemGroup>
+
+</Project>

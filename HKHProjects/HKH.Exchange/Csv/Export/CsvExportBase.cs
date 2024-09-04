@@ -8,15 +8,11 @@
  * 
 *****************************************************/
 
+using System;
+using System.IO;
 using HKH.CSV;
 using HKH.Exchange.Common;
 using HKH.Exchange.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HKH.Exchange.CSV
 {
@@ -70,7 +66,7 @@ namespace HKH.Exchange.CSV
         public override int NextRowNum()
         {
             curEIndex++;
-            return exportSetting.Body.FirstRowIndex + curEIndex;
+            return Setting.Body.FirstRowIndex + curEIndex;
         }
 
         #endregion
@@ -80,9 +76,9 @@ namespace HKH.Exchange.CSV
         private void OutputDetails(TBodyList tList)
         {
             //write columns' title
-            if (mode == ExportMode.Export && exportSetting.Body.OutPutTitle)
+            if (mode == ExportMode.Export && Setting.Body.OutPutTitle)
             {
-                foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
+                foreach (ExportBodyColumnMapping columnMapping in Setting.Body.Values)
                 {
                     //write column title
                     _writer.Write(columnMapping.Title);
@@ -98,7 +94,7 @@ namespace HKH.Exchange.CSV
                 if (ValidateSourceData(tObj, tList))
                 {
                     //write data
-                    foreach (ExportBodyColumnMapping columnMapping in exportSetting.Body.Values)
+                    foreach (ExportBodyColumnMapping columnMapping in Setting.Body.Values)
                     {
                         object val = GetValue(tObj, columnMapping.PropertyName);
                         if (val is DateTime)

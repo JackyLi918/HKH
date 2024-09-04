@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+	  <TargetFrameworks>net48;netstandard2.0;net6.0;net8.0</TargetFrameworks>
 	  <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	  <RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
@@ -11,16 +11,16 @@
 	  <Authors>Jacky li</Authors>
 	  <PackageProjectUrl>https://github.com/JackyLi918/HKH</PackageProjectUrl>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	  <Title>HKH.DataProvider</Title>
+	  <Title>HKH.DataProvider.MsSqlServer</Title>
 	  <Description>A lightweight data access module</Description>
 	  <PackageTags>dataaccess;sqlserver;</PackageTags>
 	  <RootNamespace>HKH.Data.SqlServer</RootNamespace>
-	  <Version>5.0.0.0</Version>
+	  <Version>5.1.0.0</Version>
 	  <Copyright>Copyright © BlackEyes 2009</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>

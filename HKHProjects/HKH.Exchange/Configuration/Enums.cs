@@ -8,12 +8,6 @@
  * 
 *****************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HKH.Exchange.Configuration
 {
 
@@ -26,7 +20,8 @@ namespace HKH.Exchange.Configuration
     public enum PropertyType
     {
         Normal,
-        Expression
+        Expression,
+        Picture
     }
 
     public enum XlsFormat

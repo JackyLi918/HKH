@@ -106,7 +106,7 @@ namespace System.Linq //HKH.Common
         {
             var keySelector = ObjectExtension.BuildGetter<T>(propName);
             string methodName = direction == SortDirection.Ascending ? "ThenBy" : "ThenByDescending";
-            
+
             MethodCallExpression methodCall = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(T), (keySelector as LambdaExpression).ReturnType }, queryable.Expression, Expression.Quote(keySelector));
             return (IOrderedQueryable<T>)queryable.Provider.CreateQuery<T>(methodCall);
         }

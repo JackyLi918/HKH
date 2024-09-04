@@ -10,16 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HKH.Exchange.CSV
 {
 	/// <summary>
 	/// CsvExportList
 	/// </summary>
-    public class CSVExportList<TBody> : CSVExportBase<TBody, IList<TBody>> where TBody : class
+	public class CSVExportList<TBody> : CSVExportBase<TBody, IList<TBody>> where TBody : class
 	{
 		#region Constructor
 

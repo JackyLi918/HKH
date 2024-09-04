@@ -387,6 +387,17 @@ namespace System//HKH.Common
             return int.TryParse(src, out result) ? result : defaultValue;
         }
 
+        public static long SafeToInt64(this string src)
+        {
+            return SafeToInt64(src, 0);
+        }
+
+        public static long SafeToInt64(this string src, long defaultValue)
+        {
+            long result = 0;
+            return long.TryParse(src, out result) ? result : defaultValue;
+        }
+
         public static double SafeToDouble(this string src)
         {
             return SafeToDouble(src, 0.0);
@@ -397,7 +408,16 @@ namespace System//HKH.Common
             double result = 0.0;
             return double.TryParse(src, out result) ? result : defaultValue;
         }
+        public static decimal SafeToDecimal(this string src)
+        {
+            return SafeToDecimal(src, 0m);
+        }
 
+        public static decimal SafeToDecimal(this string src, decimal defaultValue)
+        {
+            decimal result = 0m;
+            return decimal.TryParse(src, out result) ? result : defaultValue;
+        }
         public static DateTime SafeToDateTime(this string src)
         {
             return SafeToDateTime(src, DateTime.MinValue);

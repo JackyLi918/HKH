@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HKH.Exchange.Configuration
 {
@@ -34,11 +30,5 @@ namespace HKH.Exchange.Configuration
             : base(message, ex)
         {
         }
-
-        protected ExchangeConfigurationException(SerializationInfo si, StreamingContext sc)
-            : base(si, sc)
-        {
-        }
-
     }
 }

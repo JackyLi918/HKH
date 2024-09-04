@@ -1,14 +1,8 @@
-﻿using HKH.Common;
-using HKH.Exchange.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HKH.Exchange.Configuration;
 using HKH.Exchange.Common;
+using HKH.Exchange.Configuration;
 
 namespace HKH.Exchange.CSV
 {
@@ -69,10 +63,10 @@ namespace HKH.Exchange.CSV
 
         protected override string[] GetDataHeaders(DataTable sheet)
         {
-            if (importSetting.ColumnMapType == ColumnMapType.ExcelHeader)
+            if (Setting.ColumnMapType == ColumnMapType.ExcelHeader)
                 return null;
 
-            if (importSetting.FirstRowIndex > 0 && sheet.Rows.Count > 0)
+            if (Setting.FirstRowIndex > 0 && sheet.Rows.Count > 0)
             {
                 List<string> headers = new List<string>();
                 foreach (var val in sheet.Rows[0].ItemArray)

@@ -29,5 +29,9 @@ namespace HKH.Tools
             new frmHexImage().ShowDialog();
         }
 
+        private void tsbJsonValidate_Click(object sender, EventArgs e)
+        {
+            new frmJsonValidate().ShowDialog();
+        }
     }
 }

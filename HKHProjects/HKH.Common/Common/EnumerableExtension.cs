@@ -10,24 +10,27 @@ namespace System.Linq//HKH.Common
     public static class EnumerableExtension
     {
         #region Do Action
+
         /// <summary>
-        /// 
+        /// doWork for each element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="doWork"></param>
+        [Obsolete("Use ForEach instead")]
         public static void Do<T>(this IEnumerable<T> source, Action<T> doWork)
         {
             Do<T>(source, t => true, doWork);
         }
 
         /// <summary>
-        /// 
+        /// doWork for the filterred element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="predicate"></param>
         /// <param name="doWork"></param>
+        [Obsolete("Use ForEach instead")]
         public static void Do<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> doWork)
         {
             if (source == null)
@@ -55,23 +58,25 @@ namespace System.Linq//HKH.Common
         }
 
         /// <summary>
-        /// 
+        /// doWork for each element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="doWork"></param>
+        [Obsolete("Use ForEachAsync instead")]
         public static void DoAsync<T>(this IEnumerable<T> source, Action<T> doWork)
         {
             DoAsync<T>(source, t => true, doWork);
         }
 
         /// <summary>
-        /// 
+        /// doWork for the filterred element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="predicate"></param>
         /// <param name="doWork"></param>
+        [Obsolete("Use ForEachAsync instead")]
         public static void DoAsync<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> doWork)
         {
             if (source == null)
@@ -95,23 +100,134 @@ namespace System.Linq//HKH.Common
         }
 
         /// <summary>
-        /// 
+        /// doWork for the first element
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <param name="predicate"></param>
         /// <param name="doWork"></param>
+        [Obsolete("Use First instead")]
         public static void DoFirst<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> doWork)
         {
             if (doWork == null)
             {
-                throw Error.ArgumentNull("func)");
+                throw Error.ArgumentNull("doWork)");
             }
 
             T t = source.FirstOrDefault(predicate);
             if (t != null)
                 doWork(t);
         }
+
+        #endregion
+
+        #region ForEach
+        /// <summary>
+        /// run action for each element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action"></param>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            ForEach<T>(source, t => true, action);
+        }
+
+        /// <summary>
+        /// run action for the filterred element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <param name="action"></param>
+        public static void ForEach<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> action)
+        {
+            if (source == null)
+            {
+                throw Error.ArgumentNull("source");
+            }
+            if (predicate == null)
+            {
+                throw Error.ArgumentNull("predicate)");
+            }
+            if (action == null)
+            {
+                throw Error.ArgumentNull("action)");
+            }
+
+            using (IEnumerator<T> enumerator = source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    T current = enumerator.Current;
+                    if (predicate(current))
+                        action(current);
+                }
+            }
+        }
+
+        /// <summary>
+        /// run action for each element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="action"></param>
+        public static void ForEachAsync<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            ForEachAsync<T>(source, t => true, action);
+        }
+
+        /// <summary>
+        /// run action for the filterred element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <param name="action"></param>
+        public static void ForEachAsync<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> action)
+        {
+            if (source == null)
+            {
+                throw Error.ArgumentNull("source");
+            }
+            if (predicate == null)
+            {
+                throw Error.ArgumentNull("predicate)");
+            }
+            if (action == null)
+            {
+                throw Error.ArgumentNull("action)");
+            }
+
+            Parallel.ForEach(source, current =>
+            {
+                if (predicate(current))
+                    action(current);
+            });
+        }
+
+        /// <summary>
+        /// run action for the first element
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <param name="action"></param>
+        public static void First<T>(this IEnumerable<T> source, Func<T, bool> predicate, Action<T> action)
+        {
+            if (action == null)
+            {
+                throw Error.ArgumentNull("action)");
+            }
+
+            T t = source.FirstOrDefault(predicate);
+            if (t != null)
+                action(t);
+        }
+
+        #endregion
+
+        #region Type Cast
 
         /// <summary>
         /// 
@@ -162,6 +278,14 @@ namespace System.Linq//HKH.Common
                     }
                 }
             }
+        }
+
+        public static HKH.Common.LinkedList<T> Link<T>(this IEnumerable<T> source, params IEnumerable<T>[] toLinkEnumerables)
+        {
+            if (source is HKH.Common.LinkedList<T>)
+                return (source as HKH.Common.LinkedList<T>).Add(toLinkEnumerables);
+            else
+                return new HKH.Common.LinkedList<T>(source).Add(toLinkEnumerables);
         }
 
         /// <summary>
@@ -237,6 +361,7 @@ namespace System.Linq//HKH.Common
                 }
             }
         }
+
         #endregion
 
         #region Sort

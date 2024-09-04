@@ -33,6 +33,7 @@
             this.tsbAppSetting = new System.Windows.Forms.ToolStripButton();
             this.tsbDbBackupAndRestore = new System.Windows.Forms.ToolStripButton();
             this.tsbImageConvert = new System.Windows.Forms.ToolStripButton();
+            this.tsbJsonValidate = new System.Windows.Forms.ToolStripButton();
             this.tsMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +42,8 @@
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbAppSetting,
             this.tsbDbBackupAndRestore,
-            this.tsbImageConvert});
+            this.tsbImageConvert,
+            this.tsbJsonValidate});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(511, 25);
@@ -77,6 +79,15 @@
             this.tsbImageConvert.Text = "图片字符串转换";
             this.tsbImageConvert.Click += new System.EventHandler(this.tsbImageConvert_Click);
             // 
+            // tsbJsonValidate
+            // 
+            this.tsbJsonValidate.Image = ((System.Drawing.Image)(resources.GetObject("tsbJsonValidate.Image")));
+            this.tsbJsonValidate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbJsonValidate.Name = "tsbJsonValidate";
+            this.tsbJsonValidate.Size = new System.Drawing.Size(81, 22);
+            this.tsbJsonValidate.Text = "JSON验证";
+            this.tsbJsonValidate.Click += new System.EventHandler(this.tsbJsonValidate_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +110,7 @@
         private System.Windows.Forms.ToolStripButton tsbAppSetting;
         private System.Windows.Forms.ToolStripButton tsbDbBackupAndRestore;
 		private System.Windows.Forms.ToolStripButton tsbImageConvert;
+        private System.Windows.Forms.ToolStripButton tsbJsonValidate;
     }
 }
 

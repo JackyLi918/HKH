@@ -23,11 +23,5 @@ namespace HKH.Common
 			:base(message, ex)
 		{
 		}
-
-		protected UnLogException(SerializationInfo si, StreamingContext sc)
-			: base(si, sc)
-		{
-		}
 	}
-
 }

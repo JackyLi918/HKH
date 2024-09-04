@@ -42,7 +42,7 @@
           <columnMapping col ="D" prop ="Net"/>
           <columnMapping col ="E" prop ="Java" />
           <columnMapping col ="F" prop ="Html" />
-          <columnMapping col ="G" prop ="Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" propType="expression" title="总分" />
+          <columnMapping col ="G" prop ="=Sum($D{XlsRowNum(0)},$E{XlsRowNum(0)},$F{XlsRowNum(0)})" propType="expression" title="总分" />
         </body>
       </export>
     </exports>

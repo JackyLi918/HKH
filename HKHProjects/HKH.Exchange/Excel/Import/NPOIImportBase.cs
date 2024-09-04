@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using HKH.Exchange.Common;
 using HKH.Exchange.Configuration;
 using NPOI.SS.UserModel;
@@ -81,7 +78,7 @@ namespace HKH.Exchange.Excel
 
         protected override string[] GetDataHeaders(ISheet sheet)
         {
-            if (importSetting.FirstRowIndex > 0)
+            if (Setting.FirstRowIndex > 0)
             {
                 IRow firstRow = sheet.GetRow(0);
                 return firstRow.Cells.Select<ICell, string>(c => c.GetCellValue().ToString()).ToArray();

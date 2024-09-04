@@ -53,16 +53,16 @@ namespace HKH.CurrencyFormat
 		public double Format(string sRMB, int digits)
 		{
 
-			//1.5ÒÚ
+			//1.5äº¿
 			if (Regex.IsMatch(sRMB, "^\\d+[.\\d+]*\\D$"))
 			{
-				//È¥µô¡®Ôª¡¯
+				//å»æ‰â€˜å…ƒâ€™
 				sRMB = Regex.Replace(sRMB, unitProvider.GetUnit(0).Unit, "");
 				string temp = sRMB[sRMB.Length - 1].ToString();
 				CurrencyUnit mUnit;
 				if (unitProvider.IsPivotalUnit(temp, out mUnit))
 				{
-					//Ò»°ãÀ´Ëµ£¬´ËÇé¿öÏÂ²»´øÓĞĞ¡Êı
+					//ä¸€èˆ¬æ¥è¯´ï¼Œæ­¤æƒ…å†µä¸‹ä¸å¸¦æœ‰å°æ•°
 					return Math.Round(Convert.ToDouble(sRMB.Substring(0, sRMB.Length - 1)) * Math.Pow(10, mUnit.Exp), digits);
 				}
 				else
@@ -70,7 +70,7 @@ namespace HKH.CurrencyFormat
 					return Convert.ToDouble(sRMB);
 				}
 			}
-			//Ò¼ÒÚÎéÇ§Íò-----±ê×¼¸ñÊ½
+			//å£¹äº¿ä¼åƒä¸‡-----æ ‡å‡†æ ¼å¼
 			else
 			{
 				return Eval(sRMB);
@@ -86,21 +86,21 @@ namespace HKH.CurrencyFormat
 		{
 
 			if (0 == nRMB)
-				return "ÁãÔªÕû";
+				return "é›¶å…ƒæ•´";
 
 			StringBuilder builder = new StringBuilder();
 
-			//³Ë100ÒÔ¸ñÊ½³ÉÕûĞÍ£¬±ãÓÚ´¦Àí
+			//ä¹˜100ä»¥æ ¼å¼æˆæ•´å‹ï¼Œä¾¿äºå¤„ç†
 			ulong uRMB = Convert.ToUInt64(nRMB * 100);
 
 			builder.Insert(0, ToLocalFormat(Convert.ToInt32(uRMB % 100), -2));
 
-			//È¥µôÔ­À´µÄĞ¡ÊıÎ»
+			//å»æ‰åŸæ¥çš„å°æ•°ä½
 			uRMB = uRMB / 100;
 
 			int iUnit = 0;
 
-			//ÒÔÃ¿4Î»ÎªÒ»¸öµ¥Î»¶Î½øĞĞ´¦Àí£¬ËùÒÔÏÂ±ß³ıÒÔ10000
+			//ä»¥æ¯4ä½ä¸ºä¸€ä¸ªå•ä½æ®µè¿›è¡Œå¤„ç†ï¼Œæ‰€ä»¥ä¸‹è¾¹é™¤ä»¥10000
 			while (0 != uRMB)
 			{
 				builder.Insert(0, ToLocalFormat(Convert.ToInt32(uRMB % 10000), iUnit));
@@ -108,11 +108,11 @@ namespace HKH.CurrencyFormat
 				iUnit += 4;
 			}
 
-			builder.Replace("ÔªÁãÕû", "ÔªÕû");
-			builder.Replace("ÁãÔª", "Ôª");
+			builder.Replace("å…ƒé›¶æ•´", "å…ƒæ•´");
+			builder.Replace("é›¶å…ƒ", "å…ƒ");
 
-			//¸ñÊ½ĞŞÕı
-			return Regex.Replace(builder.ToString(), "Áã+", "Áã").Trim('Áã');
+			//æ ¼å¼ä¿®æ­£
+			return Regex.Replace(builder.ToString(), "é›¶+", "é›¶").Trim('é›¶');
 		}
 
 		#endregion
@@ -167,7 +167,7 @@ namespace HKH.CurrencyFormat
 		}
 
 		/// <summary>
-		/// ¼ÆËã±í´ïÊ½£¨Ğ¡Ğ´ÊıÖµÇó´óĞ´×Ö·û´®£©
+		/// è®¡ç®—è¡¨è¾¾å¼ï¼ˆå°å†™æ•°å€¼æ±‚å¤§å†™å­—ç¬¦ä¸²ï¼‰
 		/// </summary>
 		/// <param name="nRMB"></param>
 		/// <param name="exp"></param>
@@ -178,22 +178,22 @@ namespace HKH.CurrencyFormat
 			{
 				if (-2 == exp)
 				{
-					return "Õû";
+					return "æ•´";
 				}
 
 				if (0 == exp)
 				{
-					return "Ôª";
+					return "å…ƒ";
 				}
 
-				return "Áã";
+				return "é›¶";
 			}
 
 			StringBuilder builder = new StringBuilder();
 
 			string sRMB = string.Empty;
 
-			#region ¶Ô½Ç/·Ö×öÌØÊâ´¦Àí
+			#region å¯¹è§’/åˆ†åšç‰¹æ®Šå¤„ç†
 
 			if (-2 == exp)
 			{
@@ -222,16 +222,16 @@ namespace HKH.CurrencyFormat
 
 			#endregion
 
-			#region ÒÔÏÂÎªÕûÊı²¿·ÖÕı³£´¦Àí
+			#region ä»¥ä¸‹ä¸ºæ•´æ•°éƒ¨åˆ†æ­£å¸¸å¤„ç†
 
 			sRMB = nRMB.ToString("0000");
 
-			//Ç°Ò»Î»ÊÇ·ñÊÇ0
+			//å‰ä¸€ä½æ˜¯å¦æ˜¯0
 			bool hasZero = false;
 
 			for (int i = 0; i < sRMB.Length; i++)
 			{
-				//Ö»ÓĞËÄÎ»£¬×î¸ßÎ»Îª¡®Ç§¡¯£¬ËùÒÔÏÂ±ßµÄ3-iÎªµ¥Î»ĞŞÕı
+				//åªæœ‰å››ä½ï¼Œæœ€é«˜ä½ä¸ºâ€˜åƒâ€™ï¼Œæ‰€ä»¥ä¸‹è¾¹çš„3-iä¸ºå•ä½ä¿®æ­£
 				if ((3 - i) > 0)
 				{
 					if ('0' != sRMB[i])
@@ -248,8 +248,8 @@ namespace HKH.CurrencyFormat
 						hasZero = true;
 					}
 				}
-				//×îºóÒ»Î»£¬ÌØ±ğ¸ñÊ½´¦Àí
-				//Èç×îºóÒ»Î»ÊÇÁã£¬Ôòµ¥Î»Ó¦ÔÚÁãÖ®Ç°
+				//æœ€åä¸€ä½ï¼Œç‰¹åˆ«æ ¼å¼å¤„ç†
+				//å¦‚æœ€åä¸€ä½æ˜¯é›¶ï¼Œåˆ™å•ä½åº”åœ¨é›¶ä¹‹å‰
 				else
 				{
 					if ('0' != sRMB[i])
@@ -273,7 +273,7 @@ namespace HKH.CurrencyFormat
 				}
 			}
 
-			//×ª»»´óĞ´ºó·µ»Ø
+			//è½¬æ¢å¤§å†™åè¿”å›
 			return Replace(builder,false).ToString();
 
 			#endregion
@@ -330,28 +330,32 @@ namespace HKH.CurrencyFormat
 
 		private void Init()
 		{
-			numbersMapping = new Dictionary<int, string>();
-			numbersMapping.Add(0, "Áã");
-			numbersMapping.Add(1, "Ò¼");
-			numbersMapping.Add(2, "·¡");
-			numbersMapping.Add(3, "Èş");
-			numbersMapping.Add(4, "ËÁ");
-			numbersMapping.Add(5, "Îé");
-			numbersMapping.Add(6, "Â½");
-			numbersMapping.Add(7, "Æâ");
-			numbersMapping.Add(8, "°Æ");
-			numbersMapping.Add(9, "¾Á");
+            numbersMapping = new Dictionary<int, string>
+            {
+                { 0, "é›¶" },
+                { 1, "å£¹" },
+                { 2, "è´°" },
+                { 3, "å" },
+                { 4, "è‚†" },
+                { 5, "ä¼" },
+                { 6, "é™†" },
+                { 7, "æŸ’" },
+                { 8, "æŒ" },
+                { 9, "ç–" }
+            };
 
-			units = new Dictionary<int, CurrencyUnit>();
-			units.Add(-2, new CurrencyUnit("·Ö", -2));
-			units.Add(-1, new CurrencyUnit("½Ç", -1));
-			units.Add(0, new CurrencyUnit("Ôª|Ô²", 0, true));
-			units.Add(1, new CurrencyUnit("Ê°|Ê®", 1));
-			units.Add(2, new CurrencyUnit("°Û|°Ù", 2));
-			units.Add(3, new CurrencyUnit("Çª|Ç§", 3));
-			units.Add(4, new CurrencyUnit("Èf|Íò", 4, true));
-			units.Add(8, new CurrencyUnit("ÒÚ", 8, true));
-		}
+            units = new Dictionary<int, CurrencyUnit>
+            {
+                { -2, new CurrencyUnit("åˆ†", -2) },
+                { -1, new CurrencyUnit("è§’", -1) },
+                { 0, new CurrencyUnit("å…ƒ|åœ†", 0, true) },
+                { 1, new CurrencyUnit("æ‹¾|å", 1) },
+                { 2, new CurrencyUnit("ä½°|ç™¾", 2) },
+                { 3, new CurrencyUnit("ä»Ÿ|åƒ", 3) },
+                { 4, new CurrencyUnit("ä¸‡|è¬", 4, true) },
+                { 8, new CurrencyUnit("äº¿", 8, true) }
+            };
+        }
 
 		#endregion
 
@@ -359,7 +363,7 @@ namespace HKH.CurrencyFormat
 
 		public string SuffixToken
 		{
-			get { return "Õû"; }
+			get { return "æ•´"; }
 		}
 
 		public Dictionary<int, string> NumbersMapping

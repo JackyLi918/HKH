@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net48;netstandard2.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net48;netstandard2.0;net6.0;net8.0</TargetFrameworks>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<RepositoryUrl>https://github.com/JackyLi918/HKH</RepositoryUrl>
@@ -13,11 +13,15 @@
 		<Title>HKH.Tasks</Title>
 		<Description>Parallel task pool</Description>
 		<PackageTags>parallel;task pool</PackageTags>
-		<Version>2.0.0.0</Version>
+		<Version>2.1.0.0</Version>
 		<Copyright>Copyright © BlackEyes 2009</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+	  <Content Include="Configuration\HKHTaskSettingsExample.json" />
+	  <Content Include="Configuration\HKHTaskSettingsSchema.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\HKH.Common\HKH.Common.csproj" />
