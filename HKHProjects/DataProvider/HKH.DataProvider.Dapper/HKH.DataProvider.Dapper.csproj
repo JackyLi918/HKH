@@ -15,7 +15,7 @@
 		<Description>HKH.DataProvider with dapper intergated</Description>
 		<PackageTags>dataaccess;sqlserver;odbc;oledb;dapper</PackageTags>
 		<RootNamespace>HKH.Data.Dapper</RootNamespace>
-		<Version>5.1.0.0</Version>
+		<Version>5.1.1.0</Version>
 		<Copyright>Copyright © BlackEyes 2009</Copyright>
 	</PropertyGroup>
 
